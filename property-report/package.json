@@ -1,0 +1,30 @@
+{
+  "name": "property-report",
+  "version": "1.0.0",
+  "description": "A comprehensive property report widget for ArcGIS Experience Builder that queries intersecting features from configured data layers based on address search, geocoding, or map click, with configurable report sections, data tables, charts, related-table and nearby-feature analysis, and WCAG 2.1 AA accessible PDF export.",
+  "keywords": [
+    "exb-widget",
+    "experience-builder",
+    "exb",
+    "arcgis",
+    "esri",
+    "property-report",
+    "pdf-export"
+  ],
+  "license": "Apache-2.0",
+  "author": "Brian McLeer",
+  "contributors": [
+    "City of Grand Junction, CO"
+  ],
+  "homepage": "https://community.esri.com/t5/experience-builder-custom-widgets/property-report-widget/bc-p/1705989",
+  "dependencies": {
+    "@mantine/charts": "^8.3.16",
+    "@mantine/dates": "^8.3.16",
+    "@mantine/notifications": "^8.3.16",
+    "@tanstack/react-table": "^8.21.3",
+    "dayjs": "^1.11.19",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.0",
+    "recharts": "^3.7.0"
+  }
+}

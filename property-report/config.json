@@ -1,0 +1,92 @@
+{
+  "mapWidgetId": null,
+  "searchSources": [
+    {
+      "sourceId": "default-geocoder",
+      "sourceName": "World Geocoder",
+      "enabled": true,
+      "type": "geocoder",
+      "geocoderUrl": "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer",
+      "geocoderName": "World Geocoder",
+      "maxSuggestions": 6
+    }
+  ],
+  "sections": [],
+  "headerInfo": {
+    "enabled": false,
+    "displayFields": []
+  },
+  "highlightLayer": {
+    "enabled": false,
+    "highlightColor": "#00FFFF",
+    "fillOpacity": 0.2
+  },
+  "pdfTitle": "Property Report",
+  "pdfIncludeTables": true,
+  "pdfIncludeCharts": true,
+  "resultsPanelTitle": "Property Report",
+  "pdfHeader": {
+    "organizationName": "",
+    "titleMode": "default",
+    "reportTitle": "Property Report",
+    "reportSubtitle": "",
+    "showGeneratedDate": true,
+    "showCoordinates": true,
+    "includeMap": true,
+    "mapHeight": 60,
+    "titlePosition": "center",
+    "datePosition": "right",
+    "headerLayout": "inline"
+  },
+  "pdfFooter": {
+    "enabled": true,
+    "showPageNumbers": true,
+    "pageNumberFormat": "detailed",
+    "pageNumberPosition": "right",
+    "disclaimerText": "DISCLAIMER: This product is for informational purposes and may not have been prepared for or be suitable for legal, engineering, or surveying purposes.",
+    "disclaimerFontSize": 7,
+    "contactText": "",
+    "contactPosition": "left",
+    "footerHeight": 18,
+    "showTopBorder": true
+  },
+  "pdfStyle": {
+    "primaryColor": "#1A6B7C",
+    "sectionHeaderColor": "#1A6B7C",
+    "sectionHeaderTextColor": "#FFFFFF",
+    "alternateRowColor": "#F5F5F5",
+    "borderColor": "#CCCCCC",
+    "fontFamily": "helvetica",
+    "dataLayout": "auto",
+    "showSectionBorders": true,
+    "compactMode": false
+  },
+  "defaultChartConfig": {
+    "chartType": "bar",
+    "showLegend": true,
+    "legendPosition": "bottom",
+    "showValues": false,
+    "showGrid": true,
+    "animate": true,
+    "stacked": false,
+    "curveType": "natural",
+    "height": 200
+  },
+  "defaultTableConfig": {
+    "enableSorting": true,
+    "enableFiltering": false,
+    "enablePagination": true,
+    "pageSize": 10,
+    "stickyHeader": true,
+    "stripedRows": true,
+    "highlightOnHover": true,
+    "compactMode": false,
+    "showRowNumbers": false
+  },
+  "combinedMaxSuggestions": 10,
+  "showSourceLabels": true,
+  "coordinateSystem": "wgs84",
+  "coordinateFormat": "decimal",
+  "coordinatePrecision": 6,
+  "showCoordinates": true
+}

@@ -1,0 +1,17 @@
+# Installed dependencies (consumers run `npm ci` / Experience Builder installs them)
+node_modules/
+
+# Visual Studio cache / user state
+.vs/
+*.user
+*.suo
+
+# Build output
+dist/
+build/
+
+# OS / editor cruft
+.DS_Store
+__MACOSX/
+Thumbs.db
+*.log
