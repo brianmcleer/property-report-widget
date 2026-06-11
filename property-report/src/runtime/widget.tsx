@@ -8019,17 +8019,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                         // Strip HTML tags for PDF (simple conversion)
                         // Convert <br> to space (not newline) so text reflows to full width
                         // Only <p> tags create actual paragraph breaks
-                        let plainText = htmlToPlainText(sr.sectionConfig.richTextContent)// br becomes space for reflow
-                            .replace(/<\/p>\s*<p[^>]*>/gi, '\n\n')  // </p><p> becomes paragraph break
-                            .replace(/<\/p>/gi, '\n')          // </p> becomes single newline
-                            .replace(/<p[^>]*>/gi, '')         // Remove opening <p> tags
-                            .replace(/<[^>]+>/g, '')           // Remove all other HTML tags
-                            .replace(/&nbsp;/g, ' ')
-                            .replace(/&amp;/g, '&')
-                            .replace(/&lt;/g, '<')
-                            .replace(/&gt;/g, '>')
-                            .replace(/&quot;/g, '"')
-                            .replace(/\s+/g, ' ')              // Collapse multiple spaces to single
+                        let plainText = htmlToPlainText(sr.sectionConfig.richTextContent)
                             .trim()
 
                         // Replace field placeholders
