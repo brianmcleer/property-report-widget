@@ -2,7 +2,7 @@
   "name": "property-report",
   "label": "Property Report",
   "type": "widget",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "exbVersion": "1.20.0",
   "author": "Brian McLeer",
   "description": "A comprehensive property report widget that queries intersecting features from configured data layers based on address search, geocoding, or map click. Features include multi-source search (geocoder, layer, REST URL), configurable report sections with data tables and charts, rich text sections with HTML support (links, email, phone), action buttons with field placeholders, header info display, geometry highlighting, and professional PDF export with customizable branding.",
