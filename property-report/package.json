@@ -1,6 +1,6 @@
 {
   "name": "property-report",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A comprehensive property report widget for ArcGIS Experience Builder that queries intersecting features from configured data layers based on address search, geocoding, or map click, with configurable report sections, data tables, charts, related-table and nearby-feature analysis, and WCAG 2.1 AA accessible PDF export.",
   "keywords": [
     "exb-widget",
