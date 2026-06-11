@@ -136,6 +136,8 @@ Please report bugs, ideas, questions, and enhancement requests on the [Esri Comm
 
 ## Changelog
 
+- 2026-06-11 v1.0.1: Security fixes for CodeQL code scanning alerts
+
 - **2026-03-27** — Resolved issue for Experience Builder 1.20. Versions 1.19 and 1.20 available.
 - **2026-03-25** — DE 1.20 broke something in the widget; troubleshooting.
 - **2026-02-23** — Allow manual sorting of fields within sections in Settings.

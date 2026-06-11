@@ -40,6 +40,20 @@ import Polyline from 'esri/geometry/Polyline'
 import jsPDFLib from 'jspdf'
 import html2canvasLib from 'html2canvas'
 
+// Convert rich-text HTML to plain text for PDF output using an inert DOMParser
+// pass. This strips tags and decodes entities correctly in one step and avoids
+// the incomplete-sanitization and double-escaping patterns CodeQL flags.
+const htmlToPlainText = (html: string): string => {
+  if (!html) return ''
+  const doc = new DOMParser().parseFromString(html, 'text/html')
+  doc.body.querySelectorAll('br').forEach(br => br.replaceWith(' '))
+  doc.body.querySelectorAll('p').forEach(p => p.insertAdjacentText('beforeend', '\n'))
+  return (doc.body.textContent || '')
+    .replace(/\u00a0/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+}
+
 // Module-level mutable state (not imports)
 let projection: any = null  // esri/geometry/projection loaded via loadArcGISJSAPIModules
 let _projectionResolve: (() => void) | null = null
@@ -8005,8 +8019,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                         // Strip HTML tags for PDF (simple conversion)
                         // Convert <br> to space (not newline) so text reflows to full width
                         // Only <p> tags create actual paragraph breaks
-                        let plainText = sr.sectionConfig.richTextContent
-                            .replace(/<br\s*\/?>/gi, ' ')      // br becomes space for reflow
+                        let plainText = htmlToPlainText(sr.sectionConfig.richTextContent)// br becomes space for reflow
                             .replace(/<\/p>\s*<p[^>]*>/gi, '\n\n')  // </p><p> becomes paragraph break
                             .replace(/<\/p>/gi, '\n')          // </p> becomes single newline
                             .replace(/<p[^>]*>/gi, '')         // Remove opening <p> tags
@@ -8143,11 +8156,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                             doc.setFont(activeFontFamily, 'normal')
                             doc.setTextColor(51, 51, 51)
 
-                            let descText = sr.sectionConfig.chartConfig.chartDescription
-                                .replace(/<[^>]+>/g, '')
-                                .replace(/&nbsp;/g, ' ')
-                                .replace(/&amp;/g, '&')
-                                .trim()
+                            let descText = htmlToPlainText(sr.sectionConfig.chartConfig.chartDescription).trim()
 
                             // Replace placeholders
                             descText = descText.replace(/\{([^}]+)\}/g, (match, fieldName) => {
@@ -8309,19 +8318,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                                     doc.setFont(activeFontFamily, 'normal')
 
                                     // Strip HTML tags for PDF
-                                    let plainText = lr.layerConfig.layerRichTextContent
-                                        .replace(/<br\s*\/?>/gi, ' ')
-                                        .replace(/<\/p>\s*<p[^>]*>/gi, '\n\n')
-                                        .replace(/<\/p>/gi, '\n')
-                                        .replace(/<p[^>]*>/gi, '')
-                                        .replace(/<[^>]+>/g, '')
-                                        .replace(/&nbsp;/g, ' ')
-                                        .replace(/&amp;/g, '&')
-                                        .replace(/&lt;/g, '<')
-                                        .replace(/&gt;/g, '>')
-                                        .replace(/&quot;/g, '"')
-                                        .replace(/\s+/g, ' ')
-                                        .trim()
+                                    let plainText = htmlToPlainText(lr.layerConfig.layerRichTextContent).trim()
 
                                     // Replace field placeholders with layer data
                                     plainText = replaceLayerPdfPlaceholders(plainText)
