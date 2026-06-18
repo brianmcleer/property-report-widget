@@ -2088,6 +2088,34 @@ const getStyles = (themeColors: { primary: string; primaryDark: string; primaryL
         padding: 60px;
         color: ${theme.textSecondary};
     }
+    .loading-state .loading-primary {
+        margin-top: 12px;
+        font-weight: 500;
+        color: ${theme.textPrimary};
+        text-align: center;
+    }
+    .loading-state .loading-secondary {
+        margin-top: 4px;
+        font-size: 12px;
+        color: ${theme.textSecondary};
+        text-align: center;
+        max-width: 260px;
+    }
+    .loading-state .loading-slow-hint {
+        margin-top: 8px;
+        font-size: 12px;
+        color: ${theme.textSecondary};
+        text-align: center;
+        max-width: 260px;
+        opacity: 0;
+        animation: prw-loading-slow-hint 0.4s ease 8s forwards;
+    }
+    @keyframes prw-loading-slow-hint {
+        to { opacity: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .loading-state .loading-slow-hint { animation-duration: 0.01ms; }
+    }
 
     .pdf-generating-overlay {
         position: absolute;
@@ -9459,9 +9487,17 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
 
                     {/* ACCESSIBILITY: Loading State */}
                     {loading && (
-                        <div className="loading-state" role="status" aria-live="polite" aria-busy="true">
+                        <div className="loading-state" aria-hidden="true">
                             <Loading type={LoadingType.Donut} />
-                            <div style={{ marginTop: 12 }}>Querying layers...</div>
+                            <div className="loading-primary">
+                                {statusMessage || 'Querying layers...'}
+                            </div>
+                            <div className="loading-secondary">
+                                Gathering information from multiple layers. This can take a few seconds.
+                            </div>
+                            <div className="loading-slow-hint">
+                                Still working on it. Thanks for your patience.
+                            </div>
                         </div>
                     )}
 
