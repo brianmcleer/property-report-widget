@@ -1,10 +1,10 @@
 # Property Report Widget for ArcGIS Experience Builder
 
-A comprehensive property lookup and reporting widget for ArcGIS Experience Builder applications. Search for a property by address, parcel number, or map click, then view detailed information from multiple data sources in a unified, configurable report — and export it to an accessible, branded PDF.
+A comprehensive property lookup and reporting widget for ArcGIS Experience Builder applications. Search for a property by address, parcel number, or map click, then view detailed information from multiple data sources in a unified, configurable report, and export it to an accessible, branded PDF.
 
 Built and tested on **ArcGIS Experience Builder Developer Edition 1.19** (also runs on 1.20). The design and functionality were heavily informed by the reporting tool on [PortlandMaps.com](https://www.portlandmaps.com/).
 
-- **Author:** Brian McLeer — GIS Administrator/Developer, City of Grand Junction, CO
+- **Author:** Brian McLeer, GIS Administrator/Developer, City of Grand Junction, CO
 - **License:** Apache-2.0
 - **Discussion / downloads / feedback:** [Property Report Widget on Esri Community](https://community.esri.com/t5/experience-builder-custom-widgets/property-report-widget/bc-p/1705989)
 
@@ -28,9 +28,9 @@ This widget ships with a `package.json` and `package-lock.json`, so you no longe
 
    `npm ci` installs the exact versions captured in `package-lock.json`, which avoids the version-mismatch and dependency-clash issues that come from installing packages manually.
 
-3. Start (or restart) the client, then refresh the Builder window. The widget will appear under **Insert Widget → Custom**.
+3. Start (or restart) the client, then refresh the Builder window. The widget will appear under **Insert Widget > Custom**.
 
-> **Heads up:** if you update a source file (e.g. `widget.tsx`), you generally only need to refresh the Builder window — you don't need to re-run the install commands unless the dependency list changes.
+> **Heads up:** if you update a source file (e.g. `widget.tsx`), you generally only need to refresh the Builder window. You do not need to re-run the install commands unless the dependency list changes.
 
 ### Manual install (only if you are not using the lockfile)
 
@@ -64,21 +64,23 @@ Exact versions are pinned in `package.json` and frozen in `package-lock.json`.
 ## Features
 
 ### Search
-- **Multi-source search** — combine geocoder services, feature-layer (attribute) search, and REST URL sources in one unified search box, with drag-and-drop priority ordering.
-- **Type-ahead suggestions** grouped by source, with full keyboard navigation (arrow keys + Enter) and a clear button.
-- **Map selection** — click the map-location icon, then click anywhere on the map to search at that point.
-- **URL parameters** — pre-populate and auto-run a search via query string for direct links to a specific property.
-- **Validation** — invalid input surfaces an "Address not found" message; changed text forces a fresh geocode (case-insensitive) instead of reusing cached results.
+- **Multi-source search:** combine geocoder services, feature-layer (attribute) search, and REST URL sources in one unified search box, with drag-and-drop priority ordering.
+- **Type-ahead suggestions** grouped by source, with full keyboard navigation (arrow keys plus Enter) and a clear button.
+- **Map selection:** click the map-location icon, then click anywhere on the map to search at that point.
+- **URL parameters:** pre-populate and auto-run a search via query string for direct links to a specific property.
+- **Validation:** invalid input surfaces an "Address not found" message; changed text forces a fresh geocode (case-insensitive) instead of reusing cached results.
+- **Live loading status:** while a search runs, the widget shows progress (searching, querying layers, gathering nearby features) plus a brief reassurance message for longer lookups.
 
 ### Report content
-- **Header info** — key property attributes pinned at the top of results, with optional reverse geocoding to show the address in the title regardless of search method.
-- **Property preview** — static map image centered on the property, with zoom, copy-address, and custom action buttons (URLs support field tokens like `{parcelid}`), plus an optional logo.
-- **Configurable sections** — organize results from different data sources, each with one or more layers, displayed as tables, charts, or both, inline or in a separate slide-out pane.
-- **Rich text** — HTML content (links, phone, email) before or after data, with optional action buttons.
-- **Tables** — sortable, resizable, filterable columns; sticky headers; striping; pagination; row click/hover interactions (zoom, highlight, popup) on the map.
-- **Charts** — bar, column, pie, donut, line, area; interactive legends and tooltips; responsive sizing; screen-reader-accessible data tables as an alternative.
-- **Related tables** — query relationship classes; display inline (collapsed/expanded) or in a separate pane, with field formatting, optional charts, and sorting.
-- **Nearby features** — distance-based analysis sorted nearest/farthest, with title, subtitle, formatted distance, and optional click-to-zoom.
+- **Header info:** key property attributes pinned at the top of results, with optional reverse geocoding to show the address in the title regardless of search method.
+- **Property preview:** static map image centered on the property, with zoom, copy-address, and custom action buttons (URLs support field tokens like `{parcelid}`), plus an optional logo.
+- **Configurable sections:** organize results from different data sources, each with one or more layers, displayed as tables, charts, or both, inline or in a separate slide-out pane.
+- **Fast, parallel loading:** section, layer, and nearby-feature queries run concurrently rather than one after another, so reports that pull from many sources load in a fraction of the time.
+- **Rich text:** HTML content (links, phone, email) before or after data, with optional action buttons.
+- **Tables:** sortable, resizable, filterable columns; sticky headers; striping; pagination; row click/hover interactions (zoom, highlight, popup) on the map.
+- **Charts:** bar, column, pie, donut, line, area; interactive legends and tooltips; responsive sizing; screen-reader-accessible data tables as an alternative.
+- **Related tables:** query relationship classes; display inline (collapsed/expanded) or in a separate pane, with field formatting, optional charts, and sorting.
+- **Nearby features:** distance-based analysis sorted nearest/farthest, with title, subtitle, formatted distance, and optional click-to-zoom.
 
 ### Map integration
 - Highlights query results using configurable point, line, and polygon symbols.
@@ -101,17 +103,17 @@ Exact versions are pinned in `package.json` and frozen in `package-lock.json`.
 
 All configuration happens in the widget's **Settings** panel in Experience Builder, organized into collapsible sections:
 
-- **Map Connection** — select the map widget the report interacts with.
-- **Search Sources** — geocoder, layer, and URL-parameter sources, plus global suggestion limits and ordering.
-- **Header Info** — data source, search/display fields, aliases, formatting, PDF exclusion.
-- **Property Preview** — image dimensions, basemap, zoom, action buttons, logo.
-- **Sections & Layers** — titles, table/chart options, rich text, buffers, field selection/ordering/aliases, row interactions, related tables, and nearby features.
-- **Highlight Layer** — point/line/polygon symbols and auto-clear behavior.
-- **PDF Export** — header, footer, style, table of contents, content toggles, and accessibility (language, title metadata, alt-text templates).
-- **Coordinate Display** — coordinate system, format, precision.
-- **Default Configurations** — global chart/table defaults applied unless overridden per section or layer.
+- **Map Connection:** select the map widget the report interacts with.
+- **Search Sources:** geocoder, layer, and URL-parameter sources, plus global suggestion limits and ordering.
+- **Header Info:** data source, search/display fields, aliases, formatting, PDF exclusion.
+- **Property Preview:** image dimensions, basemap, zoom, action buttons, logo.
+- **Sections & Layers:** titles, table/chart options, rich text, buffers, field selection/ordering/aliases, row interactions, related tables, and nearby features.
+- **Highlight Layer:** point/line/polygon symbols and auto-clear behavior.
+- **PDF Export:** header, footer, style, table of contents, content toggles, and accessibility (language, title metadata, alt-text templates).
+- **Coordinate Display:** coordinate system, format, precision.
+- **Default Configurations:** global chart/table defaults applied unless overridden per section or layer.
 
-> **Tip on field order:** fields appear in the report in the order you configure them in Settings, not in feature-class order. Configure each field fully before moving to the next. Field order can also be controlled at the published service level (Pro → Enterprise).
+> **Tip on field order:** fields appear in the report in the order you configure them in Settings, not in feature-class order. You can reorder selected fields by dragging them in the field list, or with the up and down arrows next to each field. Field order can also be controlled at the published service level (Pro to Enterprise).
 
 ---
 
@@ -120,7 +122,7 @@ All configuration happens in the widget's **Settings** panel in Experience Build
 The widget targets WCAG 2.1 Level AA:
 
 - Full keyboard navigation with visible focus indicators (Tab, Enter/Space, arrow keys in dropdowns/tables, Escape to close menus and panes).
-- ARIA labels, roles, and live regions that announce dynamic content and errors to screen readers.
+- ARIA labels, roles, and live regions that announce dynamic content, loading progress, and errors to screen readers.
 - Minimum contrast ratios and `rem`-based font sizes that respect browser zoom and user font preferences.
 - Charts include screen-reader-accessible data tables as an alternative.
 - Honors the `prefers-reduced-motion` setting.
@@ -136,12 +138,13 @@ Please report bugs, ideas, questions, and enhancement requests on the [Esri Comm
 
 ## Changelog
 
-- **2026-03-27** — Resolved issue for Experience Builder 1.20. Versions 1.19 and 1.20 available.
-- **2026-03-25** — DE 1.20 broke something in the widget; troubleshooting.
-- **2026-02-23** — Allow manual sorting of fields within sections in Settings.
-- **2026-02-17** — No code change; the companion Right Click widget was updated to launch this widget.
-- **2026-02-09** — Added option to interact with the search widget and other widgets for actions; fixed a UI bug where "Nearby" could overrun in some PDF reports.
-- **2026-01-22** — V1 finalized after community feedback.
+- **2026-06-30 (v1.1.0):** Performance and usability update. Section, layer, and nearby-feature queries now run in parallel instead of sequentially, so multi-section reports load much faster. Search now shows live loading status messages. Selected fields can be reordered by dragging in Settings, with the up and down arrows kept as a keyboard-accessible alternative. Includes TypeScript build fixes and a dependency update (dompurify).
+- **2026-03-27:** Resolved issue for Experience Builder 1.20. Versions 1.19 and 1.20 available.
+- **2026-03-25:** DE 1.20 broke something in the widget; troubleshooting.
+- **2026-02-23:** Allow manual sorting of fields within sections in Settings.
+- **2026-02-17:** No code change; the companion Right Click widget was updated to launch this widget.
+- **2026-02-09:** Added option to interact with the search widget and other widgets for actions; fixed a UI bug where "Nearby" could overrun in some PDF reports.
+- **2026-01-22:** V1 finalized after community feedback.
 
 ---
 

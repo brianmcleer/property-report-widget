@@ -468,6 +468,63 @@ const getStyles = () => css`
     }
   }
 
+  .selected-field-order {
+    border: 1px solid var(--sys-color-divider-secondary, #e0e0e0);
+    border-radius: 4px;
+    padding: 6px;
+    margin-bottom: 8px;
+    background: var(--sys-color-surface-paper, #fafafa);
+  }
+  .selected-field-order-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--sys-color-text-light);
+    margin: 0 2px 6px;
+  }
+  .field-order-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 6px;
+    border-radius: 3px;
+    background: var(--sys-color-surface-background, #fff);
+    border: 1px solid var(--sys-color-divider-secondary, #e0e0e0);
+    cursor: grab;
+    user-select: none;
+  }
+  .field-order-item + .field-order-item {
+    margin-top: 3px;
+  }
+  .field-order-item:active {
+    cursor: grabbing;
+  }
+  .field-order-item.dragging {
+    opacity: 0.4;
+  }
+  .field-order-item.drag-over {
+    border-color: var(--sys-color-primary-main, #1976d2);
+    box-shadow: inset 0 2px 0 var(--sys-color-primary-main, #1976d2);
+  }
+  .field-order-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: var(--sys-color-primary-main, #1976d2);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .field-order-name {
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .list-item-content {
     padding: 12px;
     background: var(--sys-color-surface-paper);
@@ -3288,6 +3345,34 @@ const Setting = (props: AllWidgetSettingProps<IMConfig>) => {
         const temp = fields[idx]
         fields[idx] = fields[swapIdx]
         fields[swapIdx] = temp
+
+        layers[layerIndex].fields = fields
+        sections[sectionIndex].layers = layers
+        updateConfig('sections', sections)
+    }
+
+    // Move a selected field to immediately before another field (drag-and-drop reorder)
+    const moveFieldBefore = (sectionId: string, layerId: string, fromName: string, beforeName: string) => {
+        if (fromName === beforeName) return
+        const sections = toMutableSections(config.sections)
+        const sectionIndex = sections.findIndex(s => s.sectionId === sectionId)
+        if (sectionIndex === -1) return
+
+        const layers = toMutableLayers(sections[sectionIndex].layers)
+        const layerIndex = layers.findIndex(l => l.layerId === layerId)
+        if (layerIndex === -1) return
+
+        const fields = toMutableFields(layers[layerIndex].fields)
+        const fromIdx = fields.findIndex(f => f.name === fromName)
+        if (fromIdx === -1) return
+
+        const [moved] = fields.splice(fromIdx, 1)
+        const beforeIdx = fields.findIndex(f => f.name === beforeName)
+        if (beforeIdx === -1) {
+            fields.push(moved)
+        } else {
+            fields.splice(beforeIdx, 0, moved)
+        }
 
         layers[layerIndex].fields = fields
         sections[sectionIndex].layers = layers
@@ -6623,6 +6708,29 @@ const Setting = (props: AllWidgetSettingProps<IMConfig>) => {
                                                                                         })()}
                                                                                     </div>
                                                                                 )}>
+                                                                                    {/* Selected field order: drag to reorder. Live preview of report order; the arrows above still work too. */}
+                                                                                    {selectedFields.length > 1 && (
+                                                                                        <div className="selected-field-order" role="list" aria-label="Selected field display order. Drag an item to reorder.">
+                                                                                            <div className="selected-field-order-label">Selected field order (drag to reorder)</div>
+                                                                                            {selectedFields.map((orderField, orderIdx) => (
+                                                                                                <div
+                                                                                                    key={orderField.name}
+                                                                                                    role="listitem"
+                                                                                                    className="field-order-item"
+                                                                                                    draggable
+                                                                                                    onDragStart={(e) => { e.dataTransfer.setData('text/plain', orderField.name); e.dataTransfer.effectAllowed = 'move'; e.currentTarget.classList.add('dragging') }}
+                                                                                                    onDragEnd={(e) => { e.currentTarget.classList.remove('dragging') }}
+                                                                                                    onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; e.currentTarget.classList.add('drag-over') }}
+                                                                                                    onDragLeave={(e) => { e.currentTarget.classList.remove('drag-over') }}
+                                                                                                    onDrop={(e) => { e.preventDefault(); e.currentTarget.classList.remove('drag-over'); const fromName = e.dataTransfer.getData('text/plain'); if (fromName) { moveFieldBefore(section.sectionId, layer.layerId, fromName, orderField.name) } }}
+                                                                                                >
+                                                                                                    <span className="drag-handle" aria-hidden="true"><DragHandleIcon /></span>
+                                                                                                    <span className="field-order-num">{orderIdx + 1}</span>
+                                                                                                    <span className="field-order-name">{orderField.alias && orderField.alias !== orderField.name ? `${orderField.name} (${orderField.alias})` : orderField.name}</span>
+                                                                                                </div>
+                                                                                            ))}
+                                                                                        </div>
+                                                                                    )}
                                                                                     <div className="fields-container">
                                                                                         {layerFields.length === 0 ? (
                                                                                             <div className="field-item" style={{ justifyContent: 'center', color: 'var(--sys-color-text-light)' }}>

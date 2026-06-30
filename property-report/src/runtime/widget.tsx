@@ -44,14 +44,14 @@ import html2canvasLib from 'html2canvas'
 // pass. This strips tags and decodes entities correctly in one step and avoids
 // the incomplete-sanitization and double-escaping patterns CodeQL flags.
 const htmlToPlainText = (html: string): string => {
-  if (!html) return ''
-  const doc = new DOMParser().parseFromString(html, 'text/html')
-  doc.body.querySelectorAll('br').forEach(br => br.replaceWith(' '))
-  doc.body.querySelectorAll('p').forEach(p => p.insertAdjacentText('beforeend', '\n'))
-  return (doc.body.textContent || '')
-    .replace(/\u00a0/g, ' ')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim()
+    if (!html) return ''
+    const doc = new DOMParser().parseFromString(html, 'text/html')
+    doc.body.querySelectorAll('br').forEach(br => br.replaceWith(' '))
+    doc.body.querySelectorAll('p').forEach(p => p.insertAdjacentText('beforeend', '\n'))
+    return (doc.body.textContent || '')
+        .replace(/\u00a0/g, ' ')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim()
 }
 
 // Module-level mutable state (not imports)
@@ -2863,7 +2863,6 @@ const formatFieldValueWithDomain = (
     return formatFieldValue(resolvedValue, fieldConfig)
 }
 
-// =====================================================
 // Property Preview Component - with static map rendering
 // =====================================================
 interface PropertyPreviewProps {
@@ -5889,16 +5888,14 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
 
         // Section queries
         const sections = toMutable<SectionConfig>(config.sections)
-        const sectionResults: SectionResult[] = []
-
-        for (const section of sections) {
+        const sectionResults: SectionResult[] = await Promise.all(sections.map(async (section) => {
             const layers = toMutable<LayerConfig>(section.layers)
-            const layerResults: LayerResult[] = []
 
-            for (const layerConfig of layers) {
+            // Run all layers in this section concurrently (Promise.all preserves order)
+            const layerResults: LayerResult[] = (await Promise.all(layers.map(async (layerConfig): Promise<LayerResult | null> => {
                 // Skip layers with nearby mode enabled - they're queried separately
                 if (layerConfig.nearbyConfig?.enabled) {
-                    continue
+                    return null
                 }
 
                 try {
@@ -6064,12 +6061,12 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                         }
                     }
 
-                    layerResults.push({ layerConfig, features, relatedData, domainLookup: layerDomainLookup })
+                    return { layerConfig, features, relatedData, domainLookup: layerDomainLookup }
                 } catch (e) {
                     console.error(`Query failed for ${layerConfig.layerTitle}:`, e)
-                    layerResults.push({ layerConfig, features: [] })
+                    return { layerConfig, features: [] }
                 }
-            }
+            }))).filter((lr): lr is LayerResult => lr !== null)
 
             const totalFeatures = layerResults.reduce((sum, lr) => sum + lr.features.length, 0)
             let chartData: any[] = []
@@ -6232,15 +6229,15 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
 
             // ====== NEARBY MODE QUERY ======
             // Query features for layers with nearby display mode enabled
-            const nearbyResults: NearbyResult[] = []
             const nearbyLayers = toMutable<LayerConfig>(section.layers)
 
-            for (const layerConfig of nearbyLayers) {
+            // Run all nearby-layer queries in this section concurrently
+            const nearbyResults: NearbyResult[] = (await Promise.all(nearbyLayers.map(async (layerConfig): Promise<NearbyResult | null> => {
                 const nearbyConfig = layerConfig.nearbyConfig
 
                 // Skip if nearby mode not enabled or title field not configured
                 if (!nearbyConfig?.enabled || !nearbyConfig.titleField) {
-                    continue
+                    return null
                 }
 
                 // Get layer URL from either dataSourceId or direct layerUrl
@@ -6272,7 +6269,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                 }
 
                 if (!nearbyLayerUrl) {
-                    continue // Skip if no URL available
+                    return null // Skip if no URL available
                 }
 
                 try {
@@ -6317,7 +6314,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
 
                     if (!bufferedGeometry) {
                         console.warn('Nearby query: Failed to create buffer geometry')
-                        continue
+                        return null
                     }
 
                     query.geometry = bufferedGeometry
@@ -6437,25 +6434,25 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                     const maxFeatures = nearbyConfig.maxFeatures || 5
                     const limitedFeatures = featuresWithDistance.slice(0, maxFeatures)
 
-                    nearbyResults.push({
+                    return {
                         layerConfig,
                         nearbyConfig,
                         features: limitedFeatures
-                    })
+                    }
 
                 } catch (err) {
                     console.error(`Error querying nearby features for ${layerConfig.layerTitle}:`, err)
-                    nearbyResults.push({
+                    return {
                         layerConfig,
                         nearbyConfig,
                         features: [],
                         error: `Failed to query ${layerConfig.layerTitle}`
-                    })
+                    }
                 }
-            }
+            }))).filter((nr): nr is NearbyResult => nr !== null)
 
-            sectionResults.push({ sectionConfig: section, layerResults, totalFeatures, chartData, nearbyResults })
-        }
+            return { sectionConfig: section, layerResults, totalFeatures, chartData, nearbyResults }
+        }))
 
         // Determine which sections should be expanded by default
         // Honor the section.expanded config setting (defaults to true if not specified)
@@ -7986,6 +7983,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                 doc.text(sectionTitle, margin + 3, y + 5.5)
                 y += 8
 
+
                 // Check if rich text should be included in PDF (not excluded)
                 const includeRichTextInPdf = !sr.sectionConfig.richTextExcludeFromPdf
                 const hasRichTextConfig = includeRichTextInPdf && (sr.sectionConfig.richTextContent || (sr.sectionConfig.richTextButtons && sr.sectionConfig.richTextButtons.length > 0))
@@ -9244,7 +9242,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                         // jsPDF outline plugin hardcodes y=792 (top of page) for all bookmarks
                         // We replace these with the actual y positions we calculated
                         const originalRender = outline.render.bind(outline)
-                        outline.render = function() {
+                        outline.render = function () {
                             let output = originalRender()
 
                             // Replace each /XYZ 0 792 0 or /XYZ 0 792. 0 with correct y position

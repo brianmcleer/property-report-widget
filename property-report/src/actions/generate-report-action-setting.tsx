@@ -22,7 +22,7 @@ const styles = css`
 `
 
 const GenerateReportActionSetting = (props: ActionSettingProps<ActionConfig>) => {
-    const config: ActionConfig = props.actionConfig ?? { autoScrollToResults: true }
+    const config: ActionConfig = (props.config as any) ?? { autoScrollToResults: true }
 
     const update = (patch: Partial<ActionConfig>) => {
         props.onSettingChange({
