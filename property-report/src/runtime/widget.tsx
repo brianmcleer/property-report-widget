@@ -335,12 +335,13 @@ const getStyles = (themeColors: { primary: string; primaryDark: string; primaryL
 
     .search-row {
         display: flex;
+        flex-wrap: wrap;
         gap: 8px;
         align-items: center;
     }
 
     .search-input-container {
-        flex: 1;
+        flex: 1 1 100%;
         position: relative;
     }
 
@@ -410,6 +411,7 @@ const getStyles = (themeColors: { primary: string; primaryDark: string; primaryL
 
     .search-btn {
         height: 34px;
+        flex: 1 1 auto;
         padding: 0 20px;
         background: var(--theme-primary);
         color: white;
@@ -2120,11 +2122,13 @@ const getStyles = (themeColors: { primary: string; primaryDark: string; primaryL
         .loading-state .loading-slow-hint { animation-duration: 0.01ms; }
     }
     .streaming-note { padding: 8px 16px; font-size: 12px; color: ${theme.textSecondary}; display: flex; align-items: center; gap: 8px; }
-    .recent-searches { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 8px 16px 0; }
-    .recent-label { font-size: 12px; color: ${theme.textSecondary}; }
-    .recent-chip { border: 1px solid ${theme.borderLight}; background: ${theme.bgAlt}; border-radius: 12px; padding: 2px 10px; font-size: 12px; cursor: pointer; color: ${theme.textPrimary}; }
-    .recent-chip:hover { border-color: #1976d2; }
-    .recent-clear { border: none; background: none; font-size: 11px; color: ${theme.textMuted}; cursor: pointer; text-decoration: underline; }
+    .recent-searches { padding: 10px 16px 0; }
+    .recent-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .recent-label { font-size: 12px; font-weight: 600; color: ${theme.textSecondary}; }
+    .recent-chips { display: flex; flex-direction: column; gap: 4px; }
+    .recent-chip { display: block; width: 100%; text-align: left; border: 1px solid ${theme.borderLight}; background: ${theme.bgAlt}; border-radius: 6px; padding: 6px 10px; font-size: 12px; cursor: pointer; color: ${theme.textPrimary}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .recent-chip:hover { border-color: #1976d2; background: ${theme.white}; }
+    .recent-clear { border: none; background: none; font-size: 11px; color: ${theme.textMuted}; cursor: pointer; text-decoration: underline; flex-shrink: 0; }
     .report-summary { margin: 10px 16px 0; padding: 10px 12px; background: ${theme.bgAlt}; border-left: 3px solid #1976d2; border-radius: 4px; font-size: 13px; line-height: 1.5; color: ${theme.textPrimary}; }
     .section-tools { display: flex; justify-content: flex-end; margin: 0 0 6px; }
     .csv-export-btn { display: inline-flex; align-items: center; gap: 4px; border: 1px solid ${theme.borderLight}; background: #ffffff; border-radius: 4px; padding: 2px 8px; font-size: 11px; cursor: pointer; color: ${theme.textSecondary}; }
@@ -10034,11 +10038,15 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                     {/* Recent searches (local to this browser) */}
                     {(config as any).enableRecentSearches !== false && recentSearches.length > 0 && results.length === 0 && !loading && (
                         <div className="recent-searches">
-                            <span className="recent-label">Recent:</span>
-                            {recentSearches.slice(0, 5).map(t => (
-                                <button key={t} type="button" className="recent-chip" title={`Search ${t}`} onClick={() => { setSearchText(t); runQuery(t) }}>{t}</button>
-                            ))}
-                            <button type="button" className="recent-clear" onClick={clearRecentSearches}>Clear</button>
+                            <div className="recent-header">
+                                <span className="recent-label">Recent</span>
+                                <button type="button" className="recent-clear" onClick={clearRecentSearches}>Clear</button>
+                            </div>
+                            <div className="recent-chips">
+                                {recentSearches.slice(0, 5).map(t => (
+                                    <button key={t} type="button" className="recent-chip" title={`Search ${t}`} onClick={() => { setSearchText(t); runQuery(t) }}>{t}</button>
+                                ))}
+                            </div>
                         </div>
                     )}
 
