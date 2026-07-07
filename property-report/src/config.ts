@@ -243,6 +243,15 @@ export interface RichTextButton {
     openInNewTab?: boolean    // Default: true
 }
 
+export interface SectionAlertConfig {
+    alertId: string
+    field: string                    // attribute name evaluated against the section's features
+    operator: 'equals' | 'notEquals' | 'contains' | 'greaterThan' | 'lessThan' | 'isEmpty' | 'isNotEmpty'
+    value?: string
+    message: string                  // banner text shown when the rule matches
+    severity?: 'info' | 'warning' | 'critical'
+}
+
 export interface SectionConfig {
     sectionId: string
     sectionTitle: string
@@ -273,6 +282,9 @@ export interface SectionConfig {
     // Enhanced chart configuration
     chartConfig?: ChartConfig       // Detailed chart settings
     tableConfig?: TableDisplayConfig  // Table display settings
+
+    // Alert rules that surface banners at the top of this section
+    alerts?: SectionAlertConfig[]
 }
 
 // Search source types
@@ -652,6 +664,15 @@ export interface Config {
     showCoordinates?: boolean                            // Show coordinates in results header (default: true)
     customCoordinateWkid?: number                        // Custom WKID for coordinate display (e.g., 2180 for Poland ETRS89)
     customCoordinateLabel?: string                       // Label for custom coordinate system (e.g., "ETRS89 / Poland CS92")
+
+    // Report options
+    reportSummaryTemplate?: string                       // Plain-language summary above sections; tokens: {address} plus {FIELD} from header info
+    permalinkParam?: string                              // URL query parameter for shareable report links (default: 'propertysearch')
+    permalinkAutoOpen?: boolean                          // Attempt to auto-open the widget's panel/sidebar on permalink load (default: true)
+    enableComparison?: boolean                           // Show the property comparison button (default: true)
+    enablePermalink?: boolean                            // Show the copy-report-link button (default: true)
+    enableCsvExport?: boolean                            // Show per-section CSV export buttons (default: true)
+    enableRecentSearches?: boolean                       // Remember and show recent searches (default: true)
 
     // Performance settings
     enableClientSideQuery?: boolean                      // Use client-side querying for layers in map (faster, default: false)

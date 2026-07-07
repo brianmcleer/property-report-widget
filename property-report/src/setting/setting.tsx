@@ -1644,7 +1644,11 @@ const Setting = (props: AllWidgetSettingProps<IMConfig>) => {
             'displayPane', 'searchRadiusUnit', 'distanceUnit',
 
             // Custom font name
-            'customFontName'
+            'customFontName',
+
+            // v1.2.0 additions: report summary template, permalink param, and section alert fields
+            'reportSummaryTemplate', 'permalinkParam',
+            'alertId', 'field', 'operator', 'severity', 'message'
         ])
 
         // Arrays whose items should always be strings (NOT number arrays like pageSizeOptions)
@@ -3379,6 +3383,32 @@ const Setting = (props: AllWidgetSettingProps<IMConfig>) => {
         updateConfig('sections', sections)
     }
 
+    // ---- Section alert helpers ----
+    const getSectionAlerts = (section: any): any[] => {
+        const raw = section?.alerts
+        if (!raw) return []
+        return (raw as any).asMutable ? (raw as any).asMutable({ deep: true }) : [...raw]
+    }
+    const writeSectionAlerts = (section: any, alerts: any[]) => {
+        updateSection(section.sectionId, { alerts } as any)
+    }
+    const addSectionAlert = (section: any) => {
+        const alerts = getSectionAlerts(section)
+        alerts.push({ alertId: `alert_${Date.now()}`, field: '', operator: 'equals', value: '', message: '', severity: 'warning' })
+        writeSectionAlerts(section, alerts)
+    }
+    const updateSectionAlert = (section: any, index: number, patch: any) => {
+        const alerts = getSectionAlerts(section)
+        if (!alerts[index]) return
+        alerts[index] = { ...alerts[index], ...patch }
+        writeSectionAlerts(section, alerts)
+    }
+    const removeSectionAlert = (section: any, index: number) => {
+        const alerts = getSectionAlerts(section)
+        alerts.splice(index, 1)
+        writeSectionAlerts(section, alerts)
+    }
+
     // Update field alias
     const updateFieldAlias = (sectionId: string, layerId: string, fieldName: string, newAlias: string) => {
         const sections = toMutableSections(config.sections)
@@ -3866,6 +3896,115 @@ const Setting = (props: AllWidgetSettingProps<IMConfig>) => {
                             <strong>Tip:</strong> Enable this for significantly faster queries on layers already loaded in your map.
                             Falls back to server queries for layers not in the map.
                         </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Report Options */}
+            <div className="collapsible-panel">
+                <div
+                    className="collapsible-panel-header"
+                    onClick={() => togglePanel('report-options')}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => e.key === 'Enter' && togglePanel('report-options')}
+                    aria-expanded={expandedPanels.has('report-options')}
+                >
+                    <div className="collapsible-panel-header-left">
+                        <span className="collapsible-panel-title">Report Options</span>
+                    </div>
+                    <span className={`collapsible-panel-toggle ${!expandedPanels.has('report-options') ? 'collapsed' : ''}`}>
+                        <ChevronDownIcon />
+                    </span>
+                </div>
+                <div className={`collapsible-panel-content ${expandedPanels.has('report-options') ? 'expanded' : ''}`}>
+                    <div className="collapsible-panel-inner">
+                        <SettingRow flow="wrap" label={(
+                            <TooltipLabel
+                                label="Report summary template"
+                                tooltip="Optional plain-language sentence shown above the report sections. Use {address} for the searched address and {FIELD_NAME} for any header info field. Example: This {ACRES}-acre parcel at {address} is zoned {ZONE}."
+                            />
+                        )}>
+                            <TextArea
+                                value={config.reportSummaryTemplate || ''}
+                                onChange={(e) => updateConfig('reportSummaryTemplate', e.target.value)}
+                                placeholder="This {ACRES}-acre parcel at {address} is zoned {ZONE}."
+                                style={{ minHeight: 60 }}
+                            />
+                        </SettingRow>
+                        <SettingRow flow="wrap" label={(
+                            <TooltipLabel
+                                label="Permalink URL parameter"
+                                tooltip="Query-string parameter used by the Copy Link button in results, and honored on app load to auto-run a search. Example link: ...?propertysearch=1015 N 7th St"
+                            />
+                        )}>
+                            <TextInput
+                                size="sm"
+                                value={config.permalinkParam || ''}
+                                onChange={(e) => updateConfig('permalinkParam', e.target.value || undefined)}
+                                placeholder="propertysearch"
+                            />
+                        </SettingRow>
+                        <SettingRow flow="no-wrap" label={(
+                            <TooltipLabel
+                                label="Auto-open panel from permalink"
+                                tooltip="When a report link is opened, attempt to automatically open the panel or sidebar containing this widget. Turn off if the automatic opening misbehaves in your app layout; the report still loads and appears when the user opens the widget."
+                            />
+                        )}>
+                            <Switch
+                                checked={config.permalinkAutoOpen !== false}
+                                onChange={(e) => updateConfig('permalinkAutoOpen', e.target.checked)}
+                                aria-label="Auto-open panel from permalink"
+                            />
+                        </SettingRow>
+                        <SettingRow flow="no-wrap" label={(
+                            <TooltipLabel
+                                label="Enable comparison"
+                                tooltip="Show the compare button in the report header, letting users snapshot one property and compare it side by side with another."
+                            />
+                        )}>
+                            <Switch
+                                checked={config.enableComparison !== false}
+                                onChange={(e) => updateConfig('enableComparison', e.target.checked)}
+                                aria-label="Enable comparison"
+                            />
+                        </SettingRow>
+                        <SettingRow flow="no-wrap" label={(
+                            <TooltipLabel
+                                label="Enable report link"
+                                tooltip="Show the copy-link button in the report header, which copies a shareable URL that reopens this report."
+                            />
+                        )}>
+                            <Switch
+                                checked={config.enablePermalink !== false}
+                                onChange={(e) => updateConfig('enablePermalink', e.target.checked)}
+                                aria-label="Enable report link"
+                            />
+                        </SettingRow>
+                        <SettingRow flow="no-wrap" label={(
+                            <TooltipLabel
+                                label="Enable CSV export"
+                                tooltip="Show a CSV download button on each report section that has data."
+                            />
+                        )}>
+                            <Switch
+                                checked={config.enableCsvExport !== false}
+                                onChange={(e) => updateConfig('enableCsvExport', e.target.checked)}
+                                aria-label="Enable CSV export"
+                            />
+                        </SettingRow>
+                        <SettingRow flow="no-wrap" label={(
+                            <TooltipLabel
+                                label="Enable recent searches"
+                                tooltip="Remember recent property searches in the browser and show them as quick-access chips under the search box."
+                            />
+                        )}>
+                            <Switch
+                                checked={config.enableRecentSearches !== false}
+                                onChange={(e) => updateConfig('enableRecentSearches', e.target.checked)}
+                                aria-label="Enable recent searches"
+                            />
+                        </SettingRow>
                     </div>
                 </div>
             </div>
@@ -5360,6 +5499,43 @@ const Setting = (props: AllWidgetSettingProps<IMConfig>) => {
                                                         <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
                                                             {section.expanded === false ? 'Section starts collapsed when results load' : 'Section starts expanded when results load'}
                                                         </span>
+                                                    </div>
+                                                </SettingRow>
+
+                                                <SettingRow flow="wrap" label={(
+                                                    <TooltipLabel
+                                                        label="Section alerts"
+                                                        tooltip="Rules evaluated against this section's results. When a rule matches, a banner appears at the top of the section. Example: field FLOODZONE, operator does not equal, value X, message: This property may be in a flood zone."
+                                                    />
+                                                )}>
+                                                    <div style={{ width: '100%' }}>
+                                                        {getSectionAlerts(section).map((al: any, ai: number) => (
+                                                            <div key={al.alertId || ai} style={{ border: '1px solid var(--sys-color-divider-secondary, #e0e0e0)', borderRadius: 4, padding: 6, marginBottom: 6 }}>
+                                                                <TextInput size="sm" placeholder="Field name (e.g. FLOODZONE)" value={al.field || ''} onChange={(e) => updateSectionAlert(section, ai, { field: e.target.value })} style={{ marginBottom: 4 }} aria-label="Alert field name" />
+                                                                <Select size="sm" value={al.operator || 'equals'} onChange={(e) => updateSectionAlert(section, ai, { operator: (e.target as HTMLSelectElement).value })} style={{ marginBottom: 4 }} aria-label="Alert operator">
+                                                                    <Option value="equals">equals</Option>
+                                                                    <Option value="notEquals">does not equal</Option>
+                                                                    <Option value="contains">contains</Option>
+                                                                    <Option value="greaterThan">greater than</Option>
+                                                                    <Option value="lessThan">less than</Option>
+                                                                    <Option value="isEmpty">is empty</Option>
+                                                                    <Option value="isNotEmpty">is not empty</Option>
+                                                                </Select>
+                                                                {al.operator !== 'isEmpty' && al.operator !== 'isNotEmpty' && (
+                                                                    <TextInput size="sm" placeholder="Value to compare" value={al.value || ''} onChange={(e) => updateSectionAlert(section, ai, { value: e.target.value })} style={{ marginBottom: 4 }} aria-label="Alert comparison value" />
+                                                                )}
+                                                                <TextInput size="sm" placeholder="Banner message" value={al.message || ''} onChange={(e) => updateSectionAlert(section, ai, { message: e.target.value })} style={{ marginBottom: 4 }} aria-label="Alert banner message" />
+                                                                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                                                    <Select size="sm" value={al.severity || 'warning'} onChange={(e) => updateSectionAlert(section, ai, { severity: (e.target as HTMLSelectElement).value })} aria-label="Alert severity" style={{ width: 110 }}>
+                                                                        <Option value="info">Info</Option>
+                                                                        <Option value="warning">Warning</Option>
+                                                                        <Option value="critical">Critical</Option>
+                                                                    </Select>
+                                                                    <Button size="sm" type="tertiary" onClick={() => removeSectionAlert(section, ai)} aria-label="Remove this alert">Remove</Button>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                        <Button size="sm" onClick={() => addSectionAlert(section)} aria-label="Add a new alert rule">Add alert</Button>
                                                     </div>
                                                 </SettingRow>
 

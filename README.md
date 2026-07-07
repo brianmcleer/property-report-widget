@@ -60,11 +60,15 @@ Dependencies (installed automatically, pinned in `property-report/package-lock.j
 ## Features
 
 - Multi-source search (geocoder, feature layer, and URL parameter) with type-ahead suggestions and map-click selection.
+- Recent searches and shareable report links that reopen a saved report from a URL.
 - Configurable report sections with sortable/filterable tables and charts (bar, column, pie, donut, line, area).
+- Progressive rendering so sections stream into view as each query finishes.
+- Side-by-side property comparison, a plain-language report summary, and per-section alert banners.
 - Related-table queries and nearby-feature (proximity) analysis.
+- Per-section CSV export that respects configured field aliases and order.
 - Highlighting of results on the connected map with configurable symbols.
 - Branded, WCAG 2.1 AA accessible PDF export with header, footer, table of contents, and disclaimer.
-- Full configuration through the widget Settings panel, plus XML import/export of settings.
+- Full configuration through the widget Settings panel, with individual on/off switches for comparison, report links, CSV export, and recent searches, plus XML import/export of all settings.
 
 See [`property-report/README.md`](property-report/README.md) for the full feature and configuration reference.
 

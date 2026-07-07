@@ -68,16 +68,23 @@ Exact versions are pinned in `package.json` and frozen in `package-lock.json`.
 - **Type-ahead suggestions** grouped by source, with full keyboard navigation (arrow keys plus Enter) and a clear button.
 - **Map selection:** click the map-location icon, then click anywhere on the map to search at that point.
 - **URL parameters:** pre-populate and auto-run a search via query string for direct links to a specific property.
+- **Shareable report links:** a copy-link button places a URL on the clipboard that reopens the current report; opening the link auto-runs the search. The URL parameter is configurable (default `propertysearch`), with an optional setting to auto-open the widget panel on load.
+- **Recent searches:** the widget remembers recent lookups in the browser and offers them as quick-access chips under the search box, with a clear button.
 - **Validation:** invalid input surfaces an "Address not found" message; changed text forces a fresh geocode (case-insensitive) instead of reusing cached results.
 - **Live loading status:** while a search runs, the widget shows progress (searching, querying layers, gathering nearby features) plus a brief reassurance message for longer lookups.
 
 ### Report content
+- **Progressive rendering:** report sections appear as soon as each query finishes rather than waiting for the entire report, so results feel immediate and long reports stream into view.
+- **Report summary:** an optional plain-language summary rendered above the sections, built from a configurable template with field tokens (for example `{address}` plus any header-info field).
+- **Property comparison:** snapshot the current property, search a second one, and view the two side by side with differing values highlighted.
+- **Section alerts:** per-section rules evaluated against the results, surfacing colored banners (by severity) when a condition is met, for example flagging a flood zone or an overdue status.
 - **Header info:** key property attributes pinned at the top of results, with optional reverse geocoding to show the address in the title regardless of search method.
 - **Property preview:** static map image centered on the property, with zoom, copy-address, and custom action buttons (URLs support field tokens like `{parcelid}`), plus an optional logo.
 - **Configurable sections:** organize results from different data sources, each with one or more layers, displayed as tables, charts, or both, inline or in a separate slide-out pane.
 - **Fast, parallel loading:** section, layer, and nearby-feature queries run concurrently rather than one after another, so reports that pull from many sources load in a fraction of the time.
 - **Rich text:** HTML content (links, phone, email) before or after data, with optional action buttons.
 - **Tables:** sortable, resizable, filterable columns; sticky headers; striping; pagination; row click/hover interactions (zoom, highlight, popup) on the map.
+- **CSV export:** each section with data offers a one-click CSV download that respects the configured field aliases and order.
 - **Charts:** bar, column, pie, donut, line, area; interactive legends and tooltips; responsive sizing; screen-reader-accessible data tables as an alternative.
 - **Related tables:** query relationship classes; display inline (collapsed/expanded) or in a separate pane, with field formatting, optional charts, and sorting.
 - **Nearby features:** distance-based analysis sorted nearest/farthest, with title, subtitle, formatted distance, and optional click-to-zoom.
@@ -95,7 +102,7 @@ Exact versions are pinned in `package.json` and frozen in `package-lock.json`.
 - Map-native, WGS84, or Web Mercator; decimal degrees or degrees-minutes-seconds; configurable precision; visibility toggle.
 
 ### Import / Export of settings
-- Export the full widget configuration to XML for backup or transfer, and import it into another Experience Builder application to replicate setup quickly.
+- Export the full widget configuration to XML for backup or transfer, and import it into another Experience Builder application to replicate setup quickly. All settings, including the v1.2.0 feature toggles, round-trip through XML.
 
 ---
 
@@ -107,7 +114,8 @@ All configuration happens in the widget's **Settings** panel in Experience Build
 - **Search Sources:** geocoder, layer, and URL-parameter sources, plus global suggestion limits and ordering.
 - **Header Info:** data source, search/display fields, aliases, formatting, PDF exclusion.
 - **Property Preview:** image dimensions, basemap, zoom, action buttons, logo.
-- **Sections & Layers:** titles, table/chart options, rich text, buffers, field selection/ordering/aliases, row interactions, related tables, and nearby features.
+- **Sections & Layers:** titles, table/chart options, rich text, buffers, field selection/ordering/aliases, row interactions, related tables, nearby features, and per-section alert rules.
+- **Report Options:** plain-language summary template, shareable-link URL parameter and auto-open behavior, and individual on/off switches for comparison, report links, CSV export, and recent searches (all on by default).
 - **Highlight Layer:** point/line/polygon symbols and auto-clear behavior.
 - **PDF Export:** header, footer, style, table of contents, content toggles, and accessibility (language, title metadata, alt-text templates).
 - **Coordinate Display:** coordinate system, format, precision.
@@ -138,6 +146,7 @@ Please report bugs, ideas, questions, and enhancement requests on the [Esri Comm
 
 ## Changelog
 
+- **2026-07-07 (v1.2.0):** Feature and usability update. Adds progressive rendering (sections stream in as each query completes), a plain-language report summary, per-section alert banners, side-by-side property comparison, shareable report links with an optional auto-open setting, per-section CSV export, and recent searches. Comparison, report links, CSV export, and recent searches each have an on/off switch in the Report Options settings; all settings round-trip through XML import/export. Also fixes header layout so the report action buttons wrap to their own row in narrow panels and long parcel numbers no longer truncate.
 - **2026-06-30 (v1.1.0):** Performance and usability update. Section, layer, and nearby-feature queries now run in parallel instead of sequentially, so multi-section reports load much faster. Search now shows live loading status messages. Selected fields can be reordered by dragging in Settings, with the up and down arrows kept as a keyboard-accessible alternative. Includes TypeScript build fixes and a dependency update (dompurify).
 - **2026-03-27:** Resolved issue for Experience Builder 1.20. Versions 1.19 and 1.20 available.
 - **2026-03-25:** DE 1.20 broke something in the widget; troubleshooting.

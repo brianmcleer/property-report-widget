@@ -1,6 +1,6 @@
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
-import { React, jsx, css, DataSourceManager, WidgetState } from 'jimu-core'
+import { React, jsx, css, DataSourceManager, WidgetState, getAppStore, appActions, WidgetManager } from 'jimu-core'
 import type { AllWidgetProps } from 'jimu-core'
 import { JimuMapViewComponent, loadArcGISJSAPIModules } from 'jimu-arcgis'
 import type { JimuMapView } from 'jimu-arcgis'
@@ -565,9 +565,10 @@ const getStyles = (themeColors: { primary: string; primaryDark: string; primaryL
 
     /* ===== Address Header ===== */
     .address-header {
-        padding: 15px 20px;
+        padding: 12px 16px;
         border-bottom: 1px solid ${theme.border};
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-between;
         align-items: flex-start;
         position: sticky;
@@ -576,7 +577,7 @@ const getStyles = (themeColors: { primary: string; primaryDark: string; primaryL
         z-index: 10;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0);
         transition: box-shadow 0.2s ease;
-        gap: 12px;
+        gap: 10px;
     }
 
     /* Add subtle shadow when content is scrolled underneath */
@@ -585,8 +586,8 @@ const getStyles = (themeColors: { primary: string; primaryDark: string; primaryL
     }
 
     .address-info {
-        flex: 1;
-        min-width: 0; /* Critical for text truncation in flex containers */
+        flex: 1 1 240px;
+        min-width: 200px; /* Force the action buttons to wrap to their own row when narrow */
         overflow: hidden;
     }
 
@@ -618,7 +619,8 @@ const getStyles = (themeColors: { primary: string; primaryDark: string; primaryL
 
     .header-info-item {
         display: inline-flex;
-        align-items: center;
+        align-items: baseline;
+        flex-wrap: wrap;
         gap: 4px;
         font-size: 0.875rem;
         max-width: 100%;
@@ -633,20 +635,21 @@ const getStyles = (themeColors: { primary: string; primaryDark: string; primaryL
     .header-info-value {
         color: ${theme.textPrimary};
         font-weight: 500;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
     .address-actions {
         display: flex;
-        gap: 8px;
-        flex-shrink: 0;
+        gap: 6px;
+        flex: 1 1 auto;
+        justify-content: flex-end;
     }
 
     .action-icon {
-        width: 32px;
-        height: 32px;
+        width: 30px;
+        height: 30px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -2116,6 +2119,34 @@ const getStyles = (themeColors: { primary: string; primaryDark: string; primaryL
     @media (prefers-reduced-motion: reduce) {
         .loading-state .loading-slow-hint { animation-duration: 0.01ms; }
     }
+    .streaming-note { padding: 8px 16px; font-size: 12px; color: ${theme.textSecondary}; display: flex; align-items: center; gap: 8px; }
+    .recent-searches { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 8px 16px 0; }
+    .recent-label { font-size: 12px; color: ${theme.textSecondary}; }
+    .recent-chip { border: 1px solid ${theme.borderLight}; background: ${theme.bgAlt}; border-radius: 12px; padding: 2px 10px; font-size: 12px; cursor: pointer; color: ${theme.textPrimary}; }
+    .recent-chip:hover { border-color: #1976d2; }
+    .recent-clear { border: none; background: none; font-size: 11px; color: ${theme.textMuted}; cursor: pointer; text-decoration: underline; }
+    .report-summary { margin: 10px 16px 0; padding: 10px 12px; background: ${theme.bgAlt}; border-left: 3px solid #1976d2; border-radius: 4px; font-size: 13px; line-height: 1.5; color: ${theme.textPrimary}; }
+    .section-tools { display: flex; justify-content: flex-end; margin: 0 0 6px; }
+    .csv-export-btn { display: inline-flex; align-items: center; gap: 4px; border: 1px solid ${theme.borderLight}; background: #ffffff; border-radius: 4px; padding: 2px 8px; font-size: 11px; cursor: pointer; color: ${theme.textSecondary}; }
+    .csv-export-btn:hover { color: ${theme.textPrimary}; border-color: #1976d2; }
+    .section-alerts { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+    .section-alert { padding: 8px 10px; border-radius: 4px; font-size: 12.5px; border: 1px solid; }
+    .section-alert-info { background: #eef6fd; border-color: #90c7f0; color: #0b5394; }
+    .section-alert-warning { background: #fdf6e3; border-color: #f0d48a; color: #7a5b00; }
+    .section-alert-critical { background: #fdecea; border-color: #f2a6a0; color: #8a1c12; }
+    .comparison-pending { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 8px 16px 0; padding: 8px 12px; background: #eef6fd; border: 1px solid #90c7f0; border-radius: 4px; font-size: 12.5px; color: #0b5394; }
+    .comparison-panel { margin: 10px 16px 0; border: 1px solid ${theme.borderLight}; border-radius: 6px; background: #ffffff; }
+    .comparison-header { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid ${theme.borderLight}; background: ${theme.bgAlt}; border-radius: 6px 6px 0 0; }
+    .comparison-title { font-size: 13px; font-weight: 600; color: ${theme.textPrimary}; }
+    .comparison-close { border: none; background: none; cursor: pointer; color: ${theme.textSecondary}; display: inline-flex; padding: 4px; }
+    .comparison-group { padding: 8px 12px 4px; }
+    .comparison-group-title { font-size: 12px; font-weight: 600; color: ${theme.textSecondary}; text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 4px; }
+    .comparison-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-bottom: 8px; }
+    .comparison-table th, .comparison-table td { text-align: left; padding: 4px 6px; border-bottom: 1px solid ${theme.borderLight}; vertical-align: top; }
+    .comparison-table thead th { font-weight: 600; color: ${theme.textSecondary}; }
+    .comparison-table tbody th { font-weight: 500; color: ${theme.textPrimary}; width: 34%; }
+    .comparison-diff td, .comparison-diff th { background: #fdf6e3; }
+    .comparison-note { padding: 0 12px 10px; font-size: 11.5px; color: ${theme.textMuted}; margin: 0; }
 
     .pdf-generating-overlay {
         position: absolute;
@@ -2277,7 +2308,7 @@ const getStyles = (themeColors: { primary: string; primaryDark: string; primaryL
 
         /* Address Header - Improved mobile layout */
         .address-header {
-            padding: 12px 12px;
+            padding: 10px 12px;
             flex-direction: row;
             flex-wrap: wrap;
             align-items: flex-start;
@@ -2286,7 +2317,7 @@ const getStyles = (themeColors: { primary: string; primaryDark: string; primaryL
 
         .address-info {
             min-width: 0; /* Allow text truncation */
-            flex: 1 1 calc(100% - 80px); /* Leave room for action buttons */
+            flex: 1 1 100%; /* Full width; buttons move to their own row below */
             order: 1;
         }
 
@@ -2317,13 +2348,20 @@ const getStyles = (themeColors: { primary: string; primaryDark: string; primaryL
 
         .header-info-label,
         .header-info-value {
-            overflow: hidden;
-            text-overflow: ellipsis;
+            overflow: visible;
+            text-overflow: clip;
+            white-space: normal;
+            overflow-wrap: anywhere;
         }
 
         .address-actions {
-            flex-shrink: 0;
             order: 2;
+            flex: 1 1 100%;
+            justify-content: flex-end;
+            gap: 6px;
+            padding-top: 8px;
+            margin-top: 2px;
+            border-top: 1px solid ${theme.borderLight};
         }
 
         .action-icon {
@@ -4453,6 +4491,314 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
     const [mapView, setMapView] = useState<JimuMapView | null>(null)
     const [searchText, setSearchText] = useState('')
     const [displayedSearchText, setDisplayedSearchText] = useState('')
+
+    // ---- Recent searches (stored locally in this browser) ----
+    const RECENT_SEARCHES_KEY = 'property-report-recent-searches'
+    const [recentSearches, setRecentSearches] = useState<string[]>(() => {
+        try { const raw = localStorage.getItem(RECENT_SEARCHES_KEY); return raw ? JSON.parse(raw) : [] } catch (e) { return [] }
+    })
+    const saveRecentSearch = (text: string) => {
+        try {
+            const t = (text || '').trim()
+            if (!t) return
+            const list = [t, ...recentSearches.filter(x => x.toLowerCase() !== t.toLowerCase())].slice(0, 8)
+            localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(list))
+            setRecentSearches(list)
+        } catch (e) { /* storage unavailable */ }
+    }
+    const clearRecentSearches = () => {
+        try { localStorage.removeItem(RECENT_SEARCHES_KEY) } catch (e) { /* ignore */ }
+        setRecentSearches([])
+    }
+
+    // ---- Report permalink ----
+    const widgetRootRef = useRef<HTMLDivElement>(null)
+    const [linkCopied, setLinkCopied] = useState(false)
+    const queryRunIdRef = useRef(0)
+    // Find ancestor container widgets (sidebars/controllers) of this widget in the app config.
+    // Handles widget layouts, sections/views, pages, screens, header, footer, and dialogs,
+    // and both layout-reference shapes ({sizeMode: layoutId} or a plain layoutId string).
+    const collectLayoutIds = (obj: any): string[] => {
+        const ids: string[] = []
+        if (!obj) return ids
+        if (typeof obj === 'string') { ids.push(obj); return ids }
+        try {
+            Object.keys(obj).forEach((k: string) => {
+                const v = obj[k]
+                if (typeof v === 'string') ids.push(v)
+                else if (v && typeof v === 'object') {
+                    Object.keys(v).forEach((k2: string) => { if (typeof v[k2] === 'string') ids.push(v[k2]) })
+                }
+            })
+        } catch (e) { /* ignore */ }
+        return ids
+    }
+
+    const buildLayoutOwnerMap = (appConfig: any): Record<string, { kind: string; id: string }> => {
+        const layoutOwner: Record<string, { kind: string; id: string }> = {}
+        const claim = (obj: any, owner: { kind: string; id: string }) => {
+            collectLayoutIds(obj).forEach(lid => { layoutOwner[lid] = owner })
+        }
+        if (appConfig.widgets) Object.keys(appConfig.widgets).forEach((wid: string) => claim(appConfig.widgets[wid]?.layouts, { kind: 'widget', id: wid }))
+        if (appConfig.views) Object.keys(appConfig.views).forEach((vid: string) => claim(appConfig.views[vid]?.layout, { kind: 'view', id: vid }))
+        if (appConfig.pages) Object.keys(appConfig.pages).forEach((pid: string) => claim(appConfig.pages[pid]?.layout, { kind: 'page', id: pid }))
+        if (appConfig.screens) Object.keys(appConfig.screens).forEach((sid: string) => claim(appConfig.screens[sid]?.layout, { kind: 'screen', id: sid }))
+        if (appConfig.dialogs) Object.keys(appConfig.dialogs).forEach((did: string) => claim(appConfig.dialogs[did]?.layout, { kind: 'dialog', id: did }))
+        if (appConfig.header) claim(appConfig.header.layout, { kind: 'header', id: 'header' })
+        if (appConfig.footer) claim(appConfig.footer.layout, { kind: 'footer', id: 'footer' })
+        return layoutOwner
+    }
+
+    const findAncestorContainers = (): Array<{ id: string; uri: string; childId: string }> => {
+        const out: Array<{ id: string; uri: string; childId: string }> = []
+        try {
+            const state = getAppStore().getState()
+            const appConfig: any = state?.appConfig
+            if (!appConfig?.widgets || !appConfig?.layouts) return out
+            const layoutOwner = buildLayoutOwnerMap(appConfig)
+
+            const findLayoutContaining = (kind: 'WIDGET' | 'SECTION', id: string): string | null => {
+                const layouts = appConfig.layouts
+                for (const lid of Object.keys(layouts)) {
+                    const content = layouts[lid]?.content
+                    if (!content) continue
+                    for (const itemId of Object.keys(content)) {
+                        const item = content[itemId]
+                        if (!item) continue
+                        if (kind === 'WIDGET' && item.type === 'WIDGET' && item.widgetId === id) return lid
+                        if (kind === 'SECTION' && item.type === 'SECTION' && item.sectionId === id) return lid
+                    }
+                }
+                return null
+            }
+            const sectionOfView = (viewId: string): string | null => {
+                const sections = appConfig.sections
+                if (!sections) return null
+                for (const sid of Object.keys(sections)) {
+                    const views = sections[sid]?.views
+                    if (views && Array.from(views).indexOf(viewId) !== -1) return sid
+                }
+                return null
+            }
+
+            let cur: { kind: 'WIDGET' | 'SECTION'; id: string } = { kind: 'WIDGET', id: props.id }
+            let lastWidget = props.id
+            for (let hops = 0; hops < 25; hops++) {
+                const lid = findLayoutContaining(cur.kind, cur.id)
+                if (!lid) break
+                const owner = layoutOwner[lid]
+                if (!owner) break
+                if (owner.kind === 'widget') {
+                    out.push({ id: owner.id, uri: String(appConfig.widgets[owner.id]?.uri || ''), childId: lastWidget })
+                    lastWidget = owner.id
+                    cur = { kind: 'WIDGET', id: owner.id }
+                } else if (owner.kind === 'view') {
+                    const sid = sectionOfView(owner.id)
+                    if (!sid) break
+                    cur = { kind: 'SECTION', id: sid }
+                } else {
+                    /* reached page/header/footer; climb complete */
+                    break
+                }
+            }
+        } catch (e) { /* ignore */ }
+        return out
+    }
+
+    // Downward search: which sidebar widgets contain this widget as a descendant?
+    // Exact per-sidebar check, used when the upward climb cannot reach a sidebar.
+    const findSidebarsContainingThisWidget = (): string[] => {
+        const found: string[] = []
+        try {
+            const state = getAppStore().getState()
+            const appConfig: any = state?.appConfig
+            if (!appConfig?.widgets || !appConfig?.layouts) return found
+            const sidebarIds = Object.keys(appConfig.widgets).filter((wid: string) =>
+                String(appConfig.widgets[wid]?.uri || '').includes('sidebar'))
+            const widgetsAndSectionsInLayout = (lid: string): { widgets: string[]; sections: string[] } => {
+                const res = { widgets: [] as string[], sections: [] as string[] }
+                const content = appConfig.layouts?.[lid]?.content
+                if (!content) return res
+                Object.keys(content).forEach((itemId: string) => {
+                    const item = content[itemId]
+                    if (!item) return
+                    if (item.type === 'WIDGET' && item.widgetId) res.widgets.push(item.widgetId)
+                    if (item.type === 'SECTION' && item.sectionId) res.sections.push(item.sectionId)
+                })
+                return res
+            }
+            sidebarIds.forEach(sid => {
+                const seenLayouts = new Set<string>()
+                const seenWidgets = new Set<string>()
+                const layoutQueue: string[] = collectLayoutIds(appConfig.widgets[sid]?.layouts)
+                let hit = false
+                let guard = 0
+                while (layoutQueue.length > 0 && guard++ < 500) {
+                    const lid = layoutQueue.shift() as string
+                    if (seenLayouts.has(lid)) continue
+                    seenLayouts.add(lid)
+                    const { widgets, sections } = widgetsAndSectionsInLayout(lid)
+                    for (const wid of widgets) {
+                        if (wid === props.id) { hit = true; break }
+                        if (!seenWidgets.has(wid)) {
+                            seenWidgets.add(wid)
+                            collectLayoutIds(appConfig.widgets[wid]?.layouts).forEach(l => layoutQueue.push(l))
+                        }
+                    }
+                    if (hit) break
+                    for (const secId of sections) {
+                        const views = appConfig.sections?.[secId]?.views
+                        if (!views) continue
+                        Array.from(views).forEach((vid: any) => {
+                            collectLayoutIds(appConfig.views?.[vid]?.layout).forEach(l => layoutQueue.push(l))
+                        })
+                    }
+                }
+                if (hit) found.push(sid)
+            })
+        } catch (e) { /* ignore */ }
+        return found
+    }
+
+    const copyReportLink = async () => {
+        try {
+            const paramName = (config as any).permalinkParam || 'propertysearch'
+            const url = new URL(window.location.href)
+            url.searchParams.set(paramName, displayedSearchText)
+            // Ask the containing sidebar to open itself via its own URL deep-link (sb_<id>=open)
+            const linkContainers = findAncestorContainers()
+            let linkSidebars = linkContainers.filter(c => c.uri.includes('sidebar')).map(c => c.id)
+            if (linkSidebars.length === 0) linkSidebars = findSidebarsContainingThisWidget()
+            linkSidebars.forEach(sid => url.searchParams.set(`sb_${sid}`, 'open'))
+            await navigator.clipboard.writeText(url.toString())
+            setLinkCopied(true)
+            setStatusMessage('Report link copied to clipboard.')
+            setTimeout(() => setLinkCopied(false), 2500)
+        } catch (e) {
+            console.warn('Copy link failed:', e)
+            setStatusMessage('Could not copy the report link.')
+        }
+    }
+
+    // ---- Property comparison ----
+    const [comparisonSnapshot, setComparisonSnapshot] = useState<{ label: string; headerData: any; results: SectionResult[] } | null>(null)
+    const startComparison = () => {
+        if (results.length === 0) return
+        setComparisonSnapshot({ label: displayedSearchText || 'Property A', headerData: headerInfoData, results })
+        clearResults()
+        setStatusMessage('Comparison started. Search a second property.')
+    }
+    const buildComparison = (): Array<{ title: string; rows: Array<{ label: string; a: string; b: string; diff: boolean }> }> => {
+        if (!comparisonSnapshot) return []
+        const groups: Array<{ title: string; rows: Array<{ label: string; a: string; b: string; diff: boolean }> }> = []
+        const fmt = (v: any) => (v === null || v === undefined || v === '') ? '-' : String(v)
+        try {
+            const hf = config.headerInfo?.displayFields ? normalizeFields(toMutable<any>(config.headerInfo.displayFields)) : []
+            if (hf.length > 0 && (comparisonSnapshot.headerData || headerInfoData)) {
+                const rows = hf.map((f: any) => {
+                    const a = fmt(comparisonSnapshot.headerData ? comparisonSnapshot.headerData[f.name] : undefined)
+                    const b = fmt(headerInfoData ? (headerInfoData as any)[f.name] : undefined)
+                    return { label: String(f.alias || f.name).replace(/:+$/, ''), a, b, diff: a !== b }
+                })
+                groups.push({ title: 'Property Information', rows })
+            }
+        } catch (e) { /* ignore */ }
+        results.forEach(sr => {
+            const prev = comparisonSnapshot.results.find(p => p.sectionConfig.sectionId === sr.sectionConfig.sectionId)
+            if (!prev) return
+            const rows: Array<{ label: string; a: string; b: string; diff: boolean }> = []
+            sr.layerResults.forEach((lr: any) => {
+                const plr: any = prev.layerResults.find((x: any) => x.layerConfig.layerId === lr.layerConfig.layerId)
+                if (!plr) return
+                const aCount = plr.features?.length || 0
+                const bCount = lr.features?.length || 0
+                if (aCount === 1 && bCount === 1) {
+                    const fields = (lr.layerConfig.fields || []) as any[]
+                    fields.forEach((f: any) => {
+                        const a = fmt(plr.features[0][f.name])
+                        const b = fmt(lr.features[0][f.name])
+                        rows.push({ label: f.alias || f.name, a, b, diff: a !== b })
+                    })
+                } else {
+                    const a = `${aCount} feature${aCount === 1 ? '' : 's'}`
+                    const b = `${bCount} feature${bCount === 1 ? '' : 's'}`
+                    rows.push({ label: lr.layerConfig.layerTitle || 'Features', a, b, diff: aCount !== bCount })
+                }
+            })
+            if (rows.length > 0) groups.push({ title: sr.sectionConfig.sectionTitle, rows })
+        })
+        return groups
+    }
+
+    // ---- CSV export (per section, one file per layer) ----
+    const csvEscape = (v: any): string => {
+        if (v === null || v === undefined) return ''
+        const s = String(v)
+        return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s
+    }
+    const exportSectionCsv = (sr: SectionResult) => {
+        try {
+            const base = (displayedSearchText || 'property').replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '_') || 'property'
+            sr.layerResults.forEach((lr: any, idx: number) => {
+                if (!lr.features || lr.features.length === 0) return
+                const configured = (lr.layerConfig.fields || []).map((f: any) => ({ name: f.name, label: f.alias || f.name }))
+                const cols = configured.length > 0 ? configured : Object.keys(lr.features[0]).filter(k => k !== '__geometry').map(k => ({ name: k, label: k }))
+                const header = cols.map((c: any) => csvEscape(c.label)).join(',')
+                const rows = lr.features.map((f: any) => cols.map((c: any) => csvEscape(f[c.name])).join(','))
+                const csv = [header, ...rows].join('\r\n')
+                const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' })
+                const a = document.createElement('a')
+                a.href = URL.createObjectURL(blob)
+                const layerName = (lr.layerConfig.layerTitle || `layer${idx + 1}`).replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '_')
+                a.download = `${base}_${layerName}.csv`
+                document.body.appendChild(a); a.click(); document.body.removeChild(a)
+                setTimeout(() => URL.revokeObjectURL(a.href), 4000)
+            })
+            setStatusMessage('CSV download started.')
+        } catch (e) {
+            console.error('CSV export failed:', e)
+            setStatusMessage('CSV export failed.')
+        }
+    }
+
+    // ---- Plain-language report summary ----
+    const resolveSummaryTemplate = (tpl: string): string => {
+        try {
+            return tpl.replace(/\{([^}]+)\}/g, (m, name) => {
+                if (name === 'address') return displayedSearchText || ''
+                const v = headerInfoData ? (headerInfoData as any)[name] : undefined
+                return (v === null || v === undefined) ? '' : String(v)
+            })
+        } catch (e) { return tpl }
+    }
+
+    // ---- Section alert evaluation ----
+    const evaluateSectionAlerts = (sr: SectionResult): any[] => {
+        const rules: any[] = (((sr.sectionConfig as any).alerts) || []) as any[]
+        if (!rules || rules.length === 0) return []
+        const feats: any[] = []
+        sr.layerResults?.forEach((lr: any) => lr.features?.forEach((f: any) => feats.push(f)))
+        return rules.filter((rule: any) => {
+            if (!rule?.field || !rule?.message) return false
+            const test = (raw: any): boolean => {
+                const empty = raw === null || raw === undefined || raw === ''
+                const s = empty ? '' : String(raw).toLowerCase()
+                const v = (rule.value ?? '').toString().toLowerCase()
+                switch (rule.operator) {
+                    case 'equals': return !empty && s === v
+                    case 'notEquals': return !empty && s !== v
+                    case 'contains': return !empty && s.indexOf(v) !== -1
+                    case 'greaterThan': { const n = parseFloat(String(raw)); const cv = parseFloat(rule.value); return !isNaN(n) && !isNaN(cv) && n > cv }
+                    case 'lessThan': { const n = parseFloat(String(raw)); const cv = parseFloat(rule.value); return !isNaN(n) && !isNaN(cv) && n < cv }
+                    case 'isEmpty': return empty
+                    case 'isNotEmpty': return !empty
+                    default: return false
+                }
+            }
+            if (rule.operator === 'isEmpty') return feats.length === 0 || feats.some((f: any) => test(f[rule.field]))
+            return feats.some((f: any) => test(f[rule.field]))
+        })
+    }
     const [queryPoint, setQueryPoint] = useState<Point | null>(null)
     const [results, setResults] = useState<SectionResult[]>([])
     const [headerInfoData, setHeaderInfoData] = useState<Record<string, any> | null>(null)
@@ -5055,6 +5401,184 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
 
     const runQueryWithPointRef = useRef<((point: Point) => void) | null>(null)
     const enabledSourcesRef = useRef<typeof enabledSources>([])
+
+    // Save successful searches into recent history (fires once loading completes)
+    useEffect(() => {
+        if ((config as any).enableRecentSearches !== false && !loading && results.length > 0 && displayedSearchText.trim()) {
+            saveRecentSearch(displayedSearchText)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [loading, results.length, displayedSearchText])
+
+    // Permalink: auto-run a search passed in the URL (?propertysearch=... by default).
+    // Opens any sidebar/controller containers holding this widget, then waits for the
+    // map connection before running, so the query does not hang on a missing map view.
+    const permalinkRanRef = useRef(false)
+    const openContainersOfThisWidget = () => {
+        try {
+            const state = getAppStore().getState()
+            const appConfig: any = state?.appConfig
+            const containers = findAncestorContainers()
+
+            // Sidebars from the ancestor walk; if the walk found none, fall back to
+            // every sidebar widget in the app so the expand still reaches it.
+            let sidebarIds = containers.filter(c => c.uri.includes('sidebar')).map(c => c.id)
+            if (sidebarIds.length === 0) {
+                sidebarIds = findSidebarsContainingThisWidget()
+            }
+
+            // 1) Write each sidebar's own deep-link param (sb_<id>=open) into the URL now,
+            //    so the sidebar's native deep-link logic (if enabled) opens it properly,
+            //    including its own panel restore paths.
+            try {
+                const url = new URL(window.location.href)
+                let changed = false
+                sidebarIds.forEach(sid => {
+                    if (url.searchParams.get(`sb_${sid}`) !== 'open') {
+                        url.searchParams.set(`sb_${sid}`, 'open')
+                        changed = true
+                    }
+                })
+                if (changed) window.history.replaceState(window.history.state, '', url.toString())
+            } catch (e) { /* ignore */ }
+
+            // 2) Dispatch the expand directly, with retries so it lands after the
+            //    sidebar finishes its own initialization.
+            sidebarIds.forEach(sid => {
+                const expand = () => {
+                    try {
+                        getAppStore().dispatch(appActions.widgetStatePropChange(sid, 'collapse', true))
+                    } catch (e) { /* ignore */ }
+                }
+                expand()
+                setTimeout(expand, 800)
+                setTimeout(expand, 2000)
+                setTimeout(expand, 3500)
+            })
+
+            // 3) Widget-controller ancestors: make this widget's panel visible.
+            // Observed behavior in this app: the widget preloads in a phantom OPENED state
+            // while hidden. A click in that state does not show the panel; it normalizes the
+            // state to CLOSED. From CLOSED, appActions.openWidget shows the panel normally.
+            // So run ONE deterministic sequence (never repeated toggles):
+            //   phantom OPENED -> click once to normalize -> dispatch open -> verify ->
+            //   single fallback click only if still hidden -> stop.
+            containers.forEach(c => {
+                if (c.uri.includes('controller')) {
+                    const isPanelVisible = (): boolean => {
+                        try {
+                            // Ground truth: hit-test the screen at our own center. Clipping,
+                            // offscreen parking, z-order, visibility, opacity: every hiding
+                            // technique fails this test, because it asks the browser what the
+                            // user actually sees at that pixel.
+                            const el = widgetRootRef.current
+                            if (!el) return false
+                            const rect = el.getBoundingClientRect()
+                            if (rect.height < 100 || rect.width < 100) return false
+                            if (rect.bottom <= 0 || rect.right <= 0 || rect.left >= window.innerWidth || rect.top >= window.innerHeight) return false
+                            // The controller parks the closed panel just BEYOND the app's right
+                            // edge (measured: parked at x=2156 while the app ends at x=2053).
+                            // On monitors wider than the app, that spot is still inside the
+                            // browser viewport, so also require the panel to overlap the app:
+                            // its left edge must be inside the controller's right edge.
+                            const ctrlEl = document.querySelector(`[data-widgetid="${c.id}"]`) as HTMLElement | null
+                            if (ctrlEl) {
+                                const cr = ctrlEl.getBoundingClientRect()
+                                if (cr.width > 0 && rect.left >= cr.right - 8) return false
+                            }
+                            const cx = Math.max(1, Math.min(window.innerWidth - 2, rect.left + rect.width / 2))
+                            const cy = Math.max(1, Math.min(window.innerHeight - 2, rect.top + Math.min(rect.height / 2, 200)))
+                            const hit = document.elementFromPoint(cx, cy)
+                            return !!hit && (el === hit || el.contains(hit))
+                        } catch (e) { return false }
+                    }
+                    const clickControllerButton = (reason: string) => {
+                        try {
+                            const rtState = getAppStore().getState()
+                            const label = String(rtState?.appConfig?.widgets?.[c.childId]?.label || '')
+                            const ctrlEl = document.querySelector(`[data-widgetid="${c.id}"]`) as HTMLElement | null
+                            let btn: HTMLElement | null = null
+                            if (ctrlEl) {
+                                btn = ctrlEl.querySelector(`[data-widgetid="${c.childId}"]`) as HTMLElement | null
+                                if (!btn && label) {
+                                    btn = (ctrlEl.querySelector(`button[aria-label="${label}"], button[title="${label}"], [role="button"][aria-label="${label}"], [role="button"][title="${label}"]`) as HTMLElement | null)
+                                }
+                            }
+                            if (!btn && label) {
+                                btn = (document.querySelector(`button[aria-label="${label}"], button[title="${label}"]`) as HTMLElement | null)
+                            }
+                            if (!btn) return
+                            const clickable = (btn.matches('button, [role="button"]') ? btn : null) ||
+                                (btn.querySelector('button, [role="button"]') as HTMLElement | null) ||
+                                (btn.closest('button, [role="button"]') as HTMLElement | null) ||
+                                btn
+                            /* click */
+                            clickable.click()
+                        } catch (e) { console.warn('[Property Report] permalink: click failed', e) }
+                    }
+                    const dispatchOpen = () => {
+                        try {
+                            const wm: any = WidgetManager.getInstance()
+                            const rtState = getAppStore().getState()
+                            const loaded = rtState?.widgetsRuntimeInfo?.[c.childId]?.isClassLoaded
+                            const load = loaded ? Promise.resolve(null) : wm.loadWidgetClass(c.childId)
+                            Promise.resolve(load).then(() => {
+                                /* dispatch open */
+                                getAppStore().dispatch(appActions.openWidget(c.childId))
+                            }).catch(() => { /* ignore */ })
+                        } catch (e) { /* ignore */ }
+                    }
+                    // One-shot orchestration                    // One-shot orchestration
+                    setTimeout(() => {
+                        if (isPanelVisible()) return
+                        const rtState = getAppStore().getState()
+                        const runState = String(rtState?.widgetsRuntimeInfo?.[c.childId]?.state || '')
+                        const phantomOpened = runState.toUpperCase() === 'OPENED'
+                        const normalizeDelay = phantomOpened ? 450 : 0
+                        if (phantomOpened) clickControllerButton('normalize phantom OPENED state')
+                        setTimeout(() => {
+                            dispatchOpen()
+                            setTimeout(() => {
+                                if (isPanelVisible()) return
+                                clickControllerButton('fallback after openWidget')
+                                setTimeout(() => {
+                                    /* done */
+                                }, 800)
+                            }, 800)
+                        }, normalizeDelay)
+                    }, 1200)
+                }
+            })
+        } catch (e) {
+            console.warn('Could not open widget containers for permalink:', e)
+        }
+    }
+    useEffect(() => {
+        if (permalinkRanRef.current) return
+        if (!enabledSources || enabledSources.length === 0) {
+            return
+        }
+        // If a map is configured, wait for its view before auto-running the search
+        if ((config as any).mapWidgetId && !mapView) {
+            return
+        }
+        let v: string | null = null
+        const paramName = (config as any).permalinkParam || 'propertysearch'
+        try {
+            const url = new URL(window.location.href)
+            v = url.searchParams.get(paramName)
+        } catch (e) { v = null }
+        if (!v || !v.trim()) { permalinkRanRef.current = true; return }
+        permalinkRanRef.current = true
+        if ((config as any).permalinkAutoOpen !== false) {
+            openContainersOfThisWidget()
+        }
+        const text = v
+        setSearchText(text)
+        // Small delay lets containers open and the map settle before querying
+        setTimeout(() => { runQuery(text) }, 400)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [enabledSources, mapView])
     const setStateCallbacksRef = useRef<{
         setQueryPoint: (p: Point) => void
         setSearchText: (t: string) => void
@@ -5555,8 +6079,9 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
         }
     }
 
-    const runQuery = async () => {
-        if (!searchText.trim() && !queryPoint) {
+    const runQuery = async (overrideText?: string) => {
+        const effectiveText = overrideText !== undefined ? overrideText : searchText
+        if (!effectiveText.trim() && !queryPoint) {
             setError('Please search for a property or select a location from the map')
             return
         }
@@ -5564,7 +6089,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
         // Only use existing queryPoint if search text hasn't changed
         // This prevents gibberish searches from reusing old results
         const textMatchesQueryPoint = queryPoint &&
-            searchText.trim().toLowerCase() === displayedSearchText.trim().toLowerCase()
+            effectiveText.trim().toLowerCase() === displayedSearchText.trim().toLowerCase()
 
         if (textMatchesQueryPoint) {
             runQueryWithPoint(queryPoint)
@@ -5577,10 +6102,10 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
             try {
                 setLoading(true)
                 setStatusMessage('Searching...')
-                const location = await restGeocode(geocoderSource.config.geocoderUrl, searchText)
+                const location = await restGeocode(geocoderSource.config.geocoderUrl, effectiveText)
                 if (location) {
                     // Only update displayed text after successful geocode
-                    setDisplayedSearchText(searchText)
+                    setDisplayedSearchText(effectiveText)
                     setQueryPoint(location)
                     runQueryWithPoint(location)
                 } else {
@@ -5888,7 +6413,19 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
 
         // Section queries
         const sections = toMutable<SectionConfig>(config.sections)
-        const sectionResults: SectionResult[] = await Promise.all(sections.map(async (section) => {
+        // Progressive rendering: stream each section into the UI the moment its queries finish
+        const queryRunId = ++queryRunIdRef.current
+        const streamedSections: (SectionResult | null)[] = new Array(sections.length).fill(null)
+        const streamSection = (idx: number, resSec: SectionResult) => {
+            if (queryRunId !== queryRunIdRef.current) return
+            streamedSections[idx] = resSec
+            if (resSec.sectionConfig.expanded !== false) {
+                setOpenSections(prev => { const next = new Set(prev); next.add(resSec.sectionConfig.sectionId); return next })
+            }
+            setResults(streamedSections.filter((r): r is SectionResult => r !== null))
+        }
+
+        const sectionResults: SectionResult[] = await Promise.all(sections.map(async (section, sectionIndex): Promise<SectionResult> => {
             const layers = toMutable<LayerConfig>(section.layers)
 
             // Run all layers in this section concurrently (Promise.all preserves order)
@@ -6451,7 +6988,9 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                 }
             }))).filter((nr): nr is NearbyResult => nr !== null)
 
-            return { sectionConfig: section, layerResults, totalFeatures, chartData, nearbyResults }
+            const sectionResult: SectionResult = { sectionConfig: section, layerResults, totalFeatures, chartData, nearbyResults }
+            streamSection(sectionIndex, sectionResult)
+            return sectionResult
         }))
 
         // Determine which sections should be expanded by default
@@ -9289,7 +9828,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
     let flatIndex = -1
 
     return (
-        <div css={getStyles(themeColors)} className="jimu-widget">
+        <div ref={widgetRootRef} css={getStyles(themeColors)} className="jimu-widget">
             {/* ACCESSIBILITY: Skip Link */}
             <a href="#main-content" className="skip-link">
                 Skip to main content
@@ -9484,7 +10023,26 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                     )}
 
                     {/* ACCESSIBILITY: Loading State */}
-                    {loading && (
+                    {/* Comparison pending banner */}
+                    {comparisonSnapshot && results.length === 0 && !loading && (
+                        <div className="comparison-pending" role="status">
+                            <span>Comparing with <strong>{comparisonSnapshot.label}</strong>. Search a second property to see the comparison.</span>
+                            <button type="button" className="recent-clear" onClick={() => setComparisonSnapshot(null)}>Cancel</button>
+                        </div>
+                    )}
+
+                    {/* Recent searches (local to this browser) */}
+                    {(config as any).enableRecentSearches !== false && recentSearches.length > 0 && results.length === 0 && !loading && (
+                        <div className="recent-searches">
+                            <span className="recent-label">Recent:</span>
+                            {recentSearches.slice(0, 5).map(t => (
+                                <button key={t} type="button" className="recent-chip" title={`Search ${t}`} onClick={() => { setSearchText(t); runQuery(t) }}>{t}</button>
+                            ))}
+                            <button type="button" className="recent-clear" onClick={clearRecentSearches}>Clear</button>
+                        </div>
+                    )}
+
+                    {loading && results.length === 0 && (
                         <div className="loading-state" aria-hidden="true">
                             <Loading type={LoadingType.Donut} />
                             <div className="loading-primary">
@@ -9510,12 +10068,14 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                         </div>
                     )}
 
-                    {!loading && results.length > 0 && (
+                    {results.length > 0 && (
                         <>
-                            {/* ACCESSIBILITY: Announce search results to screen readers */}
-                            <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
-                                Found {results.reduce((sum, sr) => sum + sr.totalFeatures, 0)} features across {results.length} sections for {displayedSearchText || 'selected location'}
-                            </div>
+                            {/* ACCESSIBILITY: Announce search results once loading completes */}
+                            {!loading && (
+                                <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+                                    Found {results.reduce((sum, sr) => sum + sr.totalFeatures, 0)} features across {results.length} sections for {displayedSearchText || 'selected location'}
+                                </div>
+                            )}
 
                             {/* Address Header */}
                             <header className="address-header">
@@ -9551,6 +10111,32 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                                     )}
                                 </div>
                                 <div className="address-actions">
+                                    {(config as any).enableComparison !== false && (
+                                        <button
+                                            type="button"
+                                            className="action-icon"
+                                            onClick={startComparison}
+                                            title={comparisonSnapshot ? 'Restart comparison from this property' : 'Compare with another property'}
+                                            aria-label={comparisonSnapshot ? 'Restart comparison from this property' : 'Compare this property with another'}
+                                        >
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="1" /><rect x="14" y="4" width="7" height="16" rx="1" /></svg>
+                                        </button>
+                                    )}
+                                    {(config as any).enablePermalink !== false && (
+                                        <button
+                                            type="button"
+                                            className="action-icon"
+                                            onClick={copyReportLink}
+                                            title={linkCopied ? 'Link copied!' : 'Copy a link to this report'}
+                                            aria-label={linkCopied ? 'Report link copied to clipboard' : 'Copy a link to this report'}
+                                        >
+                                            {linkCopied ? (
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M20 6L9 17l-5-5" /></svg>
+                                            ) : (
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></svg>
+                                            )}
+                                        </button>
+                                    )}
                                     <button
                                         type="button"
                                         className="action-icon"
@@ -9566,7 +10152,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                                         type="button"
                                         className="action-icon"
                                         onClick={generatePDF}
-                                        disabled={generatingPdf}
+                                        disabled={generatingPdf || loading}
                                         title={generatingPdf ? 'Generating PDF...' : 'Export to PDF'}
                                         aria-label={generatingPdf ? 'Generating PDF, please wait' : 'Export results to PDF'}
                                         aria-busy={generatingPdf}
@@ -9582,6 +10168,48 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                                     </button>
                                 </div>
                             </header>
+
+                            {/* Plain-language report summary (configurable template) */}
+                            {(config as any).reportSummaryTemplate && (
+                                <p className="report-summary">{resolveSummaryTemplate((config as any).reportSummaryTemplate)}</p>
+                            )}
+
+                            {/* Streaming indicator while remaining sections load */}
+                            {loading && (
+                                <div className="streaming-note" aria-hidden="true">
+                                    <Loading type={LoadingType.Donut} width={14} height={14} /> Loading remaining sections...
+                                </div>
+                            )}
+
+                            {/* Property comparison panel */}
+                            {comparisonSnapshot && !loading && (
+                                <div className="comparison-panel" role="region" aria-label="Property comparison">
+                                    <div className="comparison-header">
+                                        <span className="comparison-title">Comparing: {comparisonSnapshot.label} vs {displayedSearchText}</span>
+                                        <button type="button" className="comparison-close" onClick={() => setComparisonSnapshot(null)} aria-label="Close comparison">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12" /></svg>
+                                        </button>
+                                    </div>
+                                    {buildComparison().map((g, gi) => (
+                                        <div key={gi} className="comparison-group">
+                                            <div className="comparison-group-title">{g.title}</div>
+                                            <table className="comparison-table">
+                                                <thead>
+                                                    <tr><th scope="col">Field</th><th scope="col">{comparisonSnapshot.label}</th><th scope="col">{displayedSearchText}</th></tr>
+                                                </thead>
+                                                <tbody>
+                                                    {g.rows.map((r, ri) => (
+                                                        <tr key={ri} className={r.diff ? 'comparison-diff' : ''}>
+                                                            <th scope="row">{r.label}</th><td>{r.a}</td><td>{r.b}</td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    ))}
+                                    <p className="comparison-note">Differences are highlighted. The full report below is for {displayedSearchText}.</p>
+                                </div>
+                            )}
 
                             {/* Property Preview */}
                             {config.propertyPreview?.enabled && (
@@ -10064,6 +10692,28 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                                         >
                                             {/* Rich text before data */}
                                             {hasRichText && richTextPosition === 'before' && <RichTextContent />}
+
+                                            {/* Section alerts (configured rules) */}
+                                            {(((sr.sectionConfig as any).alerts || []).length > 0) && (() => {
+                                                const fired = evaluateSectionAlerts(sr)
+                                                return fired.length > 0 ? (
+                                                    <div className="section-alerts">
+                                                        {fired.map((a: any, ai: number) => (
+                                                            <div key={a.alertId || ai} className={`section-alert section-alert-${a.severity || 'warning'}`} role="alert">{a.message}</div>
+                                                        ))}
+                                                    </div>
+                                                ) : null
+                                            })()}
+
+                                            {/* Section tools */}
+                                            {(config as any).enableCsvExport !== false && sr.layerResults.some(lr => lr.features && lr.features.length > 0) && (
+                                                <div className="section-tools">
+                                                    <button type="button" className="csv-export-btn" onClick={() => exportSectionCsv(sr)} aria-label={`Download ${sr.sectionConfig.sectionTitle} data as CSV`}>
+                                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+                                                        CSV
+                                                    </button>
+                                                </div>
+                                            )}
 
                                             {/* Data content */}
                                             <DataContent />
