@@ -37,8 +37,6 @@ import FeatureLayer from 'esri/layers/FeatureLayer'
 import Polygon from 'esri/geometry/Polygon'
 import Polyline from 'esri/geometry/Polyline'
 // PDF export — requires: npm install jspdf html2canvas (run in ExB client folder)
-import jsPDFLib from 'jspdf'
-import html2canvasLib from 'html2canvas'
 
 // Convert rich-text HTML to plain text for PDF output using an inert DOMParser
 // pass. This strips tags and decodes entities correctly in one step and avoids
@@ -58,8 +56,17 @@ const htmlToPlainText = (html: string): string => {
 let projection: any = null  // esri/geometry/projection loaded via loadArcGISJSAPIModules
 let _projectionResolve: (() => void) | null = null
 const projectionReady: Promise<void> = new Promise(resolve => { _projectionResolve = resolve })
-const jsPDF: any = jsPDFLib
-const html2canvas: any = html2canvasLib
+// PERF: jspdf and html2canvas are heavy (several hundred KB combined) and only
+// needed for PDF export. Load them on demand the first time a PDF is generated
+// instead of shipping them in the widget's initial bundle.
+let jsPDF: any = null
+let html2canvas: any = null
+const loadPdfLibs = async (): Promise<void> => {
+    if (jsPDF && html2canvas) return
+    const [j, h] = await Promise.all([import('jspdf'), import('html2canvas')])
+    jsPDF = (j as any).default || j
+    html2canvas = (h as any).default || h
+}
 
 const { useState, useRef, useMemo, useCallback, useEffect } = React
 
@@ -2829,7 +2836,44 @@ const formatFieldValue = (val: any, fieldConfig?: FieldConfig): string => {
  * Extracts domain lookup from a FeatureLayer's fields.
  * Returns a mapping of field name -> code -> description
  */
+// RELIABILITY: on the very first search of a session the framework may not have
+// created a configured DataSource yet; getDataSource() then returns nothing and the
+// layer silently drops out of the report (community report: first search empty,
+// second and later searches fine). Create the data source on demand and await its
+// readiness so the first search behaves like every later one.
+const resolveDataSource = async (dataSourceId: string): Promise<any | null> => {
+    try {
+        const dsm: any = DataSourceManager.getInstance()
+        let ds: any = dsm.getDataSource(dataSourceId)
+        if (!ds && typeof dsm.createDataSourceById === 'function') {
+            try { ds = await dsm.createDataSourceById(dataSourceId) } catch (e) { ds = null }
+        }
+        if (ds) { try { await ds.ready?.() } catch (e) { /* url may still resolve */ } }
+        return ds || null
+    } catch (e) { return null }
+}
+
+// PERF: constructing a new FeatureLayer per query forces the JS API to refetch the
+// service metadata on every search. Cache instances by URL so metadata loads once
+// per layer for the lifetime of the app; queryFeatures on a shared instance is safe
+// because these layers are never mutated after creation.
+const layerCacheByUrl = new Map<string, FeatureLayer>()
+const getCachedLayer = (url: string): FeatureLayer => {
+    let cached = layerCacheByUrl.get(url)
+    if (!cached) {
+        cached = new FeatureLayer({ url })
+        layerCacheByUrl.set(url, cached)
+    }
+    return cached
+}
+
+// PERF: domain lookups walk every field's coded values; cache per layer URL.
+const domainLookupCacheByUrl = new Map<string, DomainLookup>()
+
 const extractDomainLookup = async (layer: FeatureLayer): Promise<DomainLookup> => {
+    const cacheKey = `${(layer as any).url || ''}/${(layer as any).layerId ?? ''}`
+    const hit = domainLookupCacheByUrl.get(cacheKey)
+    if (hit) return hit
     const domainLookup: DomainLookup = {}
 
     try {
@@ -2859,6 +2903,7 @@ const extractDomainLookup = async (layer: FeatureLayer): Promise<DomainLookup> =
         console.warn('Failed to extract domain lookup:', e)
     }
 
+    domainLookupCacheByUrl.set(cacheKey, domainLookup)
     return domainLookup
 }
 
@@ -4490,6 +4535,11 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
         }
     }, [appTheme])
 
+    // PERF: the widget stylesheet below is a ~2000-line template string. Without
+    // memoization it is re-interpolated and re-hashed by emotion on every render,
+    // and progressive rendering triggers a render per section. Build it once per theme.
+    const widgetStyles = useMemo(() => getStyles(themeColors), [themeColors])
+
     const primaryColor = themeColors.primary
     const primaryColorDark = themeColors.primaryDark
     const [mapView, setMapView] = useState<JimuMapView | null>(null)
@@ -5849,12 +5899,12 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                     let layer: FeatureLayer | null = null
 
                     if (cfg.dataSourceId) {
-                        const ds = DataSourceManager.getInstance().getDataSource(cfg.dataSourceId)
+                        const ds = await resolveDataSource(cfg.dataSourceId)
                         if (ds) {
                             await (ds as any).ready?.()
                             const dsJson = (ds as any).getDataSourceJson?.()
                             const url = dsJson?.url || (ds as any).url
-                            if (url) layer = new FeatureLayer({ url })
+                            if (url) layer = getCachedLayer(url)
                         }
                     }
 
@@ -5893,7 +5943,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                     })
                 } else if (source.type === 'url' && source.config.url) {
                     const cfg = source.config as any
-                    const layer = new FeatureLayer({ url: cfg.url })
+                    const layer = getCachedLayer(cfg.url)
 
                     const searchFields = toMutable<string>(cfg.searchFields) || []
                     if (searchFields.length === 0) continue
@@ -6219,7 +6269,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                 // Try to get URL from DataSource first
                 if (hlc.dataSourceId) {
                     try {
-                        const ds = DataSourceManager.getInstance().getDataSource(hlc.dataSourceId)
+                        const ds = await resolveDataSource(hlc.dataSourceId)
                         if (ds) {
                             await (ds as any).ready?.()
                             const dsJson = (ds as any).getDataSourceJson?.()
@@ -6236,7 +6286,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                 }
 
                 if (highlightUrl) {
-                    const highlightFeatureLayer = new FeatureLayer({ url: highlightUrl })
+                    const highlightFeatureLayer = getCachedLayer(highlightUrl)
 
                     await highlightFeatureLayer.load()
 
@@ -6346,73 +6396,78 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
             } as any
         }))
 
-        // Query header info layer if configured
+        // Query header info layer if configured.
+        // PERF: this used to run to completion (layer query + reverse geocode, two
+        // server roundtrips) before any section query started. It only feeds the
+        // header display, so run it in parallel with the sections instead.
         if (config.headerInfo?.enabled) {
-            try {
-                const hic = config.headerInfo as any
-                let headerLayer: FeatureLayer | null = null
-                let headerUrl: string | null = null
+            void (async () => {
+                try {
+                    const hic = config.headerInfo as any
+                    let headerLayer: FeatureLayer | null = null
+                    let headerUrl: string | null = null
 
-                // Try to get URL from DataSource first
-                if (hic.dataSourceId) {
-                    try {
-                        const ds = DataSourceManager.getInstance().getDataSource(hic.dataSourceId)
-                        if (ds) {
-                            await (ds as any).ready?.()
-                            const dsJson = (ds as any).getDataSourceJson?.()
-                            headerUrl = dsJson?.url || (ds as any).url || null
+                    // Try to get URL from DataSource first
+                    if (hic.dataSourceId) {
+                        try {
+                            const ds = await resolveDataSource(hic.dataSourceId)
+                            if (ds) {
+                                await (ds as any).ready?.()
+                                const dsJson = (ds as any).getDataSourceJson?.()
+                                headerUrl = dsJson?.url || (ds as any).url || null
+                            }
+                        } catch (dsErr) {
+                            console.warn(`HeaderInfo DataSource ${hic.dataSourceId} not available`, dsErr)
                         }
-                    } catch (dsErr) {
-                        console.warn(`HeaderInfo DataSource ${hic.dataSourceId} not available`, dsErr)
-                    }
-                }
-
-                // Fall back to layerUrl if DataSource didn't provide a URL
-                if (!headerUrl && hic.layerUrl) {
-                    headerUrl = hic.layerUrl
-                }
-
-                if (headerUrl) {
-                    headerLayer = new FeatureLayer({ url: headerUrl })
-                    const query = headerLayer.createQuery()
-                    query.geometry = point
-                    query.spatialRelationship = 'intersects'
-                    query.outFields = ['*']
-                    query.returnGeometry = false
-
-                    let result: any | null = null
-
-                    // Try client-side query if enabled
-                    if (config.enableClientSideQuery && mapView) {
-                        result = await queryLayerClientSide(headerUrl, query, mapView)
                     }
 
-                    // Fall back to server query
-                    if (!result) {
-                        result = await headerLayer.queryFeatures(query)
+                    // Fall back to layerUrl if DataSource didn't provide a URL
+                    if (!headerUrl && hic.layerUrl) {
+                        headerUrl = hic.layerUrl
                     }
 
-                    if (result.features.length > 0) {
-                        const attributes = result.features[0].attributes
-                        setHeaderInfoData(attributes)
-                    }
-                }
+                    if (headerUrl) {
+                        headerLayer = getCachedLayer(headerUrl)
+                        const query = headerLayer.createQuery()
+                        query.geometry = point
+                        query.spatialRelationship = 'intersects'
+                        query.outFields = ['*']
+                        query.returnGeometry = false
 
-                // If geocoderUrl is configured, reverse geocode the point for header title
-                const headerGeocoderUrl = (config.headerInfo as any)?.geocoderUrl
-                if (headerGeocoderUrl) {
-                    try {
-                        const address = await restReverseGeocode(headerGeocoderUrl, point)
-                        if (address) {
-                            setDisplayedSearchText(address)
+                        let result: any | null = null
+
+                        // Try client-side query if enabled
+                        if (config.enableClientSideQuery && mapView) {
+                            result = await queryLayerClientSide(headerUrl, query, mapView)
                         }
-                    } catch (geoErr) {
-                        console.warn('Header reverse geocoding failed:', geoErr)
+
+                        // Fall back to server query
+                        if (!result) {
+                            result = await headerLayer.queryFeatures(query)
+                        }
+
+                        if (result.features.length > 0) {
+                            const attributes = result.features[0].attributes
+                            setHeaderInfoData(attributes)
+                        }
                     }
+
+                    // If geocoderUrl is configured, reverse geocode the point for header title
+                    const headerGeocoderUrl = (config.headerInfo as any)?.geocoderUrl
+                    if (headerGeocoderUrl) {
+                        try {
+                            const address = await restReverseGeocode(headerGeocoderUrl, point)
+                            if (address) {
+                                setDisplayedSearchText(address)
+                            }
+                        } catch (geoErr) {
+                            console.warn('Header reverse geocoding failed:', geoErr)
+                        }
+                    }
+                } catch (e) {
+                    console.warn('Header info layer query failed:', e)
                 }
-            } catch (e) {
-                console.warn('Header info layer query failed:', e)
-            }
+            })()
         }
 
         // Section queries
@@ -6454,7 +6509,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
 
                     if (lc.dataSourceId) {
                         try {
-                            const ds = DataSourceManager.getInstance().getDataSource(lc.dataSourceId)
+                            const ds = await resolveDataSource(lc.dataSourceId)
                             if (ds) {
                                 await (ds as any).ready?.()
                                 const dsJson = (ds as any).getDataSourceJson?.()
@@ -6473,7 +6528,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                     // Execute query if we have a URL
                     let layerDomainLookup: DomainLookup = {}
                     if (queryUrl) {
-                        const layer = new FeatureLayer({ url: queryUrl })
+                        const layer = getCachedLayer(queryUrl)
 
                         // Extract domain lookup for coded value fields
                         layerDomainLookup = await extractDomainLookup(layer)
@@ -6534,7 +6589,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                                 }
 
 
-                                const relLayer = new FeatureLayer({ url: relTable.tableUrl })
+                                const relLayer = getCachedLayer(relTable.tableUrl)
                                 const relQuery = relLayer.createQuery()
 
                                 // Build query based on relationship type
@@ -6787,7 +6842,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                 // Try to get URL from DataSource first
                 if (layerConfig.dataSourceId) {
                     try {
-                        const ds = DataSourceManager.getInstance().getDataSource(layerConfig.dataSourceId)
+                        const ds = await resolveDataSource(layerConfig.dataSourceId)
                         if (ds) {
                             await (ds as any).ready?.()
                             const dsJson = (ds as any).getDataSourceJson?.()
@@ -6814,7 +6869,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
                 }
 
                 try {
-                    const nearbyLayer = new FeatureLayer({ url: nearbyLayerUrl })
+                    const nearbyLayer = getCachedLayer(nearbyLayerUrl)
                     const query = nearbyLayer.createQuery()
 
                     // Convert search radius to meters for buffer
@@ -7251,6 +7306,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
     }, [runQueryWithPoint])
 
     const generatePDF = async () => {
+        await loadPdfLibs()
         // =====================================================
         // PDF GENERATION WITH WCAG 2.1 ACCESSIBILITY COMPLIANCE
         // =====================================================
@@ -9832,7 +9888,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
     let flatIndex = -1
 
     return (
-        <div ref={widgetRootRef} css={getStyles(themeColors)} className="jimu-widget">
+        <div ref={widgetRootRef} css={widgetStyles} className="jimu-widget">
             {/* ACCESSIBILITY: Skip Link */}
             <a href="#main-content" className="skip-link">
                 Skip to main content
