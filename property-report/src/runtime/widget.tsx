@@ -4905,6 +4905,10 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
     const animatedChartsRef = useRef<Set<string>>(new Set())
     // Track last processed action timestamp to prevent re-processing same trigger
     const lastActionTimestampRef = useRef<number>(0)
+    // Queue for message actions that arrive before the map view is ready (a new
+    // map's Search widget can fire before JimuMapViewComponent connects). The
+    // pending action is flushed the moment the map becomes ready.
+    const pendingActionRef = useRef<any>(null)
 
     // Generate unique IDs for ARIA relationships
     const widgetId = useRef(`widget-${Math.random().toString(36).substr(2, 9)}`)
@@ -5812,22 +5816,11 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
     // When another widget triggers "Generate Report", this
     // receives the point geometry and executes the query.
     // =====================================================
-    useEffect(() => {
+    const executeActionData = (actionData: any) => {
         try {
-            const actionData = (props as any).mutableStateProps?.actionPoint
-            if (!actionData || !actionData.point) return
-
             const { point: pointData, address, autoOpenSection, timestamp } = actionData
-
-            // Prevent re-processing the same action
-            if (lastActionTimestampRef.current === timestamp) return
+            void autoOpenSection
             lastActionTimestampRef.current = timestamp
-
-            // Ensure map is ready
-            if (!mapViewRef.current) {
-                console.warn('Property Report: Map not ready for action trigger')
-                return
-            }
 
             // Create an ArcGIS Point from the serialized data
             const actionPoint = new Point({
@@ -5862,7 +5855,35 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
         } catch (err) {
             console.error('Property Report: Error processing action trigger', err)
         }
+    }
+
+    useEffect(() => {
+        const actionData = (props as any).mutableStateProps?.actionPoint
+        if (!actionData || !actionData.point) return
+        // Prevent re-processing the same action
+        if (lastActionTimestampRef.current === actionData.timestamp) return
+        // If the map view (or the query runner) is not ready yet, QUEUE the action
+        // instead of dropping it. Consuming the timestamp here and bailing was the
+        // cause of the 'first search from the Search widget does nothing' report.
+        if (!mapViewRef.current || !runQueryWithPointRef.current) {
+            pendingActionRef.current = actionData
+            return
+        }
+        executeActionData(actionData)
     }, [(props as any).mutableStateProps?.actionPoint])
+
+    // Flush a queued action once the map view connects
+    useEffect(() => {
+        if (!mapView) return
+        const pending = pendingActionRef.current
+        if (!pending || lastActionTimestampRef.current === pending.timestamp) return
+        pendingActionRef.current = null
+        // Brief settle so the map's layers and the query runner are in place
+        const t = setTimeout(() => {
+            if (runQueryWithPointRef.current) executeActionData(pending)
+        }, 150)
+        return () => clearTimeout(t)
+    }, [mapView])
 
 
     const onInputChange = (value: string) => {
