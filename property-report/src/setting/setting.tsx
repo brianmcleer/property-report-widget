@@ -1139,8 +1139,17 @@ interface AvailableField {
     type: string
 }
 
-const Setting = (props: AllWidgetSettingProps<IMConfig>) => {
-    const { config, onSettingChange, id, useDataSources } = props
+type SettingProps = AllWidgetSettingProps<IMConfig> & {
+    id: string
+    useDataSources?: any
+}
+
+const Setting = (props: SettingProps) => {
+    const { config, onSettingChange } = props
+    // Builder injects these at runtime, but EB 1.21's published setting props
+    // do not consistently expose them to every Visual Studio TypeScript host.
+    const id = (props as any).id as string
+    const useDataSources = (props as any).useDataSources
 
 
 

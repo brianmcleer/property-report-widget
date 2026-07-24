@@ -27,7 +27,7 @@ $ErrorActionPreference = "Stop"
 
 # ----- Settings -------------------------------------------------------------
 # Your live widget folder inside Experience Builder (the source of truth):
-$ExbWidgetPath = "C:\arcgis-experience-builder-1.20\client\your-extensions\widgets\property-report"
+$ExbWidgetPath = "C:\arcgis-experience-builder-1.21\client\your-extensions\widgets\property-report"
 
 # The repo is wherever this script lives:
 $RepoPath   = $PSScriptRoot

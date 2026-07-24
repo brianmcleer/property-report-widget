@@ -3129,6 +3129,7 @@ const PropertyPreview = ({ config, headerData, headerFields, address, onZoom, ma
 // WCAG 2.1 compliant with proper heading structure and keyboard navigation
 // =====================================================
 interface NearbyDisplayProps {
+    key?: string | number
     nearbyResult: NearbyResult
     sourceGeometry?: any | null  // The source/searched feature geometry for combined zoom
     onHighlight?: (geometry: any | null, color?: string) => void
@@ -3333,6 +3334,7 @@ const NearbyDisplay = ({ nearbyResult, sourceGeometry, onHighlight, onZoom, onZo
 // when section is configured to open in separate pane
 // =====================================================
 interface NearbySeparateTriggerProps {
+    key?: string | number
     nearbyResult: NearbyResult
     sourceGeometry?: any | null
     parentTitle: string
@@ -3409,6 +3411,7 @@ const NearbySeparateTrigger = ({ nearbyResult, sourceGeometry, parentTitle, onVi
 // Related Table Display Component
 // =====================================================
 interface RelatedTableDisplayProps {
+    key?: string | number
     relatedTable: RelatedTableConfig
     records: any[]
     chartConfig?: ChartConfig
@@ -4488,7 +4491,9 @@ const SectionPaneContent = ({ sectionResult: sr, config, onRowHighlight, onRowZo
 // =====================================================
 // ACCESSIBILITY: Main Widget with Full A11y Support
 // =====================================================
-const Widget = (props: AllWidgetProps<IMConfig>) => {
+type WidgetProps = AllWidgetProps<IMConfig> & { id: string }
+
+const Widget = (props: WidgetProps) => {
     const { config, state: widgetState, theme: appTheme } = props
 
 
@@ -4892,7 +4897,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
     } | null>(null)
 
     const selectByLocationRef = useRef(false)
-    const searchTimeout = useRef<NodeJS.Timeout | null>(null)
+    const searchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
     const graphicsLayerRef = useRef<any | null>(null)
     const rowHighlightLayerRef = useRef<any | null>(null)
     const showAllFeaturesLayerRef = useRef<any | null>(null)
@@ -10914,6 +10919,7 @@ const Widget = (props: AllWidgetProps<IMConfig>) => {
 // Layer No Results Section - Shows custom message with proper header
 // =====================================================
 interface LayerNoResultsSectionProps {
+    key?: string | number
     layerConfig: LayerConfig
     defaultOpen: boolean
 }
@@ -10973,6 +10979,7 @@ const LayerNoResultsSection = ({ layerConfig, defaultOpen }: LayerNoResultsSecti
 // ACCESSIBILITY: Enhanced Layer Data Section with Full A11y
 // =====================================================
 interface LayerDataSectionProps {
+    key?: string | number
     layerResult: LayerResult
     fields: any[]
     defaultOpen: boolean

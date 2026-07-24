@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, css } from 'jimu-core'
+import { React, jsx, css } from 'jimu-core'
 import type { ActionSettingProps } from 'jimu-core'
 import { Switch, TextInput } from 'jimu-ui'
 import { SettingRow } from 'jimu-ui/advanced/setting-components'
