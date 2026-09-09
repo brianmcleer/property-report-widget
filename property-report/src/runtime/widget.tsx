@@ -5,7 +5,21 @@ import type { AllWidgetProps } from 'jimu-core'
 import { JimuMapViewComponent, loadArcGISJSAPIModules } from 'jimu-arcgis'
 import type { JimuMapView } from 'jimu-arcgis'
 import type { IMConfig, SectionConfig, LayerConfig, SearchSourceConfig, PdfHeaderConfig, PdfFooterConfig, PdfStyleConfig, PdfLogoConfig, ChartConfig, ChartType, TableDisplayConfig, FieldConfig, RichTextButton, RelatedTableConfig, PropertyPreviewConfig, NearbyDisplayConfig } from '../config'
-import { Loading, LoadingType } from 'jimu-ui'
+import { Loading, LoadingType, Button } from 'jimu-ui'
+// In-widget help guide (shared pattern, see WIDGETHANDOFF Section 10)
+import { CalciteIcon } from 'calcite-components'
+import defaultMessages from './translations/default'
+import HelpPopup from './components/HelpPopup'
+import { buildHelpSections } from './helpSections'
+import type { HelpFeatures } from './helpSections'
+import { useTokens } from './theme'
+// PDF libraries are imported statically. They used to be lazy-loaded with a
+// dynamic import(), which makes webpack emit a separate chunk fetched at click
+// time. On several deployments that chunk could not be loaded (path prefix,
+// proxy, exported app, CSP), and because the await sat outside any try/catch
+// the export failed silently: no dialog, no error, no file.
+import * as jspdfModule from 'jspdf'
+import html2canvasModule from 'html2canvas'
 // Recharts (keep for PDF generation compatibility)
 import {
     BarChart as RechartsBarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer,
@@ -59,13 +73,21 @@ const projectionReady: Promise<void> = new Promise(resolve => { _projectionResol
 // PERF: jspdf and html2canvas are heavy (several hundred KB combined) and only
 // needed for PDF export. Load them on demand the first time a PDF is generated
 // instead of shipping them in the widget's initial bundle.
-let jsPDF: any = null
-let html2canvas: any = null
+let jsPDF: any = (jspdfModule as any).jsPDF || (jspdfModule as any).default || null
+let html2canvas: any = (html2canvasModule as any) || null
+const pdfLibsReady = (): boolean => typeof jsPDF === 'function' && typeof html2canvas === 'function'
 const loadPdfLibs = async (): Promise<void> => {
-    if (jsPDF && html2canvas) return
-    const [j, h] = await Promise.all([import('jspdf'), import('html2canvas')])
-    jsPDF = (j as any).default || j
-    html2canvas = (h as any).default || h
+    if (pdfLibsReady()) return
+    // Fallback only. If the static bindings are somehow unusable, try the dynamic
+    // import once and turn any failure into a descriptive error for the UI.
+    try {
+        const [j, h] = await Promise.all([import('jspdf'), import('html2canvas')])
+        jsPDF = (j as any).jsPDF || (j as any).default || j
+        html2canvas = (h as any).default || h
+    } catch (e: any) {
+        throw new Error(`the PDF libraries could not be loaded (${e?.message || e})`)
+    }
+    if (!pdfLibsReady()) throw new Error('the PDF libraries loaded but are not usable')
 }
 
 const { useState, useRef, useMemo, useCallback, useEffect } = React
@@ -4553,6 +4575,56 @@ const Widget = (props: WidgetProps) => {
 
     // ---- Recent searches (stored locally in this browser) ----
     const RECENT_SEARCHES_KEY = 'property-report-recent-searches'
+    // ---- In-widget help guide (WIDGETHANDOFF Section 10) ----
+    const tokens = useTokens()
+    const t = (id: string, values?: Record<string, string>): string => {
+        const fallback = (defaultMessages as any)[id] ?? id
+        try {
+            const intl = (props as any).intl
+            return intl && typeof intl.formatMessage === 'function'
+                ? intl.formatMessage({ id, defaultMessage: fallback }, values)
+                : fallback
+        } catch (e) { return fallback }
+    }
+    const [helpOpen, setHelpOpen] = useState(false)
+    // Dismissal is per browser and namespaced by widget id, wrapped in try/catch
+    // because private browsing throws on storage access.
+    const HELP_HINT_KEY = `propertyReport.helpHintDismissed.${props.id}`
+    const [showFirstRunHint, setShowFirstRunHint] = useState<boolean>(() => {
+        try { return window.localStorage.getItem(HELP_HINT_KEY) !== '1' } catch (e) { return false }
+    })
+    const dismissFirstRunHint = () => {
+        setShowFirstRunHint(false)
+        try { window.localStorage.setItem(HELP_HINT_KEY, '1') } catch (e) { /* storage blocked */ }
+    }
+    // Opening the guide counts as answering the hint.
+    const openHelp = () => { setHelpOpen(true); dismissFirstRunHint() }
+    // Flags come from the same config checks the UI uses, so the guide never
+    // describes a control the widget is not currently showing.
+    const helpFeatures = useMemo((): HelpFeatures => {
+        const sections = toMutable<SectionConfig>(config.sections)
+        const layers = sections.flatMap(sec => toMutable<LayerConfig>(sec.layers))
+        const anyLayer = (pred: (l: any) => boolean) => layers.some(l => { try { return !!pred(l) } catch (e) { return false } })
+        return {
+            mapConnected: !!(config as any).mapWidgetId,
+            currentLocation: (config as any).enableUseCurrentLocation !== false,
+            recentSearches: (config as any).enableRecentSearches !== false,
+            tables: sections.some(sec => sec.displayAsTable !== false),
+            charts: sections.some(sec => !!sec.displayAsChart),
+            nearby: anyLayer(l => l.nearbyConfig?.enabled),
+            relatedTables: anyLayer(l => toMutable<any>(l.relatedTables).length > 0),
+            separatePane: sections.some(sec => (sec as any).displayPane === 'separate') || anyLayer(l => toMutable<any>(l.relatedTables).some((r: any) => r.displayPane === 'separate')),
+            coordinates: (config as any).showCoordinates !== false,
+            rowHighlight: anyLayer(l => l.enableRowHighlight),
+            rowZoom: anyLayer(l => l.enableRowZoom),
+            showAllOnMap: anyLayer(l => l.showAllOnMap),
+            propertyPreview: !!(config as any).propertyPreview?.enabled,
+            csvExport: (config as any).enableCsvExport !== false,
+            permalink: (config as any).enablePermalink !== false,
+            comparison: (config as any).enableComparison !== false
+        }
+    }, [config])
+
     const [recentSearches, setRecentSearches] = useState<string[]>(() => {
         try { const raw = localStorage.getItem(RECENT_SEARCHES_KEY); return raw ? JSON.parse(raw) : [] } catch (e) { return [] }
     })
@@ -7332,7 +7404,20 @@ const Widget = (props: WidgetProps) => {
     }, [runQueryWithPoint])
 
     const generatePDF = async () => {
-        await loadPdfLibs()
+        // Show the overlay before anything can fail, then load the libraries inside a
+        // try/catch. This await previously ran outside every handler, so a library
+        // that could not be loaded produced no dialog, no error and no file.
+        setGeneratingPdf(true)
+        setStatusMessage('Preparing PDF export...')
+        try {
+            await loadPdfLibs()
+        } catch (libErr: any) {
+            console.error('PDF export could not start:', libErr)
+            setGeneratingPdf(false)
+            setError(`PDF export is unavailable: ${libErr?.message || 'the PDF libraries could not be loaded'}. Reload the page and try again. If it keeps happening, tell the site administrator.`)
+            setStatusMessage('PDF export failed to start.')
+            return
+        }
         // =====================================================
         // PDF GENERATION WITH WCAG 2.1 ACCESSIBILITY COMPLIANCE
         // =====================================================
@@ -9896,9 +9981,10 @@ const Widget = (props: WidgetProps) => {
 
             setStatusMessage('PDF generated successfully.')
 
-        } catch (e) {
+        } catch (e: any) {
             console.error('PDF generation failed:', e)
-            setError('Failed to generate PDF. Please try again.')
+            const reason = e?.message ? ` (${String(e.message).slice(0, 160)})` : ''
+            setError(`Failed to generate PDF${reason}. Please try again.`)
             setStatusMessage('PDF generation failed.')
         } finally {
             setGeneratingPdf(false)
@@ -10078,6 +10164,9 @@ const Widget = (props: WidgetProps) => {
                         >
                             {loading ? 'Searching...' : 'Search'}
                         </button>
+                        <Button size="sm" type="tertiary" icon onClick={openHelp} title={t('helpTitle')} aria-label={t('helpTitle')} style={{ flexShrink: 0 }}>
+                            <CalciteIcon icon="question" scale="s" />
+                        </Button>
                     </div>
                 </div>
             )}
@@ -10093,6 +10182,20 @@ const Widget = (props: WidgetProps) => {
                     aria-label="Search results"
                 >
                     {/* ACCESSIBILITY: Error Banner with Alert Role */}
+                    {showFirstRunHint && results.length === 0 && !loading && (
+                        <div role="note" style={{ margin: '10px 14px 10px 14px', padding: '10px 12px', display: 'flex', alignItems: 'flex-start', gap: '10px', background: tokens.infoBg, color: tokens.text, border: `1px solid ${tokens.divider}`, borderLeft: `3px solid ${tokens.primary}`, borderRadius: tokens.radius, fontSize: '12px', lineHeight: 1.5 }}>
+                            <span style={{ color: tokens.primary, marginTop: '1px' }} aria-hidden="true"><CalciteIcon icon="lightbulb" scale="s" /></span>
+                            <span style={{ flex: 1, minWidth: 0 }}>
+                                <strong style={{ display: 'block', marginBottom: '2px' }}>{t('firstRunTitle')}</strong>
+                                {t('firstRunBody')}
+                                {' '}
+                                <button type="button" onClick={openHelp} style={{ border: 'none', background: 'transparent', padding: 0, color: tokens.primary, cursor: 'pointer', textDecoration: 'underline', font: 'inherit' }}>{t('firstRunHelpLink')}</button>
+                            </span>
+                            <Button size="sm" type="tertiary" icon onClick={dismissFirstRunHint} title={t('firstRunDismiss')} aria-label={t('firstRunDismiss')}>
+                                <CalciteIcon icon="x" scale="s" />
+                            </Button>
+                        </div>
+                    )}
                     {error && (
                         <div id="search-error-message" className="error-banner" role="alert" aria-live="assertive">
                             <span>{error}</span>
@@ -10146,6 +10249,17 @@ const Widget = (props: WidgetProps) => {
                             </div>
                         </div>
                     )}
+
+                    <HelpPopup
+                        open={helpOpen}
+                        onClose={() => { setHelpOpen(false) }}
+                        sections={buildHelpSections(t, helpFeatures)}
+                        title={t('helpTitle')}
+                        intro={t('helpIntro')}
+                        searchPlaceholder={t('helpSearchPlaceholder')}
+                        noMatches={t('helpNoMatches')}
+                        closeLabel={t('close')}
+                    />
 
                     {/* PDF Generating Overlay */}
                     {generatingPdf && (

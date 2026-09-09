@@ -1,4 +1,5 @@
 {
+  "//": "Mode B (self-contained) per WIDGETHANDOFF Section 12 item 3: Visual Studio cannot read client\\node_modules under the EB 1.21 pnpm layout (IDE1100), so nothing here reaches outside the widget. Every import is declared ambiently in src/exb-editor-shims.d.ts (shared master, copied from widgets\\_vs) and src/vendor-shims.d.ts (this widget's third-party packages). Inert to the build (noEmit); webpack in client is the only type authority. Check with: npx tsc -p . --ignoreDeprecations 6.0",
   "compilerOptions": {
     "target": "ES2020",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
@@ -6,15 +7,7 @@
     "moduleResolution": "Node",
     "jsx": "react-jsx",
     "jsxImportSource": "@emotion/react",
-    "baseUrl": "../../..",
-    "paths": {
-      "jimu-*": ["jimu-*"],
-      "esri/*": ["node_modules/@arcgis/core/*"],
-      "react": ["node_modules/react"],
-      "react/*": ["node_modules/react/*"],
-      "react-dom": ["node_modules/react-dom"],
-      "react-dom/*": ["node_modules/react-dom/*"]
-    },
+    "types": [],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,

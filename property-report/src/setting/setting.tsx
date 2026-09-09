@@ -1,7 +1,6 @@
 /** @jsx jsx */
 /** @jsxFrag React.Fragment */
 import { React, jsx, css, Immutable, DataSourceTypes, DataSourceManager, type UseDataSource, type ImmutableArray } from 'jimu-core'
-import type { AllWidgetSettingProps } from 'jimu-for-builder'
 import { MapWidgetSelector, SettingRow } from 'jimu-ui/advanced/setting-components'
 // DataSourceSelector loaded lazily inside component to avoid module-load failure
 import {
@@ -1139,9 +1138,20 @@ interface AvailableField {
     type: string
 }
 
-type SettingProps = AllWidgetSettingProps<IMConfig> & {
+// Structural props type rather than AllWidgetSettingProps<IMConfig>. Under the
+// mode B editor shim (WIDGETHANDOFF Section 12) jimu-for-builder is a shorthand
+// module, so its members cannot be used as generic types; webpack ignores this
+// file's types either way. The fields listed are the ones this panel reads.
+type SettingProps = {
     id: string
+    config: IMConfig
+    onSettingChange: (settings: any, ...rest: any[]) => void
     useDataSources?: any
+    useMapWidgetIds?: any
+    intl?: any
+    theme?: any
+    portalUrl?: string
+    [key: string]: any
 }
 
 const Setting = (props: SettingProps) => {
@@ -1811,7 +1821,7 @@ const Setting = (props: SettingProps) => {
                 // Apply imported settings
                 let newConfig = config
                 Object.keys(importedSettings).forEach((key: string) => {
-                    newConfig = newConfig.set(key, importedSettings[key])
+                    newConfig = newConfig.set(key as any, importedSettings[key])
                 })
 
                 // Ensure mapWidgetId is preserved
@@ -2310,7 +2320,7 @@ const Setting = (props: SettingProps) => {
     const updateConfig = (key: string, value: any) => {
         onSettingChange({
             id,
-            config: config.set(key, value)
+            config: config.set(key as any, value)
         })
     }
 
