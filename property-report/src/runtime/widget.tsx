@@ -70,24 +70,19 @@ const htmlToPlainText = (html: string): string => {
 let projection: any = null  // esri/geometry/projection loaded via loadArcGISJSAPIModules
 let _projectionResolve: (() => void) | null = null
 const projectionReady: Promise<void> = new Promise(resolve => { _projectionResolve = resolve })
-// PERF: jspdf and html2canvas are heavy (several hundred KB combined) and only
-// needed for PDF export. Load them on demand the first time a PDF is generated
-// instead of shipping them in the widget's initial bundle.
-let jsPDF: any = (jspdfModule as any).jsPDF || (jspdfModule as any).default || null
-let html2canvas: any = (html2canvasModule as any) || null
+// jspdf and html2canvas resolve from the STATIC imports above, which puts them in
+// the widget's initial bundle. There is deliberately no dynamic import() anywhere:
+// a dynamic import makes webpack emit a separate chunk fetched at click time, and
+// on exported, proxied, or sub-path deployments that chunk 404s with a
+// ChunkLoadError while the button just highlights. That was the original bug. If
+// the bindings below are empty, the widget was built without its dependencies
+// installed; we say so plainly instead of reaching for a chunk that is not there.
+const jsPDF: any = (jspdfModule as any).jsPDF || (jspdfModule as any).default || null
+const html2canvas: any = (html2canvasModule as any) || null
 const pdfLibsReady = (): boolean => typeof jsPDF === 'function' && typeof html2canvas === 'function'
 const loadPdfLibs = async (): Promise<void> => {
     if (pdfLibsReady()) return
-    // Fallback only. If the static bindings are somehow unusable, try the dynamic
-    // import once and turn any failure into a descriptive error for the UI.
-    try {
-        const [j, h] = await Promise.all([import('jspdf'), import('html2canvas')])
-        jsPDF = (j as any).jsPDF || (j as any).default || j
-        html2canvas = (h as any).default || h
-    } catch (e: any) {
-        throw new Error(`the PDF libraries could not be loaded (${e?.message || e})`)
-    }
-    if (!pdfLibsReady()) throw new Error('the PDF libraries loaded but are not usable')
+    throw new Error('the PDF libraries did not load. Rebuild the widget after running "npm install jspdf html2canvas" in the Experience Builder client folder, then hard-reload the page')
 }
 
 const { useState, useRef, useMemo, useCallback, useEffect } = React
