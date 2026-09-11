@@ -3,7 +3,7 @@
 
   What it does, in order:
     1. Copies the latest widget from your Experience Builder folder into this repo's
-       "property-report" subfolder, automatically skipping node_modules and .vs.
+       "property-report" subfolder, automatically skipping node_modules, .vs, Claude outputs and dist.
     2. Commits the changes.
     3. Publishes the repo to GitHub on first run, or pushes updates on later runs.
     4. (Optional) Cuts a versioned GitHub Release with a downloadable zip.
@@ -42,10 +42,24 @@ if (-not (Test-Path $ExbWidgetPath)) {
     throw "Cannot find the widget folder at:`n  $ExbWidgetPath`nEdit the `$ExbWidgetPath line in publish.ps1 and try again."
 }
 
-# 1) Mirror the widget into the repo, skipping node_modules / .vs / cruft.
-Write-Host "`n==> Syncing widget files (skipping node_modules)..."
-robocopy "$ExbWidgetPath" "$WidgetDest" /MIR /XD "node_modules" ".vs" /XF "*.user" "*.suo" /NFL /NDL /NJH /NJS /NP | Out-Null
+# 1) Mirror the widget into the repo, skipping node_modules / .vs / Claude outputs / cruft.
+#    Folders that must never reach GitHub. /XD keeps them out of the copy, but /XD also
+#    stops /MIR from deleting one that already got into the repo copy, so step 1b
+#    removes any that are present there. Add to this list, never to the robocopy line alone.
+$NeverShip = @("node_modules", ".vs", "Claude outputs", "dist")
+
+Write-Host "`n==> Syncing widget files (skipping $($NeverShip -join ', '))..."
+robocopy "$ExbWidgetPath" "$WidgetDest" /MIR /XD $NeverShip /XF "*.user" "*.suo" "Thumbs.db" ".DS_Store" /NFL /NDL /NJH /NJS /NP | Out-Null
 if ($LASTEXITCODE -ge 8) { throw "robocopy failed with exit code $LASTEXITCODE" }
+
+# 1b) Purge never-ship folders that already exist in the repo copy so git records the removal.
+foreach ($name in $NeverShip) {
+    $stray = Join-Path $WidgetDest $name
+    if (Test-Path $stray) {
+        Write-Host "    Removing stray '$name' from the repo copy."
+        Remove-Item -LiteralPath $stray -Recurse -Force
+    }
+}
 Write-Host "    Done."
 
 # 2) Commit.
@@ -89,7 +103,7 @@ try {
             $zip = Join-Path $env:TEMP "property-report.zip"
             if (Test-Path $zip) { Remove-Item $zip -Force }
             Compress-Archive -Path $WidgetDest -DestinationPath $zip
-            $notes = "Property Report Widget for ArcGIS Experience Builder. Download property-report.zip, extract, and drop the property-report folder into client\your-extensions\widgets. Then run npm install in the client folder and restart."
+            $notes = "Property Report Widget for ArcGIS Experience Builder. Download property-report.zip, extract, and drop the property-report folder into client\your-extensions\widgets. Then run pnpm ci (Experience Builder 1.21 and later) or npm install (1.20 and earlier) in the client folder and restart."
             gh release create $Release "$zip" --title "Property Report Widget $Release" --notes $notes
         }
     }

@@ -28,7 +28,7 @@ import {
     RadialBarChart, RadialBar, ComposedChart
 } from 'recharts'
 // TanStack Table
-// @tanstack/react-table - run: npm install @tanstack/react-table in ExB client folder
+// @tanstack/react-table is declared in package.json; Experience Builder installs it (pnpm ci in client on 1.21+, npm ci on 1.20 and earlier)
 // Imported statically; ensure it is installed before starting the dev server.
 import {
     useReactTable,
@@ -50,7 +50,7 @@ import SpatialReference from 'esri/geometry/SpatialReference'
 import FeatureLayer from 'esri/layers/FeatureLayer'
 import Polygon from 'esri/geometry/Polygon'
 import Polyline from 'esri/geometry/Polyline'
-// PDF export — requires: npm install jspdf html2canvas (run in ExB client folder)
+// PDF export: jspdf and html2canvas are declared in package.json and installed by Experience Builder with the rest of the widget dependencies
 
 // Convert rich-text HTML to plain text for PDF output using an inert DOMParser
 // pass. This strips tags and decodes entities correctly in one step and avoids
@@ -82,7 +82,7 @@ const html2canvas: any = (html2canvasModule as any) || null
 const pdfLibsReady = (): boolean => typeof jsPDF === 'function' && typeof html2canvas === 'function'
 const loadPdfLibs = async (): Promise<void> => {
     if (pdfLibsReady()) return
-    throw new Error('the PDF libraries did not load. Rebuild the widget after running "npm install jspdf html2canvas" in the Experience Builder client folder, then hard-reload the page')
+    throw new Error('the PDF libraries did not load. In the Experience Builder client folder run "pnpm ci" (1.21 and later) or "npm ci" (1.20 and earlier), restart the client, then hard-reload the page')
 }
 
 const { useState, useRef, useMemo, useCallback, useEffect } = React
