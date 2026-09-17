@@ -30,6 +30,12 @@ git clone https://github.com/brianmcleer/property-report-widget.git
 
 Or use the green **Code** button above and choose **Download ZIP**. The `property-report` folder is inside.
 
+### The release zip and the editor shims
+
+The zip is the widget only. The Visual Studio type shims in the repo (`property-report/src/exb-editor-shims.d.ts`, `property-report/src/vendor-shims.d.ts`) are left out on purpose: their ambient `declare module` blocks are not file-scoped and would rewrite the react, jimu and esri types for every other widget in your `your-extensions` folder.
+
+If you clone the repository instead of using the zip, delete `property-report/src/exb-editor-shims.d.ts` and the other shim files listed above before building; nothing else depends on them.
+
 ## Installation
 
 1. Copy the `property-report` folder into your Experience Builder install:
