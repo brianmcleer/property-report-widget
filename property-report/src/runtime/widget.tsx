@@ -50,6 +50,8 @@ import SpatialReference from 'esri/geometry/SpatialReference'
 import FeatureLayer from 'esri/layers/FeatureLayer'
 import Polygon from 'esri/geometry/Polygon'
 import Polyline from 'esri/geometry/Polyline'
+import { beacon } from '../shared/beacon'
+import type { BeaconHandle } from '../shared/beacon'
 // PDF export: jspdf and html2canvas are declared in package.json and installed by Experience Builder with the rest of the widget dependencies
 
 // Convert rich-text HTML to plain text for PDF output using an inert DOMParser
@@ -4513,6 +4515,9 @@ type WidgetProps = AllWidgetProps<IMConfig> & { id: string }
 const Widget = (props: WidgetProps) => {
     const { config, state: widgetState, theme: appTheme } = props
 
+    const beaconRef = useRef<BeaconHandle | null>(null)
+    useEffect(() => { beaconRef.current = beacon.init(props) }, [])
+
 
     // Get primary color from app theme for themed UI elements
     // Experience Builder theme structure varies by version:
@@ -4863,6 +4868,7 @@ const Widget = (props: WidgetProps) => {
         return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s
     }
     const exportSectionCsv = (sr: SectionResult) => {
+        beaconRef.current?.action('export-csv')
         try {
             const base = (displayedSearchText || 'property').replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '_') || 'property'
             sr.layerResults.forEach((lr: any, idx: number) => {
@@ -4882,6 +4888,7 @@ const Widget = (props: WidgetProps) => {
             })
             setStatusMessage('CSV download started.')
         } catch (e) {
+            beaconRef.current?.error(e, 'export-csv')
             console.error('CSV export failed:', e)
             setStatusMessage('CSV export failed.')
         }
@@ -6227,6 +6234,7 @@ const Widget = (props: WidgetProps) => {
     }
 
     const runQuery = async (overrideText?: string) => {
+        beaconRef.current?.action('search')
         const effectiveText = overrideText !== undefined ? overrideText : searchText
         if (!effectiveText.trim() && !queryPoint) {
             setError('Please search for a property or select a location from the map')
@@ -6261,6 +6269,7 @@ const Widget = (props: WidgetProps) => {
                     setLoading(false)
                 }
             } catch (e: any) {
+                beaconRef.current?.error(e, 'search')
                 console.error('Geocoding error:', e)
                 const errorMessage = e?.message?.toLowerCase() || ''
                 if (errorMessage.includes('network') || errorMessage.includes('fetch') || errorMessage.includes('cors')) {
@@ -7399,6 +7408,7 @@ const Widget = (props: WidgetProps) => {
     }, [runQueryWithPoint])
 
     const generatePDF = async () => {
+        beaconRef.current?.action('export-pdf')
         // Show the overlay before anything can fail, then load the libraries inside a
         // try/catch. This await previously ran outside every handler, so a library
         // that could not be loaded produced no dialog, no error and no file.
@@ -7407,6 +7417,7 @@ const Widget = (props: WidgetProps) => {
         try {
             await loadPdfLibs()
         } catch (libErr: any) {
+            beaconRef.current?.error(libErr, 'export-pdf')
             console.error('PDF export could not start:', libErr)
             setGeneratingPdf(false)
             setError(`PDF export is unavailable: ${libErr?.message || 'the PDF libraries could not be loaded'}. Reload the page and try again. If it keeps happening, tell the site administrator.`)
