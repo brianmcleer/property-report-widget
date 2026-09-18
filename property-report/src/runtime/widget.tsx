@@ -10170,9 +10170,11 @@ const Widget = (props: WidgetProps) => {
                         >
                             {loading ? 'Searching...' : 'Search'}
                         </button>
-                        <Button size="sm" type="tertiary" icon onClick={openHelp} title={t('helpTitle')} aria-label={t('helpTitle')} style={{ flexShrink: 0 }}>
-                            <CalciteIcon icon="question" scale="s" />
-                        </Button>
+                        {props.config?.showHelp !== false && (
+                            <Button size="sm" type="tertiary" icon onClick={openHelp} title={t('helpTitle')} aria-label={t('helpTitle')} style={{ flexShrink: 0 }}>
+                                <CalciteIcon icon="question" scale="s" />
+                            </Button>
+                        )}
                     </div>
                 </div>
             )}
@@ -10188,7 +10190,7 @@ const Widget = (props: WidgetProps) => {
                     aria-label="Search results"
                 >
                     {/* ACCESSIBILITY: Error Banner with Alert Role */}
-                    {showFirstRunHint && results.length === 0 && !loading && (
+                    {props.config?.showHelp !== false && showFirstRunHint && results.length === 0 && !loading && (
                         <div role="note" style={{ margin: '10px 14px 10px 14px', padding: '10px 12px', display: 'flex', alignItems: 'flex-start', gap: '10px', background: tokens.infoBg, color: tokens.text, border: `1px solid ${tokens.divider}`, borderLeft: `3px solid ${tokens.primary}`, borderRadius: tokens.radius, fontSize: '12px', lineHeight: 1.5 }}>
                             <span style={{ color: tokens.primary, marginTop: '1px' }} aria-hidden="true"><CalciteIcon icon="lightbulb" scale="s" /></span>
                             <span style={{ flex: 1, minWidth: 0 }}>

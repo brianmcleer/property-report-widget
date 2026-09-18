@@ -10260,6 +10260,9 @@ const Setting = (props: SettingProps) => {
                                     onChange={(e) => updateDefaultTableConfig({ showRowNumbers: (e.target as HTMLInputElement).checked })}
                                 />
                             </SettingRow>
+                            <SettingRow tag='label' label='Show help guide'>
+                              <Switch checked={props.config?.showHelp !== false} onChange={(evt) => { props.onSettingChange({ id: (props as any).id, config: (props.config as any).set('showHelp', evt.target.checked) }) }} aria-label='Show the question-mark button that opens the widget help guide' />
+                            </SettingRow>
                         </div>
                     </div>
                 </div>
