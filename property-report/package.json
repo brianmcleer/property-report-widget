@@ -18,13 +18,13 @@
   ],
   "homepage": "https://community.esri.com/t5/experience-builder-custom-widgets/property-report-widget/bc-p/1705989",
   "dependencies": {
-    "@mantine/charts": "^8.3.16",
-    "@mantine/dates": "^8.3.16",
-    "@mantine/notifications": "^8.3.16",
-    "@tanstack/react-table": "^8.21.3",
-    "dayjs": "^1.11.19",
+    "@mantine/charts": "^9.6.1",
+    "@mantine/dates": "^9.6.1",
+    "@mantine/notifications": "^9.6.1",
+    "@tanstack/react-table": "^9.2.4",
+    "dayjs": "^1.11.23",
     "html2canvas": "^1.4.1",
     "jspdf": "^4.2.0",
-    "recharts": "^3.7.0"
+    "recharts": "^3.10.1"
   }
 }
