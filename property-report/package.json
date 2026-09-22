@@ -21,7 +21,7 @@
     "@mantine/charts": "^9.6.1",
     "@mantine/dates": "^9.6.1",
     "@mantine/notifications": "^9.6.1",
-    "@tanstack/react-table": "^9.2.4",
+    "@tanstack/react-table": "^8.21.3",
     "dayjs": "^1.11.23",
     "html2canvas": "^1.4.1",
     "jspdf": "^4.2.0",
