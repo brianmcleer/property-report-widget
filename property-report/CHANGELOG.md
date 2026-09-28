@@ -2,6 +2,10 @@
 
 Newest first. Every release bumps `manifest.json` and `package.json` together.
 
+## 1.2.11 (2026-09-28)
+
+- Dependencies: `@tanstack/react-table` is pinned back to 8.21.3. Version 9 removed `useReactTable`, `getCoreRowModel`, `getSortedRowModel`, `getFilteredRowModel` and `getPaginationRowModel` in favour of a feature-registration API. webpack reports the missing exports only as warnings and still compiles, so the build looks clean while every table section throws when a report renders. Nothing else changed; recharts 3.10.1 and the other dependency updates are kept.
+
 ## 1.2.10 (2026-09-18)
 
 - Settings: a **Show help guide** option. Turn it off and the question-mark button and the first-run hint both disappear; the guide itself is untouched. Undefined means on, so apps configured before this release keep their help button.
