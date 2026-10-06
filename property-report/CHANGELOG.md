@@ -2,6 +2,10 @@
 
 Newest first. Every release bumps `manifest.json` and `package.json` together.
 
+## 1.2.13 (2026-10-06)
+
+- Dependencies: removed `@mantine/charts`, `@mantine/dates`, `@mantine/notifications` and `dayjs`. No source file imports them, so they only added install size and Dependabot update requests. The widget now depends on recharts, @tanstack/react-table, jspdf and html2canvas only. No code changes.
+
 ## 1.2.12 (2026-10-06)
 
 - Security: DOMPurify, used internally by jsPDF, updated from 3.4.13 to 3.4.16 in both lockfiles. Fixes two low-severity advisories that affect DOMPurify's IN_PLACE mode. The widget does not call DOMPurify directly. No code changes.

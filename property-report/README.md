@@ -39,9 +39,6 @@ On 1.21 and later do not install packages by hand; Esri's bootstrap does it from
 
 ```bash
 npm install recharts @tanstack/react-table
-npm install @mantine/dates dayjs
-npm install @mantine/charts
-npm install @mantine/notifications
 npm install html2canvas
 npm install jspdf
 ```
@@ -52,9 +49,6 @@ npm install jspdf
 | --- | --- |
 | `recharts` | Chart visualization (bar, column, pie, donut, line, area) |
 | `@tanstack/react-table` | Table sorting, filtering, and pagination |
-| `@mantine/dates`, `dayjs` | Date handling and formatting |
-| `@mantine/charts` | Additional chart utilities |
-| `@mantine/notifications` | Toast notifications |
 | `html2canvas` | HTML-to-canvas conversion for rendering charts into the PDF |
 | `jspdf` | Client-side PDF generation |
 
@@ -161,6 +155,11 @@ Please report bugs, ideas, questions, and enhancement requests on the [Esri Comm
 
 ## Changelog
 
+Full history is in `CHANGELOG.md`.
+
+- **2026-10-06 (v1.2.13):** Removes four unused dependencies (`@mantine/charts`, `@mantine/dates`, `@mantine/notifications`, `dayjs`). Smaller install, no code changes.
+- **2026-10-06 (v1.2.12):** Security: DOMPurify (used inside jsPDF) updated to 3.4.16 for two low-severity advisories.
+- **2026-09-28 (v1.2.11):** Pins `@tanstack/react-table` to version 8. Version 9 breaks every table section at runtime.
 - **2026-09-11 (v1.2.6):** Install fix for Experience Builder 1.21. Removes the `overrides` entries from `package.json` (jsPDF 4.2.1 already requires the patched dompurify 3.4.13), so the frozen dependency install no longer fails with `ERR_PNPM_LOCKFILE_CONFIG_MISMATCH` on newer pnpm versions. Adds a Troubleshooting section to this README.
 - **2026-09-10 (v1.2.5):** Export PDF now bundles jsPDF and html2canvas statically. The on-demand chunk that could 404 on exported, proxied, and sub-path deployments no longer exists.
 - **2026-09-09 (v1.2.4):** Adds a searchable in-widget Help guide (question mark button beside the search box) whose sections follow the widget configuration, with a dismissible first-run hint. Adds a self-contained `tsconfig.json` and type shims so Visual Studio reports zero errors under the 1.21 pnpm layout.
