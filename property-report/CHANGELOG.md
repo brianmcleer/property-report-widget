@@ -2,6 +2,10 @@
 
 Newest first. Every release bumps `manifest.json` and `package.json` together.
 
+## 1.2.12 (2026-10-06)
+
+- Security: DOMPurify, used internally by jsPDF, updated from 3.4.13 to 3.4.16 in both lockfiles. Fixes two low-severity advisories that affect DOMPurify's IN_PLACE mode. The widget does not call DOMPurify directly. No code changes.
+
 ## 1.2.11 (2026-09-28)
 
 - Dependencies: `@tanstack/react-table` is pinned back to 8.21.3. Version 9 removed `useReactTable`, `getCoreRowModel`, `getSortedRowModel`, `getFilteredRowModel` and `getPaginationRowModel` in favour of a feature-registration API. webpack reports the missing exports only as warnings and still compiles, so the build looks clean while every table section throws when a report renders. Nothing else changed; recharts 3.10.1 and the other dependency updates are kept.
