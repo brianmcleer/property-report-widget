@@ -16,6 +16,9 @@ updates:
       - dependency-name: "@arcgis/*"
       - dependency-name: "react"
       - dependency-name: "react-dom"
+      # Major versions change APIs and can break the widget at runtime. Take them by hand.
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
