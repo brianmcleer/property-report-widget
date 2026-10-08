@@ -16,6 +16,9 @@ import {
     Tooltip
 } from 'jimu-ui'
 import type { IMConfig, SectionConfig, LayerConfig, FieldConfig, SearchSourceConfig, HeaderInfoConfig, PdfHeaderConfig, PdfFooterConfig, PdfStyleConfig, PdfLogoConfig, ImageSizeMode, ChartConfig, ChartType, ChartMode, ChartFieldConfig, AggregationType, TableDisplayConfig, FieldFormatConfig, NumberFormatType, DateFormatType, TextFormatType, RichTextButton, RelatedTableConfig, PropertyPreviewConfig, PropertyActionConfig, AggregateFieldConfig, NearbyDisplayConfig, PdfAccessibilityConfig } from '../config'
+import { hooks as __exbI18nHooks } from 'jimu-core';
+import __exbI18nMessages from './translations/default';
+
 // Tip aliased to Tooltip — component was renamed in ExB 1.20
 const Tip = Tooltip
 const { useState, useEffect, useRef } = React
@@ -1155,6 +1158,7 @@ type SettingProps = {
 }
 
 const Setting = (props: SettingProps) => {
+  const t = __exbI18nHooks.useTranslation(__exbI18nMessages);
     const { config, onSettingChange } = props
     // Builder injects these at runtime, but EB 1.21's published setting props
     // do not consistently expose them to every Visual Studio TypeScript host.
@@ -2374,13 +2378,13 @@ const Setting = (props: SettingProps) => {
 
         // Validate file type
         if (!file.type.startsWith('image/')) {
-            alert('Please select an image file (PNG, JPG, GIF, SVG)')
+            alert(t('pleaseSelectAnImageFilePng'))
             return
         }
 
         // Validate file size (max 1MB for better quality logos)
         if (file.size > 1024 * 1024) {
-            alert('Image file size must be less than 1MB')
+            alert(t('imageFileSizeMustBeLess'))
             return
         }
 
@@ -2451,13 +2455,13 @@ const Setting = (props: SettingProps) => {
 
         // Validate file type - must be TTF
         if (!file.name.toLowerCase().endsWith('.ttf')) {
-            alert('Please select a TTF font file (.ttf)')
+            alert(t('pleaseSelectATtfFontFile'))
             return
         }
 
         // Validate file size (max 2MB per font)
         if (file.size > 2 * 1024 * 1024) {
-            alert('Font file size must be less than 2MB')
+            alert(t('fontFileSizeMustBeLess'))
             return
         }
 
@@ -3788,7 +3792,7 @@ const Setting = (props: SettingProps) => {
                     aria-expanded={expandedPanels.has('map-connection')}
                 >
                     <div className="collapsible-panel-header-left">
-                        <span className="collapsible-panel-title">Map Connection</span>
+                        <span className="collapsible-panel-title">{t('mapConnection')}</span>
                     </div>
                     <span className={`collapsible-panel-toggle ${!expandedPanels.has('map-connection') ? 'collapsed' : ''}`}>
                         <ChevronDownIcon />
@@ -3796,7 +3800,7 @@ const Setting = (props: SettingProps) => {
                 </div>
                 <div className={`collapsible-panel-content ${expandedPanels.has('map-connection') ? 'expanded' : ''}`}>
                     <div className="collapsible-panel-inner">
-                        <SettingRow flow="wrap" label="Select Map Widget">
+                        <SettingRow flow="wrap" label={t('selectMapWidget')}>
                             <MapWidgetSelector
                                 useMapWidgetIds={config.mapWidgetId ? Immutable([config.mapWidgetId]) : Immutable([])}
                                 onSelect={(ids) => updateConfig('mapWidgetId', ids?.[0] || null)}
@@ -3817,7 +3821,7 @@ const Setting = (props: SettingProps) => {
                     aria-expanded={expandedPanels.has('import-export')}
                 >
                     <div className="collapsible-panel-header-left">
-                        <span className="collapsible-panel-title">Settings Import/Export</span>
+                        <span className="collapsible-panel-title">{t('settingsImportExport')}</span>
                     </div>
                     <span className={`collapsible-panel-toggle ${!expandedPanels.has('import-export') ? 'collapsed' : ''}`}>
                         <ChevronDownIcon />
@@ -3827,27 +3831,26 @@ const Setting = (props: SettingProps) => {
                     <div className="collapsible-panel-inner">
                         <div className="import-export-section">
                             <p className="hint-text">
-                                Export or import widget configuration to quickly replicate settings across Experience Builder applications.
-                                The Map Widget connection is not included in exports.
+                                {t('exportOrImportWidgetConfigurationTo')}
                             </p>
 
                             <div className="import-export-buttons">
                                 <button
                                     className="import-export-btn"
                                     onClick={exportSettingsToXml}
-                                    aria-label="Export settings to XML"
+                                    aria-label={t('exportSettingsToXml')}
                                 >
                                     <ExportIcon />
-                                    Export Settings
+                                    {t('exportSettings')}
                                 </button>
 
                                 <button
                                     className="import-export-btn"
                                     onClick={() => importInputRef.current?.click()}
-                                    aria-label="Import settings from XML"
+                                    aria-label={t('importSettingsFromXml')}
                                 >
                                     <ImportIcon />
-                                    Import Settings
+                                    {t('importSettings')}
                                 </button>
 
                                 <input
@@ -3867,9 +3870,9 @@ const Setting = (props: SettingProps) => {
                             )}
 
                             <div className="import-export-info">
-                                <strong>Exported settings include:</strong> Coordinate display, search sources (geocoders &amp; layers), result sections (layers, fields, charts, tables, rich text), header info layer, highlight layer, PDF settings (header, footer, logo, styles, WCAG accessibility), and chart/table defaults.
+                                <strong>{t('exportedSettingsInclude')}</strong> {t('coordinateDisplaySearchSourcesGeocodersLayers')}
                                 <br /><br />
-                                <strong>Not exported:</strong> Map widget connection (must be set per-deployment).
+                                <strong>{t('notExported')}</strong> {t('mapWidgetConnectionMustBeSet')}
                             </div>
                         </div>
                     </div>
@@ -3887,7 +3890,7 @@ const Setting = (props: SettingProps) => {
                     aria-expanded={expandedPanels.has('performance-settings')}
                 >
                     <div className="collapsible-panel-header-left">
-                        <span className="collapsible-panel-title">Performance Settings</span>
+                        <span className="collapsible-panel-title">{t('performanceSettings')}</span>
                     </div>
                     <span className={`collapsible-panel-toggle ${!expandedPanels.has('performance-settings') ? 'collapsed' : ''}`}>
                         <ChevronDownIcon />
@@ -3896,24 +3899,23 @@ const Setting = (props: SettingProps) => {
                 <div className={`collapsible-panel-content ${expandedPanels.has('performance-settings') ? 'expanded' : ''}`}>
                     <div className="collapsible-panel-inner">
                         <p className="hint-text">
-                            Configure performance optimizations for faster query responses.
+                            {t('configurePerformanceOptimizationsForFasterQuery')}
                         </p>
 
                         <SettingRow flow="wrap" label={(
                             <TooltipLabel
-                                label="Client-Side Querying"
-                                tooltip="When enabled, queries layers already loaded in the map using client-side processing instead of server requests. Can reduce query time from 30+ seconds to under 1 second for layers visible in the map."
+                                label={t('clientSideQuerying')}
+                                tooltip={t('whenEnabledQueriesLayersAlreadyLoaded')}
                             />
                         )}>
                             <Switch
                                 checked={config.enableClientSideQuery || false}
                                 onChange={(e) => updateConfig('enableClientSideQuery', (e.target as HTMLInputElement).checked)}
-                                aria-label="Enable client-side querying"
+                                aria-label={t('enableClientSideQuerying')}
                             />
                         </SettingRow>
                         <p className="hint-text" style={{ marginTop: '4px' }}>
-                            <strong>Tip:</strong> Enable this for significantly faster queries on layers already loaded in your map.
-                            Falls back to server queries for layers not in the map.
+                            <strong>{t('tip')}</strong> {t('enableThisForSignificantlyFasterQueries')}
                         </p>
                     </div>
                 </div>
@@ -3930,7 +3932,7 @@ const Setting = (props: SettingProps) => {
                     aria-expanded={expandedPanels.has('report-options')}
                 >
                     <div className="collapsible-panel-header-left">
-                        <span className="collapsible-panel-title">Report Options</span>
+                        <span className="collapsible-panel-title">{t('reportOptions')}</span>
                     </div>
                     <span className={`collapsible-panel-toggle ${!expandedPanels.has('report-options') ? 'collapsed' : ''}`}>
                         <ChevronDownIcon />
@@ -3940,21 +3942,21 @@ const Setting = (props: SettingProps) => {
                     <div className="collapsible-panel-inner">
                         <SettingRow flow="wrap" label={(
                             <TooltipLabel
-                                label="Report summary template"
-                                tooltip="Optional plain-language sentence shown above the report sections. Use {address} for the searched address and {FIELD_NAME} for any header info field. Example: This {ACRES}-acre parcel at {address} is zoned {ZONE}."
+                                label={t('reportSummaryTemplate')}
+                                tooltip={t('optionalPlainLanguageSentenceShownAbove')}
                             />
                         )}>
                             <TextArea
                                 value={config.reportSummaryTemplate || ''}
                                 onChange={(e) => updateConfig('reportSummaryTemplate', e.target.value)}
-                                placeholder="This {ACRES}-acre parcel at {address} is zoned {ZONE}."
+                                placeholder={t('thisAcresAcreParcelAtAddress')}
                                 style={{ minHeight: 60 }}
                             />
                         </SettingRow>
                         <SettingRow flow="wrap" label={(
                             <TooltipLabel
-                                label="Permalink URL parameter"
-                                tooltip="Query-string parameter used by the Copy Link button in results, and honored on app load to auto-run a search. Example link: ...?propertysearch=1015 N 7th St"
+                                label={t('permalinkUrlParameter')}
+                                tooltip={t('queryStringParameterUsedByThe')}
                             />
                         )}>
                             <TextInput
@@ -3966,62 +3968,62 @@ const Setting = (props: SettingProps) => {
                         </SettingRow>
                         <SettingRow flow="no-wrap" label={(
                             <TooltipLabel
-                                label="Auto-open panel from permalink"
-                                tooltip="When a report link is opened, attempt to automatically open the panel or sidebar containing this widget. Turn off if the automatic opening misbehaves in your app layout; the report still loads and appears when the user opens the widget."
+                                label={t('autoOpenPanelFromPermalink')}
+                                tooltip={t('whenAReportLinkIsOpened')}
                             />
                         )}>
                             <Switch
                                 checked={config.permalinkAutoOpen !== false}
                                 onChange={(e) => updateConfig('permalinkAutoOpen', e.target.checked)}
-                                aria-label="Auto-open panel from permalink"
+                                aria-label={t('autoOpenPanelFromPermalink')}
                             />
                         </SettingRow>
                         <SettingRow flow="no-wrap" label={(
                             <TooltipLabel
-                                label="Enable comparison"
-                                tooltip="Show the compare button in the report header, letting users snapshot one property and compare it side by side with another."
+                                label={t('enableComparison')}
+                                tooltip={t('showTheCompareButtonInThe')}
                             />
                         )}>
                             <Switch
                                 checked={config.enableComparison !== false}
                                 onChange={(e) => updateConfig('enableComparison', e.target.checked)}
-                                aria-label="Enable comparison"
+                                aria-label={t('enableComparison')}
                             />
                         </SettingRow>
                         <SettingRow flow="no-wrap" label={(
                             <TooltipLabel
-                                label="Enable report link"
-                                tooltip="Show the copy-link button in the report header, which copies a shareable URL that reopens this report."
+                                label={t('enableReportLink')}
+                                tooltip={t('showTheCopyLinkButtonIn')}
                             />
                         )}>
                             <Switch
                                 checked={config.enablePermalink !== false}
                                 onChange={(e) => updateConfig('enablePermalink', e.target.checked)}
-                                aria-label="Enable report link"
+                                aria-label={t('enableReportLink')}
                             />
                         </SettingRow>
                         <SettingRow flow="no-wrap" label={(
                             <TooltipLabel
-                                label="Enable CSV export"
-                                tooltip="Show a CSV download button on each report section that has data."
+                                label={t('enableCsvExport')}
+                                tooltip={t('showACsvDownloadButtonOn')}
                             />
                         )}>
                             <Switch
                                 checked={config.enableCsvExport !== false}
                                 onChange={(e) => updateConfig('enableCsvExport', e.target.checked)}
-                                aria-label="Enable CSV export"
+                                aria-label={t('enableCsvExport')}
                             />
                         </SettingRow>
                         <SettingRow flow="no-wrap" label={(
                             <TooltipLabel
-                                label="Enable recent searches"
-                                tooltip="Remember recent property searches in the browser and show them as quick-access chips under the search box."
+                                label={t('enableRecentSearches')}
+                                tooltip={t('rememberRecentPropertySearchesInThe')}
                             />
                         )}>
                             <Switch
                                 checked={config.enableRecentSearches !== false}
                                 onChange={(e) => updateConfig('enableRecentSearches', e.target.checked)}
-                                aria-label="Enable recent searches"
+                                aria-label={t('enableRecentSearches')}
                             />
                         </SettingRow>
                     </div>
@@ -4039,7 +4041,7 @@ const Setting = (props: SettingProps) => {
                     aria-expanded={expandedPanels.has('coordinate-display')}
                 >
                     <div className="collapsible-panel-header-left">
-                        <span className="collapsible-panel-title">Coordinate Display</span>
+                        <span className="collapsible-panel-title">{t('coordinateDisplay')}</span>
                     </div>
                     <span className={`collapsible-panel-toggle ${!expandedPanels.has('coordinate-display') ? 'collapsed' : ''}`}>
                         <ChevronDownIcon />
@@ -4048,46 +4050,46 @@ const Setting = (props: SettingProps) => {
                 <div className={`collapsible-panel-content ${expandedPanels.has('coordinate-display') ? 'expanded' : ''}`}>
                     <div className="collapsible-panel-inner">
                         <p className="hint-text">
-                            Configure how coordinates are displayed in results and PDF reports.
+                            {t('configureHowCoordinatesAreDisplayedIn')}
                         </p>
 
                         <SettingRow flow="wrap" label={(
                             <TooltipLabel
-                                label="Enable Use Current Location"
-                                tooltip="Show a 'Use Current Location' button that uses the device's GPS to query at the user's current position. Requires HTTPS and user permission."
+                                label={t('enableUseCurrentLocation')}
+                                tooltip={t('showAUseCurrentLocationButton')}
                             />
                         )}>
 
                             <Switch
                                 checked={config.enableUseCurrentLocation !== false}
                                 onChange={(e) => updateConfig('enableUseCurrentLocation', (e.target as HTMLInputElement).checked)}
-                                aria-label="Enable use current location button"
+                                aria-label={t('enableUseCurrentLocationButton')}
                             />
                         </SettingRow>
                         {config.enableUseCurrentLocation !== false && (
                             <p className="hint-text" style={{ marginTop: '2px', marginBottom: '8px' }}>
-                                Adds a GPS button to query at the user's current location. Requires HTTPS in production. Users will be prompted to allow location access.
+                                {t('addsAGpsButtonToQuery')}
                             </p>
                         )}
 
                         <SettingRow flow="wrap" label={(
                             <TooltipLabel
-                                label="Show Coordinates"
-                                tooltip="Display the query point coordinates in the results header and PDF report. Useful for identifying exact search locations."
+                                label={t('showCoordinates')}
+                                tooltip={t('displayTheQueryPointCoordinatesIn')}
                             />
                         )}>
 
                             <Switch
                                 checked={config.showCoordinates !== false}
                                 onChange={(e) => updateConfig('showCoordinates', (e.target as HTMLInputElement).checked)}
-                                aria-label="Show coordinates in results"
+                                aria-label={t('showCoordinatesInResults')}
                             />
                         </SettingRow>
 
                         <SettingRow flow="wrap" label={(
                             <TooltipLabel
-                                label="Coordinate System"
-                                tooltip="Choose how coordinates are displayed. 'Map Native' uses the map's projection units, 'Lat/Lon' converts to WGS84 degrees, 'Web Mercator' shows X/Y meters, 'Custom WKID' allows any projection."
+                                label={t('coordinateSystem')}
+                                tooltip={t('chooseHowCoordinatesAreDisplayedMap')}
                             />
                         )}>
 
@@ -4097,10 +4099,10 @@ const Setting = (props: SettingProps) => {
                                 onChange={(e) => updateConfig('coordinateSystem', e.target.value)}
                                 style={{ width: '100%' }}
                             >
-                                <Option value="map">Map Native (Original Units)</Option>
-                                <Option value="wgs84">Lat/Lon Degrees (WGS84)</Option>
-                                <Option value="webmercator">X/Y Meters (Web Mercator)</Option>
-                                <Option value="custom">Custom WKID</Option>
+                                <Option value="map">{t('mapNativeOriginalUnits')}</Option>
+                                <Option value="wgs84">{t('latLonDegreesWgs84')}</Option>
+                                <Option value="webmercator">{t('xYMetersWebMercator')}</Option>
+                                <Option value="custom">{t('customWkid')}</Option>
                             </Select>
                         </SettingRow>
 
@@ -4109,7 +4111,7 @@ const Setting = (props: SettingProps) => {
                                 <SettingRow flow="wrap" label={(
                                     <TooltipLabel
                                         label="WKID"
-                                        tooltip="Enter the Well-Known ID (EPSG code) for your coordinate system. Examples: 2180 (Poland ETRS89), 25832 (Germany ETRS89 UTM32), 27700 (UK OSGB 1936)."
+                                        tooltip={t('enterTheWellKnownIdEpsg')}
                                     />
                                 )}>
                                     <NumericInput
@@ -4124,21 +4126,21 @@ const Setting = (props: SettingProps) => {
 
                                 <SettingRow flow="wrap" label={(
                                     <TooltipLabel
-                                        label="Display Label"
-                                        tooltip="Optional label shown in the coordinate display. If empty, will show the WKID number."
+                                        label={t('displayLabel')}
+                                        tooltip={t('optionalLabelShownInTheCoordinate')}
                                     />
                                 )}>
                                     <TextInput
                                         size="sm"
                                         value={config.customCoordinateLabel || ''}
                                         onChange={(e) => updateConfig('customCoordinateLabel', e.target.value)}
-                                        placeholder="e.g., ETRS89 / Poland CS92"
+                                        placeholder={t('eGEtrs89PolandCs92')}
                                         style={{ width: '100%' }}
                                     />
                                 </SettingRow>
 
                                 <p className="hint-text" style={{ marginTop: '4px' }}>
-                                    Common WKIDs: 2180 (Poland), 25832/25833 (Germany UTM), 27700 (UK), 2154 (France), 28992 (Netherlands), 3006 (Sweden)
+                                    {t('commonWKIDs2180Poland2583225833')}
                                 </p>
                             </>
                         )}
@@ -4146,8 +4148,8 @@ const Setting = (props: SettingProps) => {
                         {config.coordinateSystem === 'wgs84' && (
                             <SettingRow flow="wrap" label={(
                                 <TooltipLabel
-                                    label="Format"
-                                    tooltip="Decimal degrees (39.0639°) are more compact; Degrees-Minutes-Seconds (39°3′50″N) are traditional for surveying and navigation."
+                                    label={t('format')}
+                                    tooltip={t('decimalDegrees390639AreMore')}
                                 />
                             )}>
 
@@ -4157,16 +4159,16 @@ const Setting = (props: SettingProps) => {
                                     onChange={(e) => updateConfig('coordinateFormat', e.target.value)}
                                     style={{ width: '100%' }}
                                 >
-                                    <Option value="decimal">Decimal Degrees (e.g., 39.0639, -108.5506)</Option>
-                                    <Option value="dms">Degrees Minutes Seconds (e.g., 39°3'50"N)</Option>
+                                    <Option value="decimal">{t('decimalDegreesEG390639')}</Option>
+                                    <Option value="dms">{t('degreesMinutesSecondsEG39')}</Option>
                                 </Select>
                             </SettingRow>
                         )}
 
                         <SettingRow flow="wrap" label={(
                             <TooltipLabel
-                                label="Decimal Precision"
-                                tooltip="Number of decimal places. For lat/lon: 6 decimals ≈ 0.1m accuracy, 4 decimals ≈ 11m. Higher precision = longer numbers."
+                                label={t('decimalPrecision')}
+                                tooltip={t('numberOfDecimalPlacesForLat')}
                             />
                         )}>
 
@@ -4195,7 +4197,7 @@ const Setting = (props: SettingProps) => {
                     aria-expanded={expandedPanels.has('search-sources')}
                 >
                     <div className="collapsible-panel-header-left">
-                        <span className="collapsible-panel-title">Search Sources</span>
+                        <span className="collapsible-panel-title">{t('searchSources')}</span>
                     </div>
                     <span className={`collapsible-panel-toggle ${!expandedPanels.has('search-sources') ? 'collapsed' : ''}`}>
                         <ChevronDownIcon />
@@ -4204,13 +4206,13 @@ const Setting = (props: SettingProps) => {
                 <div className={`collapsible-panel-content ${expandedPanels.has('search-sources') ? 'expanded' : ''}`}>
                     <div className="collapsible-panel-inner">
                         <p className="hint-text">
-                            Configure search sources. Results from all enabled sources will be combined.
+                            {t('configureSearchSourcesResultsFromAll')}
                         </p>
 
                         {searchSources.length === 0 ? (
                             <div className="empty-state">
                                 <SearchIcon />
-                                <span>No search sources configured</span>
+                                <span>{t('noSearchSourcesConfigured')}</span>
                             </div>
                         ) : (
                             searchSources.map((source) => {
@@ -4239,7 +4241,7 @@ const Setting = (props: SettingProps) => {
                                                 <span className={`status-dot ${source.enabled ? 'status-enabled' : 'status-disabled'}`} />
                                                 <span className="list-item-title">{source.sourceName}</span>
                                                 <span className={`item-badge ${source.type === 'geocoder' ? 'item-badge-success' : ''}`}>
-                                                    {source.type === 'geocoder' ? 'Geocoder' : source.type === 'url' ? 'URL' : 'Layer'}
+                                                    {source.type === 'geocoder' ? t('geocoder') : source.type === 'url' ? 'URL' : t('layer')}
                                                 </span>
                                             </div>
                                             <div className="list-item-actions">
@@ -4250,16 +4252,16 @@ const Setting = (props: SettingProps) => {
                                                         toggleSearchSourceEnabled(source.sourceId)
                                                     }}
                                                     onClick={(e) => e.stopPropagation()}
-                                                    aria-label={`Enable ${source.sourceName}`}
+                                                    aria-label={t('enableSourceName', { sourceName: source.sourceName })}
                                                 />
-                                                <Tip title="Remove source" placement="top">
+                                                <Tip title={t('removeSource')} placement="top">
                                                     <button
                                                         className="delete-btn"
                                                         onClick={(e) => {
                                                             e.stopPropagation()
                                                             removeSearchSource(source.sourceId)
                                                         }}
-                                                        aria-label={`Remove ${source.sourceName}`}
+                                                        aria-label={t('removeSourceName', { sourceName: source.sourceName })}
                                                     >
                                                         <TrashIcon />
                                                     </button>
@@ -4271,15 +4273,15 @@ const Setting = (props: SettingProps) => {
                                             <div className="list-item-content">
                                                 <SettingRow flow="wrap" label={(
                                                     <TooltipLabel
-                                                        label="Source Name"
-                                                        tooltip="Display name shown in search suggestions dropdown to help users identify which source a suggestion came from."
+                                                        label={t('sourceName')}
+                                                        tooltip={t('displayNameShownInSearchSuggestions')}
                                                     />
                                                 )}>
                                                     <TextInput
                                                         size="sm"
                                                         value={source.sourceName}
                                                         onChange={(e) => updateSearchSource(source.sourceId, { sourceName: e.target.value })}
-                                                        aria-label="Source name"
+                                                        aria-label={t('sourceName2')}
                                                     />
                                                 </SettingRow>
 
@@ -4287,8 +4289,8 @@ const Setting = (props: SettingProps) => {
                                                     <>
                                                         <SettingRow flow="wrap" label={(
                                                             <TooltipLabel
-                                                                label="Geocoder URL"
-                                                                tooltip="ArcGIS World Geocoder or custom geocoding service URL. The default Esri geocoder provides global address matching."
+                                                                label={t('geocoderUrl')}
+                                                                tooltip={t('arcGISWorldGeocoderOrCustomGeocoding')}
                                                             />
                                                         )}>
                                                             <TextInput
@@ -4296,13 +4298,13 @@ const Setting = (props: SettingProps) => {
                                                                 value={source.geocoderUrl || ''}
                                                                 onChange={(e) => updateSearchSource(source.sourceId, { geocoderUrl: e.target.value })}
                                                                 placeholder="https://geocode.arcgis.com/..."
-                                                                aria-label="Geocoder URL"
+                                                                aria-label={t('geocoderUrl')}
                                                             />
                                                         </SettingRow>
                                                         <SettingRow flow="wrap" label={(
                                                             <TooltipLabel
-                                                                label="Max Suggestions"
-                                                                tooltip="Maximum number of address suggestions to show from this geocoder. Lower values reduce clutter; higher values give more options."
+                                                                label={t('maxSuggestions')}
+                                                                tooltip={t('maximumNumberOfAddressSuggestionsTo')}
                                                             />
                                                         )}>
                                                             <NumericInput
@@ -4312,7 +4314,7 @@ const Setting = (props: SettingProps) => {
                                                                 max={20}
                                                                 onChange={(value) => updateSearchSource(source.sourceId, { maxSuggestions: value })}
                                                                 style={{ width: 80 }}
-                                                                aria-label="Maximum suggestions"
+                                                                aria-label={t('maximumSuggestions')}
                                                             />
                                                         </SettingRow>
                                                     </>
@@ -4322,8 +4324,8 @@ const Setting = (props: SettingProps) => {
                                                     <>
                                                         <SettingRow flow="wrap" label={(
                                                             <TooltipLabel
-                                                                label="Search Layer"
-                                                                tooltip="Feature layer to search. Users can search by attribute values in this layer (e.g., parcel numbers, owner names)."
+                                                                label={t('searchLayer')}
+                                                                tooltip={t('featureLayerToSearchUsersCan')}
                                                             />
                                                         )}>
                                                             <div className="ds-selector-container">
@@ -4337,7 +4339,7 @@ const Setting = (props: SettingProps) => {
                                                                         isMultiple={false}
                                                                         closeDataSourceListOnChange
                                                                     />
-                                                                ) : <div style={{ padding: "8px", fontSize: "12px", color: "var(--sys-color-text-secondary)" }}>Loading data source selector...</div>}
+                                                                ) : <div style={{ padding: "8px", fontSize: "12px", color: "var(--sys-color-text-secondary)" }}>{t('loadingDataSourceSelector')}</div>}
                                                             </div>
                                                         </SettingRow>
 
@@ -4345,14 +4347,14 @@ const Setting = (props: SettingProps) => {
                                                             <>
                                                                 <SettingRow flow="wrap" label={(
                                                                     <TooltipLabel
-                                                                        label="Search Fields"
-                                                                        tooltip="Which text fields to search. Select multiple fields for broader matching (e.g., both ADDRESS and OWNER_NAME)."
+                                                                        label={t('searchFields')}
+                                                                        tooltip={t('whichTextFieldsToSearchSelect')}
                                                                     />
                                                                 )}>
                                                                     <div className="fields-container">
                                                                         {stringFields.length === 0 ? (
                                                                             <div className="field-item" style={{ justifyContent: 'center', color: 'var(--sys-color-text-light)' }}>
-                                                                                No text fields available
+                                                                                {t('noTextFieldsAvailable')}
                                                                             </div>
                                                                         ) : (
                                                                             stringFields.map(field => {
@@ -4362,7 +4364,7 @@ const Setting = (props: SettingProps) => {
                                                                                         <Checkbox
                                                                                             checked={isSelected}
                                                                                             onChange={() => toggleSearchFieldSelection(source.sourceId, field.name)}
-                                                                                            aria-label={`Select ${field.alias || field.name}`}
+                                                                                            aria-label={t('selectAlias', { alias: field.alias || field.name })}
                                                                                         />
                                                                                         <span className="field-name">{field.alias || field.name}</span>
                                                                                     </div>
@@ -4374,17 +4376,17 @@ const Setting = (props: SettingProps) => {
 
                                                                 <SettingRow flow="wrap" label={(
                                                                     <TooltipLabel
-                                                                        label="Display Field"
-                                                                        tooltip="Field shown in search suggestions. Choose the most recognizable identifier (e.g., full address, owner name, parcel number)."
+                                                                        label={t('displayField')}
+                                                                        tooltip={t('fieldShownInSearchSuggestionsChoose')}
                                                                     />
                                                                 )}>
                                                                     <Select
                                                                         size="sm"
                                                                         value={source.displayField || ''}
                                                                         onChange={(e) => updateSearchSource(source.sourceId, { displayField: e.target.value })}
-                                                                        aria-label="Display field"
+                                                                        aria-label={t('displayField2')}
                                                                     >
-                                                                        <Option value="">-- Select Field --</Option>
+                                                                        <Option value="">{t('selectField')}</Option>
                                                                         {searchLayerFields.map(field => (
                                                                             <Option key={field.name} value={field.name}>
                                                                                 {field.alias || field.name}
@@ -4395,8 +4397,8 @@ const Setting = (props: SettingProps) => {
 
                                                                 <SettingRow flow="wrap" label={(
                                                                     <TooltipLabel
-                                                                        label="Max Suggestions"
-                                                                        tooltip="Maximum matching features to show in dropdown. Balance between comprehensive results and UI responsiveness."
+                                                                        label={t('maxSuggestions')}
+                                                                        tooltip={t('maximumMatchingFeaturesToShowIn')}
                                                                     />
                                                                 )}>
                                                                     <NumericInput
@@ -4406,7 +4408,7 @@ const Setting = (props: SettingProps) => {
                                                                         max={20}
                                                                         onChange={(value) => updateSearchSource(source.sourceId, { maxSuggestions: value })}
                                                                         style={{ width: 80 }}
-                                                                        aria-label="Maximum suggestions"
+                                                                        aria-label={t('maximumSuggestions')}
                                                                     />
                                                                 </SettingRow>
                                                             </>
@@ -4418,8 +4420,8 @@ const Setting = (props: SettingProps) => {
                                                     <>
                                                         <SettingRow flow="wrap" label={(
                                                             <TooltipLabel
-                                                                label="Service URL"
-                                                                tooltip="ArcGIS REST endpoint URL (FeatureServer or MapServer layer). Use this for external services not in the web map."
+                                                                label={t('serviceUrl')}
+                                                                tooltip={t('arcGISRestEndpointUrlFeatureServerOr')}
                                                             />
                                                         )}>
                                                             <div style={{ display: 'flex', gap: '4px', width: '100%' }}>
@@ -4428,7 +4430,7 @@ const Setting = (props: SettingProps) => {
                                                                     value={source.url || ''}
                                                                     onChange={(e) => updateSearchSource(source.sourceId, { url: e.target.value } as any)}
                                                                     placeholder="https://services.arcgis.com/.../FeatureServer/0"
-                                                                    aria-label="REST Service URL"
+                                                                    aria-label={t('restServiceUrl')}
                                                                     style={{ flex: 1 }}
                                                                 />
                                                                 <Button
@@ -4436,9 +4438,9 @@ const Setting = (props: SettingProps) => {
                                                                     type="primary"
                                                                     disabled={!source.url || urlSourceFieldsLoading[source.sourceId]}
                                                                     onClick={() => fetchSearchSourceUrlFields(source.sourceId, source.url)}
-                                                                    aria-label="Load fields from URL"
+                                                                    aria-label={t('loadFieldsFromUrl')}
                                                                 >
-                                                                    {urlSourceFieldsLoading[source.sourceId] ? 'Loading...' : 'Load Fields'}
+                                                                    {urlSourceFieldsLoading[source.sourceId] ? 'Loading...' : t('loadFields')}
                                                                 </Button>
                                                             </div>
                                                             {fetchErrors[`search:${source.sourceId}`] && (
@@ -4453,7 +4455,7 @@ const Setting = (props: SettingProps) => {
                                                             )}
                                                         </SettingRow>
                                                         <p className="hint-text" style={{ marginTop: 0 }}>
-                                                            Enter a Feature Layer REST endpoint URL and click "Load Fields" to fetch available fields.
+                                                            {t('enterAFeatureLayerRestEndpoint')}
                                                         </p>
 
                                                         {(() => {
@@ -4465,18 +4467,18 @@ const Setting = (props: SettingProps) => {
                                                             if (urlFields.length === 0) {
                                                                 return (
                                                                     <div className="hint-text" style={{ fontStyle: 'italic', padding: '8px 0' }}>
-                                                                        Click "Load Fields" to fetch available fields from the service.
+                                                                        {t('clickLoadFieldsToFetchAvailable')}
                                                                     </div>
                                                                 )
                                                             }
 
                                                             return (
                                                                 <>
-                                                                    <SettingRow flow="wrap" label={(<TooltipLabel label="Search Fields" tooltip="Select which text fields users can search. Multiple fields allow broader search coverage (e.g., Name, Address, ID)." />)}>
+                                                                    <SettingRow flow="wrap" label={(<TooltipLabel label={t('searchFields')} tooltip={t('selectWhichTextFieldsUsersCan')} />)}>
                                                                         <div className="fields-container">
                                                                             {urlStringFields.length === 0 ? (
                                                                                 <div className="field-item" style={{ justifyContent: 'center', color: 'var(--sys-color-text-light)' }}>
-                                                                                    No text fields available
+                                                                                    {t('noTextFieldsAvailable')}
                                                                                 </div>
                                                                             ) : (
                                                                                 urlStringFields.map(field => {
@@ -4486,7 +4488,7 @@ const Setting = (props: SettingProps) => {
                                                                                             <Checkbox
                                                                                                 checked={isSelected}
                                                                                                 onChange={() => toggleSearchFieldSelection(source.sourceId, field.name)}
-                                                                                                aria-label={`Select ${field.alias || field.name}`}
+                                                                                                aria-label={t('selectAlias', { alias: field.alias || field.name })}
                                                                                             />
                                                                                             <span className="field-name">{field.alias || field.name}</span>
                                                                                         </div>
@@ -4496,14 +4498,14 @@ const Setting = (props: SettingProps) => {
                                                                         </div>
                                                                     </SettingRow>
 
-                                                                    <SettingRow flow="wrap" label={(<TooltipLabel label="Display Field" tooltip="The field value shown in search suggestions dropdown. Choose a human-readable field like Name or Address." />)}>
+                                                                    <SettingRow flow="wrap" label={(<TooltipLabel label={t('displayField')} tooltip={t('theFieldValueShownInSearch')} />)}>
                                                                         <Select
                                                                             size="sm"
                                                                             value={source.displayField || ''}
                                                                             onChange={(e) => updateSearchSource(source.sourceId, { displayField: e.target.value })}
-                                                                            aria-label="Display field"
+                                                                            aria-label={t('displayField2')}
                                                                         >
-                                                                            <Option value="">-- Select Field --</Option>
+                                                                            <Option value="">{t('selectField')}</Option>
                                                                             {urlFields.map(field => (
                                                                                 <Option key={field.name} value={field.name}>
                                                                                     {field.alias || field.name}
@@ -4515,7 +4517,7 @@ const Setting = (props: SettingProps) => {
                                                             )
                                                         })()}
 
-                                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Max Suggestions" tooltip="Maximum number of suggestions to show from this source. Lower values reduce clutter; higher values show more options." />)}>
+                                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('maxSuggestions')} tooltip={t('maximumNumberOfSuggestionsToShow')} />)}>
                                                             <NumericInput
                                                                 size="sm"
                                                                 value={source.maxSuggestions || 6}
@@ -4523,7 +4525,7 @@ const Setting = (props: SettingProps) => {
                                                                 max={20}
                                                                 onChange={(value) => updateSearchSource(source.sourceId, { maxSuggestions: value })}
                                                                 style={{ width: 80 }}
-                                                                aria-label="Maximum suggestions"
+                                                                aria-label={t('maximumSuggestions')}
                                                             />
                                                         </SettingRow>
                                                     </>
@@ -4534,8 +4536,8 @@ const Setting = (props: SettingProps) => {
                                                     <>
                                                         <SettingRow flow="wrap" label={(
                                                             <TooltipLabel
-                                                                label="Highlight Geometry"
-                                                                tooltip="Draw feature outline/fill on map when selected from search results. Useful for showing parcel boundaries or feature locations."
+                                                                label={t('highlightGeometry')}
+                                                                tooltip={t('drawFeatureOutlineFillOnMap')}
                                                             />
                                                         )}>
                                                             <Switch
@@ -4543,11 +4545,11 @@ const Setting = (props: SettingProps) => {
                                                                 onChange={(e) => updateSearchSource(source.sourceId, {
                                                                     highlightEnabled: (e.target as HTMLInputElement).checked
                                                                 } as any)}
-                                                                aria-label="Enable geometry highlight"
+                                                                aria-label={t('enableGeometryHighlight')}
                                                             />
                                                         </SettingRow>
                                                         {source.highlightEnabled && (
-                                                            <SettingRow flow="wrap" label={(<TooltipLabel label="Highlight Color" tooltip="Color used to highlight the selected feature's geometry on the map. Choose a color that contrasts well with your basemap." />)}>
+                                                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('highlightColor')} tooltip={t('colorUsedToHighlightTheSelected')} />)}>
                                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                                                     <input
                                                                         type="color"
@@ -4556,7 +4558,7 @@ const Setting = (props: SettingProps) => {
                                                                             highlightColor: e.target.value
                                                                         } as any)}
                                                                         style={{ width: 40, height: 28, padding: 0, border: '1px solid #ccc', cursor: 'pointer' }}
-                                                                        aria-label="Highlight color"
+                                                                        aria-label={t('highlightColor2')}
                                                                     />
                                                                     <TextInput
                                                                         size="sm"
@@ -4565,7 +4567,7 @@ const Setting = (props: SettingProps) => {
                                                                             highlightColor: e.target.value
                                                                         } as any)}
                                                                         style={{ width: 80 }}
-                                                                        aria-label="Highlight color hex"
+                                                                        aria-label={t('highlightColorHex')}
                                                                     />
                                                                 </div>
                                                             </SettingRow>
@@ -4583,26 +4585,26 @@ const Setting = (props: SettingProps) => {
                             <button
                                 className="source-type-btn"
                                 onClick={() => addSearchSource('geocoder')}
-                                aria-label="Add geocoder source"
+                                aria-label={t('addGeocoderSource')}
                             >
                                 <PinIcon />
-                                <span className="source-type-label">Add Geocoder</span>
+                                <span className="source-type-label">{t('addGeocoder')}</span>
                             </button>
                             <button
                                 className="source-type-btn"
                                 onClick={() => addSearchSource('layer')}
-                                aria-label="Add layer source"
+                                aria-label={t('addLayerSource')}
                             >
                                 <LayersIcon />
-                                <span className="source-type-label">Add Layer Search</span>
+                                <span className="source-type-label">{t('addLayerSearch')}</span>
                             </button>
                             <button
                                 className="source-type-btn"
                                 onClick={() => addSearchSource('url')}
-                                aria-label="Add REST URL source"
+                                aria-label={t('addRestUrlSource')}
                             >
                                 <DataIcon />
-                                <span className="source-type-label">Add REST URL</span>
+                                <span className="source-type-label">{t('addRestUrl')}</span>
                             </button>
                         </div>
                     </div>
@@ -4619,7 +4621,7 @@ const Setting = (props: SettingProps) => {
                     aria-expanded={expandedPanels.has('header-info')}
                 >
                     <div className="collapsible-panel-header-left">
-                        <span className="collapsible-panel-title">Report Header Info</span>
+                        <span className="collapsible-panel-title">{t('reportHeaderInfo')}</span>
                     </div>
                     <span className={`collapsible-panel-toggle ${!expandedPanels.has('header-info') ? 'collapsed' : ''}`}>
                         <ChevronDownIcon />
@@ -4628,13 +4630,13 @@ const Setting = (props: SettingProps) => {
                 <div className={`collapsible-panel-content ${expandedPanels.has('header-info') ? 'expanded' : ''}`}>
                     <div className="collapsible-panel-inner">
                         <p className="hint-text">
-                            Configure a layer to display additional information in the report header (e.g., parcel number, property ID).
+                            {t('configureALayerToDisplayAdditional')}
                         </p>
 
                         <SettingRow flow="wrap" label={(
                             <TooltipLabel
-                                label="Enable Header Info"
-                                tooltip="Query a parcel layer to display additional fields (like parcel number, owner name) in the report header. The query uses the search point to find the intersecting feature."
+                                label={t('enableHeaderInfo')}
+                                tooltip={t('queryAParcelLayerToDisplay')}
                             />
                         )}>
 
@@ -4644,7 +4646,7 @@ const Setting = (props: SettingProps) => {
                                     const current = (config.headerInfo || { enabled: false, displayFields: [] }) as any
                                     updateConfig('headerInfo', { ...current, enabled: (e.target as HTMLInputElement).checked } as any)
                                 }}
-                                aria-label="Enable header info layer"
+                                aria-label={t('enableHeaderInfoLayer')}
                             />
                         </SettingRow>
 
@@ -4652,8 +4654,8 @@ const Setting = (props: SettingProps) => {
                             <>
                                 <SettingRow flow="wrap" label={(
                                     <TooltipLabel
-                                        label="Data Source"
-                                        tooltip="Select a feature layer (typically parcels) to query. The widget will find the feature at the search location and display its attributes in the header."
+                                        label={t('dataSource')}
+                                        tooltip={t('selectAFeatureLayerTypicallyParcels')}
                                     />
                                 )}>
 
@@ -4718,15 +4720,15 @@ const Setting = (props: SettingProps) => {
                                                 isMultiple={false}
                                                 closeDataSourceListOnChange
                                             />
-                                        ) : <div style={{ padding: "8px", fontSize: "12px", color: "var(--sys-color-text-secondary)" }}>Loading data source selector...</div>}
+                                        ) : <div style={{ padding: "8px", fontSize: "12px", color: "var(--sys-color-text-secondary)" }}>{t('loadingDataSourceSelector')}</div>}
                                     </div>
                                 </SettingRow>
 
                                 <div style={{ textAlign: 'center', color: 'var(--sys-color-text-light)', fontSize: '11px', margin: '8px 0' }}>
-                                    — OR use direct URL —
+                                    {t('orUseDirectUrl')}
                                 </div>
 
-                                <SettingRow flow="wrap" label={(<TooltipLabel label="REST Service URL" tooltip="Direct Feature Layer REST endpoint URL (e.g., https://server/arcgis/rest/services/Name/MapServer/0). Alternative to data source selection." />)}>
+                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('restServiceUrl')} tooltip={t('directFeatureLayerRestEndpointUrl')} />)}>
                                     <TextInput
                                         size="sm"
                                         value={config.headerInfo?.layerUrl || ''}
@@ -4740,7 +4742,7 @@ const Setting = (props: SettingProps) => {
                                             } as any)
                                         }}
                                         placeholder="https://services.arcgis.com/.../FeatureServer/0"
-                                        aria-label="REST Service URL"
+                                        aria-label={t('restServiceUrl')}
                                     />
                                 </SettingRow>
 
@@ -4766,21 +4768,21 @@ const Setting = (props: SettingProps) => {
                                     return (
                                         <SettingRow flow="wrap" label={(
                                             <TooltipLabel
-                                                label="Display Fields"
-                                                tooltip="Select which fields to show in the report header (e.g., Parcel Number, Owner Name). These appear below the address title."
+                                                label={t('displayFields')}
+                                                tooltip={t('selectWhichFieldsToShowIn')}
                                             />
                                         )}>
 
                                             <div className="fields-container">
                                                 {loadingHeaderInfoFields ? (
                                                     <div className="field-item" style={{ justifyContent: 'center', color: 'var(--sys-color-text-light)' }}>
-                                                        Loading fields...
+                                                        {t('loadingFields')}
                                                     </div>
                                                 ) : headerFields.length === 0 ? (
                                                     <div className="field-item" style={{ justifyContent: 'center', color: 'var(--sys-color-text-light)' }}>
                                                         {config.headerInfo?.layerUrl || config.headerInfo?.dataSourceId
-                                                            ? 'No fields available'
-                                                            : 'Enter a URL or select a data source'}
+                                                            ? t('noFieldsAvailable')
+                                                            : t('enterAUrlOrSelectA')}
                                                     </div>
                                                 ) : (
                                                     headerFields.map(field => {
@@ -4792,7 +4794,7 @@ const Setting = (props: SettingProps) => {
                                                                     <Checkbox
                                                                         checked={isSelected}
                                                                         onChange={() => toggleHeaderInfoField(field.name, field.alias)}
-                                                                        aria-label={`Select ${field.alias || field.name}`}
+                                                                        aria-label={t('selectAlias', { alias: field.alias || field.name })}
                                                                     />
                                                                     <span className="field-name">{field.name}</span>
                                                                     {field.alias && field.alias !== field.name && (
@@ -4805,20 +4807,20 @@ const Setting = (props: SettingProps) => {
                                                                             size="sm"
                                                                             value={currentAlias}
                                                                             onChange={(e) => updateHeaderInfoFieldAlias(field.name, e.target.value)}
-                                                                            placeholder="Display alias"
-                                                                            aria-label={`Alias for ${field.name}`}
+                                                                            placeholder={t('displayAlias')}
+                                                                            aria-label={t('aliasForName', { name: field.name })}
                                                                             style={{ width: '100%' }}
                                                                         />
                                                                         <div style={{ marginTop: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                                                                             <Switch
                                                                                 checked={getHeaderInfoFieldExcludeFromPdf(field.name)}
                                                                                 onChange={() => toggleHeaderInfoFieldExcludeFromPdf(field.name)}
-                                                                                aria-label={`Exclude ${field.name} from PDF`}
+                                                                                aria-label={t('excludeNameFromPdf', { name: field.name })}
                                                                             />
                                                                             <Label style={{ fontSize: '11px', cursor: 'pointer' }}>
-                                                                                Exclude from PDF
+                                                                                {t('excludeFromPdf')}
                                                                             </Label>
-                                                                            <Tip title="Field will display in widget header but not in PDF export" placement="top">
+                                                                            <Tip title={t('fieldWillDisplayInWidgetHeader')} placement="top">
                                                                                 <span style={{ color: 'var(--sys-color-text-light)', cursor: 'help' }}>ⓘ</span>
                                                                             </Tip>
                                                                         </div>
@@ -4826,12 +4828,12 @@ const Setting = (props: SettingProps) => {
                                                                             <Switch
                                                                                 checked={getHeaderInfoFieldHideNull(field.name)}
                                                                                 onChange={() => toggleHeaderInfoFieldHideNull(field.name)}
-                                                                                aria-label={`Hide ${field.name} when NULL`}
+                                                                                aria-label={t('hideNameWhenNull', { name: field.name })}
                                                                             />
                                                                             <Label style={{ fontSize: '11px', cursor: 'pointer' }}>
-                                                                                Hide when NULL
+                                                                                {t('hideWhenNull')}
                                                                             </Label>
-                                                                            <Tip title="Hide this field when value is NULL or empty" placement="top">
+                                                                            <Tip title={t('hideThisFieldWhenValueIs')} placement="top">
                                                                                 <span style={{ color: 'var(--sys-color-text-light)', cursor: 'help' }}>ⓘ</span>
                                                                             </Tip>
                                                                         </div>
@@ -4849,8 +4851,8 @@ const Setting = (props: SettingProps) => {
                                 {/* Geocoder URL for reverse geocoding header title */}
                                 <SettingRow flow="wrap" label={(
                                     <TooltipLabel
-                                        label="Header Title Geocoder URL"
-                                        tooltip="Optional: Provide a geocoder URL for reverse geocoding. When set, the widget will convert coordinates to an address for the header title instead of using the search text."
+                                        label={t('headerTitleGeocoderUrl')}
+                                        tooltip={t('optionalProvideAGeocoderUrlFor')}
                                     />
                                 )}>
 
@@ -4865,11 +4867,11 @@ const Setting = (props: SettingProps) => {
                                             } as any)
                                         }}
                                         placeholder="https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"
-                                        aria-label="Geocoder URL for header title"
+                                        aria-label={t('geocoderUrlForHeaderTitle')}
                                     />
                                 </SettingRow>
                                 <p className="hint-text" style={{ marginTop: '4px', fontSize: '11px' }}>
-                                    Optional: Provide a geocoder URL to reverse geocode the search location and display an address in the report header title. If not set, the search text will be used.
+                                    {t('optionalProvideAGeocoderUrlTo')}
                                 </p>
                             </>
                         )}
@@ -4888,7 +4890,7 @@ const Setting = (props: SettingProps) => {
                     aria-expanded={expandedPanels.has('highlight-layer')}
                 >
                     <div className="collapsible-panel-header-left">
-                        <span className="collapsible-panel-title">Highlight Layer</span>
+                        <span className="collapsible-panel-title">{t('highlightLayer')}</span>
                     </div>
                     <span className={`collapsible-panel-toggle ${!expandedPanels.has('highlight-layer') ? 'collapsed' : ''}`}>
                         <ChevronDownIcon />
@@ -4897,13 +4899,13 @@ const Setting = (props: SettingProps) => {
                 <div className={`collapsible-panel-content ${expandedPanels.has('highlight-layer') ? 'expanded' : ''}`}>
                     <div className="collapsible-panel-inner">
                         <p className="hint-text">
-                            Configure a layer to highlight on any search (e.g., parcels). The geometry at the search location will be highlighted.
+                            {t('configureALayerToHighlightOn')}
                         </p>
 
                         <SettingRow flow="wrap" label={(
                             <TooltipLabel
-                                label="Enable Highlight Layer"
-                                tooltip="Query a polygon layer (typically parcels) to highlight the geometry at the search location. Creates a visual outline/fill on the map."
+                                label={t('enableHighlightLayer')}
+                                tooltip={t('queryAPolygonLayerTypicallyParcels')}
                             />
                         )}>
 
@@ -4913,7 +4915,7 @@ const Setting = (props: SettingProps) => {
                                     const current = (config.highlightLayer || { enabled: false }) as any
                                     updateConfig('highlightLayer', { ...current, enabled: (e.target as HTMLInputElement).checked } as any)
                                 }}
-                                aria-label="Enable highlight layer"
+                                aria-label={t('enableHighlightLayer2')}
                             />
                         </SettingRow>
 
@@ -4921,8 +4923,8 @@ const Setting = (props: SettingProps) => {
                             <>
                                 <SettingRow flow="wrap" label={(
                                     <TooltipLabel
-                                        label="Data Source"
-                                        tooltip="Select the layer to query for highlighting. Typically a parcel polygon layer. The feature intersecting the search point will be highlighted."
+                                        label={t('dataSource')}
+                                        tooltip={t('selectTheLayerToQueryFor')}
                                     />
                                 )}>
 
@@ -4973,18 +4975,18 @@ const Setting = (props: SettingProps) => {
                                                 isMultiple={false}
                                                 closeDataSourceListOnChange
                                             />
-                                        ) : <div style={{ padding: "8px", fontSize: "12px", color: "var(--sys-color-text-secondary)" }}>Loading data source selector...</div>}
+                                        ) : <div style={{ padding: "8px", fontSize: "12px", color: "var(--sys-color-text-secondary)" }}>{t('loadingDataSourceSelector')}</div>}
                                     </div>
                                 </SettingRow>
 
                                 <div style={{ textAlign: 'center', color: 'var(--sys-color-text-light)', fontSize: '11px', margin: '8px 0' }}>
-                                    — OR use direct URL —
+                                    {t('orUseDirectUrl')}
                                 </div>
 
                                 <SettingRow flow="wrap" label={(
                                     <TooltipLabel
-                                        label="REST Service URL"
-                                        tooltip="Alternative to data source: Enter the direct REST endpoint URL of the feature layer (e.g., .../FeatureServer/0). Useful for layers not in the web map."
+                                        label={t('restServiceUrl')}
+                                        tooltip={t('alternativeToDataSourceEnterThe')}
                                     />
                                 )}>
 
@@ -5001,14 +5003,14 @@ const Setting = (props: SettingProps) => {
                                             } as any)
                                         }}
                                         placeholder="https://services.arcgis.com/.../Parcels/FeatureServer/0"
-                                        aria-label="REST Service URL"
+                                        aria-label={t('restServiceUrl')}
                                     />
                                 </SettingRow>
 
                                 <SettingRow flow="wrap" label={(
                                     <TooltipLabel
-                                        label="Highlight Color"
-                                        tooltip="The outline/stroke color for highlighted features. Cyan (#00FFFF) is common for visibility against most backgrounds."
+                                        label={t('highlightColor')}
+                                        tooltip={t('theOutlineStrokeColorForHighlighted')}
                                     />
                                 )}>
 
@@ -5021,7 +5023,7 @@ const Setting = (props: SettingProps) => {
                                                 updateConfig('highlightLayer', { ...current, highlightColor: e.target.value } as any)
                                             }}
                                             style={{ width: 40, height: 28, padding: 0, border: '1px solid #ccc', cursor: 'pointer' }}
-                                            aria-label="Highlight color"
+                                            aria-label={t('highlightColor2')}
                                         />
                                         <TextInput
                                             size="sm"
@@ -5031,15 +5033,15 @@ const Setting = (props: SettingProps) => {
                                                 updateConfig('highlightLayer', { ...current, highlightColor: e.target.value } as any)
                                             }}
                                             style={{ width: 80 }}
-                                            aria-label="Highlight color hex"
+                                            aria-label={t('highlightColorHex')}
                                         />
                                     </div>
                                 </SettingRow>
 
                                 <SettingRow flow="wrap" label={(
                                     <TooltipLabel
-                                        label="Fill Opacity"
-                                        tooltip="Controls polygon fill transparency. 0 = outline only (see-through), 0.3 = semi-transparent, 1 = solid opaque fill."
+                                        label={t('fillOpacity')}
+                                        tooltip={t('controlsPolygonFillTransparency0Outline')}
                                     />
                                 )}>
 
@@ -5054,17 +5056,17 @@ const Setting = (props: SettingProps) => {
                                             updateConfig('highlightLayer', { ...current, fillOpacity: value } as any)
                                         }}
                                         style={{ width: 80 }}
-                                        aria-label="Fill opacity"
+                                        aria-label={t('fillOpacity2')}
                                     />
                                     <p className="hint-text" style={{ marginTop: 4, marginBottom: 0 }}>
-                                        0 = outline only, 1 = solid fill
+                                        {t('_0OutlineOnly1SolidFill')}
                                     </p>
                                 </SettingRow>
 
                                 <SettingRow flow="wrap" label={(
                                     <TooltipLabel
-                                        label="Output Spatial Reference (WKID)"
-                                        tooltip="Override the automatic spatial reference detection. The widget now automatically uses the map view's coordinate system, but you can force a specific WKID if needed. Common values: 102100 (Web Mercator), 4326 (WGS84). Leave empty for automatic."
+                                        label={t('outputSpatialReferenceWkid')}
+                                        tooltip={t('overrideTheAutomaticSpatialReferenceDetection')}
                                     />
                                 )}>
 
@@ -5078,18 +5080,18 @@ const Setting = (props: SettingProps) => {
                                             updateConfig('highlightLayer', { ...current, outSpatialReference: value || undefined } as any)
                                         }}
                                         style={{ width: 100 }}
-                                        placeholder="Auto"
-                                        aria-label="Output spatial reference WKID"
+                                        placeholder={t('auto')}
+                                        aria-label={t('outputSpatialReferenceWkid2')}
                                     />
                                     <p className="hint-text" style={{ marginTop: 4, marginBottom: 0 }}>
-                                        Leave empty for automatic (uses map's WKID)
+                                        {t('leaveEmptyForAutomaticUsesMap')}
                                     </p>
                                 </SettingRow>
 
                                 <SettingRow flow="wrap" label={(
                                     <TooltipLabel
-                                        label="Geometry Offset (Datum Correction)"
-                                        tooltip="Manually offset highlight geometry to correct for datum misalignment (NAD83 vs WGS84). Use this if highlight appears shifted from the visible layer. Values are in map units (meters for UTM, feet for State Plane)."
+                                        label={t('geometryOffsetDatumCorrection')}
+                                        tooltip={t('manuallyOffsetHighlightGeometryToCorrect')}
                                     />
                                 )}>
                                     <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
@@ -5104,7 +5106,7 @@ const Setting = (props: SettingProps) => {
                                                 }}
                                                 style={{ width: 70 }}
                                                 placeholder="0"
-                                                aria-label="Geometry X offset"
+                                                aria-label={t('geometryXOffset')}
                                             />
                                         </div>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
@@ -5118,12 +5120,12 @@ const Setting = (props: SettingProps) => {
                                                 }}
                                                 style={{ width: 70 }}
                                                 placeholder="0"
-                                                aria-label="Geometry Y offset"
+                                                aria-label={t('geometryYOffset')}
                                             />
                                         </div>
                                     </div>
                                     <p className="hint-text" style={{ marginTop: 4, marginBottom: 0 }}>
-                                        Positive X = East, Positive Y = North. For NW offset, try positive X and negative Y values.
+                                        {t('positiveXEastPositiveYNorth')}
                                     </p>
                                 </SettingRow>
                             </>
@@ -5143,7 +5145,7 @@ const Setting = (props: SettingProps) => {
                     aria-expanded={expandedPanels.has('property-preview')}
                 >
                     <div className="collapsible-panel-header-left">
-                        <span className="collapsible-panel-title">Property Preview</span>
+                        <span className="collapsible-panel-title">{t('propertyPreview')}</span>
                     </div>
                     <span className={`collapsible-panel-toggle ${!expandedPanels.has('property-preview') ? 'collapsed' : ''}`}>
                         <ChevronDownIcon />
@@ -5152,13 +5154,13 @@ const Setting = (props: SettingProps) => {
                 <div className={`collapsible-panel-content ${expandedPanels.has('property-preview') ? 'expanded' : ''}`}>
                     <div className="collapsible-panel-inner">
                         <p className="hint-text">
-                            Display a preview of the selected property with key attributes and a map thumbnail at the top of results.
+                            {t('displayAPreviewOfTheSelected')}
                         </p>
 
                         <SettingRow flow="wrap" label={(
                             <TooltipLabel
-                                label="Enable Property Preview"
-                                tooltip="Shows a card at the top of results with a map thumbnail, address, key attributes, and action buttons (Zoom, Copy). Great for property reports."
+                                label={t('enablePropertyPreview')}
+                                tooltip={t('showsACardAtTheTop')}
                             />
                         )}>
 
@@ -5168,18 +5170,18 @@ const Setting = (props: SettingProps) => {
                                     const current = (config.propertyPreview || {}) as PropertyPreviewConfig
                                     updateConfig('propertyPreview', { ...current, enabled: (e.target as HTMLInputElement).checked })
                                 }}
-                                aria-label="Enable property preview"
+                                aria-label={t('enablePropertyPreview2')}
                             />
                         </SettingRow>
 
                         {config.propertyPreview?.enabled && (
                             <>
-                                <div className="subsection-divider">Map Preview</div>
+                                <div className="subsection-divider">{t('mapPreview')}</div>
 
                                 <SettingRow flow="wrap" label={(
                                     <TooltipLabel
-                                        label="Show Map Preview"
-                                        tooltip="Display a small satellite/aerial map image in the preview card showing the property location with a pin marker."
+                                        label={t('showMapPreview')}
+                                        tooltip={t('displayASmallSatelliteAerialMap')}
                                     />
                                 )}>
 
@@ -5189,7 +5191,7 @@ const Setting = (props: SettingProps) => {
                                             const current = (config.propertyPreview || { enabled: true }) as PropertyPreviewConfig
                                             updateConfig('propertyPreview', { ...current, showMapPreview: (e.target as HTMLInputElement).checked })
                                         }}
-                                        aria-label="Show map preview"
+                                        aria-label={t('showMapPreview2')}
                                     />
                                 </SettingRow>
 
@@ -5197,8 +5199,8 @@ const Setting = (props: SettingProps) => {
                                     <>
                                         <SettingRow flow="wrap" label={(
                                             <TooltipLabel
-                                                label="Map Height (px)"
-                                                tooltip="Height of the map preview image in pixels. Larger = more visible but takes more vertical space. 150px is a good default."
+                                                label={t('mapHeightPx')}
+                                                tooltip={t('heightOfTheMapPreviewImage')}
                                             />
                                         )}>
 
@@ -5217,8 +5219,8 @@ const Setting = (props: SettingProps) => {
 
                                         <SettingRow flow="wrap" label={(
                                             <TooltipLabel
-                                                label="Highlight Color"
-                                                tooltip="Color used to highlight the property boundary in the map preview (if highlight layer is configured)."
+                                                label={t('highlightColor')}
+                                                tooltip={t('colorUsedToHighlightTheProperty')}
                                             />
                                         )}>
 
@@ -5246,12 +5248,12 @@ const Setting = (props: SettingProps) => {
                                     </>
                                 )}
 
-                                <div className="subsection-divider">Attribute Display</div>
+                                <div className="subsection-divider">{t('attributeDisplay')}</div>
 
                                 <SettingRow flow="wrap" label={(
                                     <TooltipLabel
-                                        label="Show Attributes"
-                                        tooltip="Display header info fields in the preview card. Shows key property details below the address."
+                                        label={t('showAttributes')}
+                                        tooltip={t('displayHeaderInfoFieldsInThe')}
                                     />
                                 )}>
                                     <Switch
@@ -5260,15 +5262,15 @@ const Setting = (props: SettingProps) => {
                                             const current = (config.propertyPreview || { enabled: true }) as PropertyPreviewConfig
                                             updateConfig('propertyPreview', { ...current, showAttributes: (e.target as HTMLInputElement).checked })
                                         }}
-                                        aria-label="Show attributes in property preview"
+                                        aria-label={t('showAttributesInPropertyPreview')}
                                     />
                                 </SettingRow>
 
                                 {config.propertyPreview?.showAttributes !== false && (
                                     <SettingRow flow="wrap" label={(
                                         <TooltipLabel
-                                            label="Attribute Layout"
-                                            tooltip="'Horizontal' = inline row, 'Vertical' = stacked list, 'Grid' = 2-column grid. Choose based on number of fields and space."
+                                            label={t('attributeLayout')}
+                                            tooltip={t('horizontalInlineRowVerticalStackedList')}
                                         />
                                     )}>
                                         <Select
@@ -5279,14 +5281,14 @@ const Setting = (props: SettingProps) => {
                                                 updateConfig('propertyPreview', { ...current, attributeLayout: e.target.value as any })
                                             }}
                                         >
-                                            <Option value="horizontal">Horizontal</Option>
-                                            <Option value="vertical">Vertical</Option>
-                                            <Option value="grid">Grid</Option>
+                                            <Option value="horizontal">{t('horizontal')}</Option>
+                                            <Option value="vertical">{t('vertical')}</Option>
+                                            <Option value="grid">{t('grid')}</Option>
                                         </Select>
                                     </SettingRow>
                                 )}
 
-                                <div className="subsection-divider">Actions</div>
+                                <div className="subsection-divider">{t('actions')}</div>
 
                                 <div className="display-options-row" style={{ flexWrap: 'wrap', gap: '12px' }}>
                                     <label className="display-option">
@@ -5297,7 +5299,7 @@ const Setting = (props: SettingProps) => {
                                                 updateConfig('propertyPreview', { ...current, showZoomButton: (e.target as HTMLInputElement).checked })
                                             }}
                                         />
-                                        <span>Zoom Button</span>
+                                        <span>{t('zoomButton')}</span>
                                     </label>
                                     <label className="display-option">
                                         <Checkbox
@@ -5307,12 +5309,12 @@ const Setting = (props: SettingProps) => {
                                                 updateConfig('propertyPreview', { ...current, showCopyButton: (e.target as HTMLInputElement).checked })
                                             }}
                                         />
-                                        <span>Copy Address</span>
+                                        <span>{t('copyAddress')}</span>
                                     </label>
                                 </div>
 
                                 <p className="hint-text" style={{ marginTop: '8px' }}>
-                                    Attributes are automatically populated from Header Info fields. Configure those fields in the Header Info Layer section above.
+                                    {t('attributesAreAutomaticallyPopulatedFromHeader')}
                                 </p>
                             </>
                         )}
@@ -5331,7 +5333,7 @@ const Setting = (props: SettingProps) => {
                     aria-expanded={expandedPanels.has('report-sections')}
                 >
                     <div className="collapsible-panel-header-left">
-                        <span className="collapsible-panel-title">Report Sections</span>
+                        <span className="collapsible-panel-title">{t('reportSections')}</span>
                     </div>
                     <span className={`collapsible-panel-toggle ${!expandedPanels.has('report-sections') ? 'collapsed' : ''}`}>
                         <ChevronDownIcon />
@@ -5340,13 +5342,13 @@ const Setting = (props: SettingProps) => {
                 <div className={`collapsible-panel-content ${expandedPanels.has('report-sections') ? 'expanded' : ''}`}>
                     <div className="collapsible-panel-inner">
                         <p className="hint-text">
-                            Configure sections for the property report. Each section can contain multiple data layers.
+                            {t('configureSectionsForThePropertyReport')}
                         </p>
 
                         {sections.length === 0 ? (
                             <div className="empty-state">
                                 <DataIcon />
-                                <span>No report sections configured</span>
+                                <span>{t('noReportSectionsConfigured')}</span>
                             </div>
                         ) : (
                             sections.map((section, sectionIndex) => {
@@ -5368,7 +5370,7 @@ const Setting = (props: SettingProps) => {
                                             <div className="list-item-header-left">
                                                 {/* Reorder buttons */}
                                                 <div className="reorder-buttons" onClick={(e) => e.stopPropagation()}>
-                                                    <Tip title="Move up" placement="left">
+                                                    <Tip title={t('moveUp')} placement="left">
                                                         <button
                                                             className="reorder-btn"
                                                             onClick={(e) => {
@@ -5376,12 +5378,12 @@ const Setting = (props: SettingProps) => {
                                                                 moveSection(section.sectionId, 'up')
                                                             }}
                                                             disabled={isFirst}
-                                                            aria-label="Move section up"
+                                                            aria-label={t('moveSectionUp')}
                                                         >
                                                             <MoveUpIcon />
                                                         </button>
                                                     </Tip>
-                                                    <Tip title="Move down" placement="left">
+                                                    <Tip title={t('moveDown')} placement="left">
                                                         <button
                                                             className="reorder-btn"
                                                             onClick={(e) => {
@@ -5389,7 +5391,7 @@ const Setting = (props: SettingProps) => {
                                                                 moveSection(section.sectionId, 'down')
                                                             }}
                                                             disabled={isLast}
-                                                            aria-label="Move section down"
+                                                            aria-label={t('moveSectionDown')}
                                                         >
                                                             <MoveDownIcon />
                                                         </button>
@@ -5400,18 +5402,18 @@ const Setting = (props: SettingProps) => {
                                                 </span>
                                                 <span className="list-item-title">{section.sectionTitle}</span>
                                                 <span className="item-badge item-badge-secondary">
-                                                    {layers.length} layer{layers.length !== 1 ? 's' : ''}
+                                                    {(layers.length !== 1 ? t('layersCountLayers', { layersCount: layers.length }) : t('layersCountLayer', { layersCount: layers.length }))}
                                                 </span>
                                             </div>
                                             <div className="list-item-actions">
-                                                <Tip title="Remove section" placement="top">
+                                                <Tip title={t('removeSection')} placement="top">
                                                     <button
                                                         className="delete-btn"
                                                         onClick={(e) => {
                                                             e.stopPropagation()
                                                             removeSection(section.sectionId)
                                                         }}
-                                                        aria-label={`Remove ${section.sectionTitle}`}
+                                                        aria-label={t('removeSectionTitle', { sectionTitle: section.sectionTitle })}
                                                     >
                                                         <TrashIcon />
                                                     </button>
@@ -5421,12 +5423,12 @@ const Setting = (props: SettingProps) => {
 
                                         <div style={{ display: isSectionExpanded ? 'block' : 'none' }}>
                                             <div className="list-item-content">
-                                                <div className="subsection-divider">Section Settings</div>
+                                                <div className="subsection-divider">{t('sectionSettings')}</div>
 
                                                 <SettingRow flow="wrap" label={(
                                                     <TooltipLabel
-                                                        label="Section Title"
-                                                        tooltip="Display name for this section in the results panel and PDF report. Use descriptive titles like 'Zoning Information' or 'Utilities'."
+                                                        label={t('sectionTitle')}
+                                                        tooltip={t('displayNameForThisSectionIn')}
                                                     />
                                                 )}>
 
@@ -5434,14 +5436,14 @@ const Setting = (props: SettingProps) => {
                                                         size="sm"
                                                         value={section.sectionTitle}
                                                         onChange={(e) => updateSection(section.sectionId, { sectionTitle: e.target.value })}
-                                                        aria-label="Section title"
+                                                        aria-label={t('sectionTitle2')}
                                                     />
                                                 </SettingRow>
 
                                                 <SettingRow flow="wrap" label={(
                                                     <TooltipLabel
-                                                        label="Exclude from PDF"
-                                                        tooltip="When enabled, this entire section will be hidden from PDF exports but still visible in the widget. Useful for internal-only data."
+                                                        label={t('excludeFromPdf')}
+                                                        tooltip={t('whenEnabledThisEntireSectionWill')}
                                                     />
                                                 )}>
 
@@ -5449,18 +5451,18 @@ const Setting = (props: SettingProps) => {
                                                         <Switch
                                                             checked={section.excludeFromPdf || false}
                                                             onChange={(e) => updateSection(section.sectionId, { excludeFromPdf: (e.target as HTMLInputElement).checked })}
-                                                            aria-label="Exclude this section from PDF export"
+                                                            aria-label={t('excludeThisSectionFromPdfExport')}
                                                         />
                                                         <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                            {section.excludeFromPdf ? 'Section will NOT appear in PDF exports' : 'Section will appear in PDF exports'}
+                                                            {section.excludeFromPdf ? t('sectionWillNotAppearInPdf') : t('sectionWillAppearInPdfExports')}
                                                         </span>
                                                     </div>
                                                 </SettingRow>
 
                                                 <SettingRow flow="wrap" label={(
                                                     <TooltipLabel
-                                                        label="Display Options"
-                                                        tooltip="Choose how data is presented: Table shows rows/columns, Chart creates a visualization. You can enable both for comprehensive display."
+                                                        label={t('displayOptions')}
+                                                        tooltip={t('chooseHowDataIsPresentedTable')}
                                                     />
                                                 )}>
 
@@ -5470,22 +5472,22 @@ const Setting = (props: SettingProps) => {
                                                                 checked={section.displayAsTable}
                                                                 onChange={(e) => updateSection(section.sectionId, { displayAsTable: (e.target as HTMLInputElement).checked })}
                                                             />
-                                                            <span>Table</span>
+                                                            <span>{t('table')}</span>
                                                         </label>
                                                         <label className="display-option">
                                                             <Checkbox
                                                                 checked={section.displayAsChart}
                                                                 onChange={(e) => updateSection(section.sectionId, { displayAsChart: (e.target as HTMLInputElement).checked })}
                                                             />
-                                                            <span>Chart</span>
+                                                            <span>{t('chart')}</span>
                                                         </label>
                                                     </div>
                                                 </SettingRow>
 
                                                 <SettingRow flow="wrap" label={(
                                                     <TooltipLabel
-                                                        label="Display Pane"
-                                                        tooltip="'Inline' shows results in the main panel. 'Separate Pane' opens results in a dedicated sliding panel - useful for large datasets."
+                                                        label={t('displayPane')}
+                                                        tooltip={t('inlineShowsResultsInTheMain')}
                                                     />
                                                 )}>
 
@@ -5494,15 +5496,15 @@ const Setting = (props: SettingProps) => {
                                                         value={section.displayPane || 'inline'}
                                                         onChange={(e) => updateSection(section.sectionId, { displayPane: e.target.value as any })}
                                                     >
-                                                        <Option value="inline">Inline (Results Panel)</Option>
-                                                        <Option value="separate">Separate Pane</Option>
+                                                        <Option value="inline">{t('inlineResultsPanel')}</Option>
+                                                        <Option value="separate">{t('separatePane')}</Option>
                                                     </Select>
                                                 </SettingRow>
 
                                                 <SettingRow flow="wrap" label={(
                                                     <TooltipLabel
-                                                        label="Default Expanded State"
-                                                        tooltip="Initial collapse state when results load. 'Expanded' shows data immediately; 'Collapsed' hides data until user clicks to expand."
+                                                        label={t('defaultExpandedState')}
+                                                        tooltip={t('initialCollapseStateWhenResultsLoad')}
                                                     />
                                                 )}>
 
@@ -5512,66 +5514,66 @@ const Setting = (props: SettingProps) => {
                                                             value={section.expanded === false ? 'collapsed' : 'expanded'}
                                                             onChange={(e) => updateSection(section.sectionId, { expanded: e.target.value === 'expanded' })}
                                                         >
-                                                            <Option value="expanded">Expanded</Option>
-                                                            <Option value="collapsed">Collapsed</Option>
+                                                            <Option value="expanded">{t('expanded')}</Option>
+                                                            <Option value="collapsed">{t('collapsed')}</Option>
                                                         </Select>
                                                         <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                            {section.expanded === false ? 'Section starts collapsed when results load' : 'Section starts expanded when results load'}
+                                                            {section.expanded === false ? t('sectionStartsCollapsedWhenResultsLoad') : t('sectionStartsExpandedWhenResultsLoad')}
                                                         </span>
                                                     </div>
                                                 </SettingRow>
 
                                                 <SettingRow flow="wrap" label={(
                                                     <TooltipLabel
-                                                        label="Section alerts"
-                                                        tooltip="Rules evaluated against this section's results. When a rule matches, a banner appears at the top of the section. Example: field FLOODZONE, operator does not equal, value X, message: This property may be in a flood zone."
+                                                        label={t('sectionAlerts')}
+                                                        tooltip={t('rulesEvaluatedAgainstThisSectionS')}
                                                     />
                                                 )}>
                                                     <div style={{ width: '100%' }}>
                                                         {getSectionAlerts(section).map((al: any, ai: number) => (
                                                             <div key={al.alertId || ai} style={{ border: '1px solid var(--sys-color-divider-secondary, #e0e0e0)', borderRadius: 4, padding: 6, marginBottom: 6 }}>
-                                                                <TextInput size="sm" placeholder="Field name (e.g. FLOODZONE)" value={al.field || ''} onChange={(e) => updateSectionAlert(section, ai, { field: e.target.value })} style={{ marginBottom: 4 }} aria-label="Alert field name" />
-                                                                <Select size="sm" value={al.operator || 'equals'} onChange={(e) => updateSectionAlert(section, ai, { operator: (e.target as HTMLSelectElement).value })} style={{ marginBottom: 4 }} aria-label="Alert operator">
-                                                                    <Option value="equals">equals</Option>
-                                                                    <Option value="notEquals">does not equal</Option>
-                                                                    <Option value="contains">contains</Option>
-                                                                    <Option value="greaterThan">greater than</Option>
-                                                                    <Option value="lessThan">less than</Option>
-                                                                    <Option value="isEmpty">is empty</Option>
-                                                                    <Option value="isNotEmpty">is not empty</Option>
+                                                                <TextInput size="sm" placeholder={t('fieldNameEGFloodzone')} value={al.field || ''} onChange={(e) => updateSectionAlert(section, ai, { field: e.target.value })} style={{ marginBottom: 4 }} aria-label={t('alertFieldName')} />
+                                                                <Select size="sm" value={al.operator || 'equals'} onChange={(e) => updateSectionAlert(section, ai, { operator: (e.target as HTMLSelectElement).value })} style={{ marginBottom: 4 }} aria-label={t('alertOperator')}>
+                                                                    <Option value="equals">{t('equals')}</Option>
+                                                                    <Option value="notEquals">{t('doesNotEqual')}</Option>
+                                                                    <Option value="contains">{t('contains')}</Option>
+                                                                    <Option value="greaterThan">{t('greaterThan')}</Option>
+                                                                    <Option value="lessThan">{t('lessThan')}</Option>
+                                                                    <Option value="isEmpty">{t('isEmpty')}</Option>
+                                                                    <Option value="isNotEmpty">{t('isNotEmpty')}</Option>
                                                                 </Select>
                                                                 {al.operator !== 'isEmpty' && al.operator !== 'isNotEmpty' && (
-                                                                    <TextInput size="sm" placeholder="Value to compare" value={al.value || ''} onChange={(e) => updateSectionAlert(section, ai, { value: e.target.value })} style={{ marginBottom: 4 }} aria-label="Alert comparison value" />
+                                                                    <TextInput size="sm" placeholder={t('valueToCompare')} value={al.value || ''} onChange={(e) => updateSectionAlert(section, ai, { value: e.target.value })} style={{ marginBottom: 4 }} aria-label={t('alertComparisonValue')} />
                                                                 )}
-                                                                <TextInput size="sm" placeholder="Banner message" value={al.message || ''} onChange={(e) => updateSectionAlert(section, ai, { message: e.target.value })} style={{ marginBottom: 4 }} aria-label="Alert banner message" />
+                                                                <TextInput size="sm" placeholder={t('bannerMessage')} value={al.message || ''} onChange={(e) => updateSectionAlert(section, ai, { message: e.target.value })} style={{ marginBottom: 4 }} aria-label={t('alertBannerMessage')} />
                                                                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                                                    <Select size="sm" value={al.severity || 'warning'} onChange={(e) => updateSectionAlert(section, ai, { severity: (e.target as HTMLSelectElement).value })} aria-label="Alert severity" style={{ width: 110 }}>
-                                                                        <Option value="info">Info</Option>
-                                                                        <Option value="warning">Warning</Option>
-                                                                        <Option value="critical">Critical</Option>
+                                                                    <Select size="sm" value={al.severity || 'warning'} onChange={(e) => updateSectionAlert(section, ai, { severity: (e.target as HTMLSelectElement).value })} aria-label={t('alertSeverity')} style={{ width: 110 }}>
+                                                                        <Option value="info">{t('info')}</Option>
+                                                                        <Option value="warning">{t('warning')}</Option>
+                                                                        <Option value="critical">{t('critical')}</Option>
                                                                     </Select>
-                                                                    <Button size="sm" type="tertiary" onClick={() => removeSectionAlert(section, ai)} aria-label="Remove this alert">Remove</Button>
+                                                                    <Button size="sm" type="tertiary" onClick={() => removeSectionAlert(section, ai)} aria-label={t('removeThisAlert')}>{t('remove')}</Button>
                                                                 </div>
                                                             </div>
                                                         ))}
-                                                        <Button size="sm" onClick={() => addSectionAlert(section)} aria-label="Add a new alert rule">Add alert</Button>
+                                                        <Button size="sm" onClick={() => addSectionAlert(section)} aria-label={t('addANewAlertRule')}>{t('addAlert')}</Button>
                                                     </div>
                                                 </SettingRow>
 
                                                 {section.displayPane === 'separate' && (
                                                     <>
-                                                        <SettingRow flow="wrap" label="Pane Title">
+                                                        <SettingRow flow="wrap" label={t('paneTitle')}>
                                                             <TextInput
                                                                 size="sm"
                                                                 value={section.separatePaneTitle || ''}
-                                                                placeholder={section.sectionTitle || 'Section Details'}
+                                                                placeholder={section.sectionTitle || t('sectionDetails')}
                                                                 onChange={(e) => updateSection(section.sectionId, { separatePaneTitle: e.target.value })}
                                                             />
                                                         </SettingRow>
                                                         <SettingRow flow="wrap" label={(
                                                             <TooltipLabel
-                                                                label="Record Threshold"
-                                                                tooltip="Only open in separate pane when the result count reaches this number. Set to 0 to always use separate pane. Useful for conditionally handling large datasets."
+                                                                label={t('recordThreshold')}
+                                                                tooltip={t('onlyOpenInSeparatePaneWhen')}
                                                             />
                                                         )}>
 
@@ -5584,7 +5586,7 @@ const Setting = (props: SettingProps) => {
                                                                     style={{ width: 70 }}
                                                                 />
                                                                 <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                                    {(section.separatePaneThreshold || 0) === 0 ? 'Always use separate pane' : `Use separate pane when ≥ ${section.separatePaneThreshold} records`}
+                                                                    {(section.separatePaneThreshold || 0) === 0 ? t('alwaysUseSeparatePane') : t('useSeparatePaneWhenSeparatePaneThresholdRecords', { separatePaneThreshold: section.separatePaneThreshold })}
                                                                 </span>
                                                             </div>
                                                         </SettingRow>
@@ -5593,15 +5595,15 @@ const Setting = (props: SettingProps) => {
 
                                                 {section.displayAsTable && (
                                                     <>
-                                                        <div className="subsection-divider">Table Configuration</div>
+                                                        <div className="subsection-divider">{t('tableConfiguration')}</div>
                                                         <p className="hint-text">
-                                                            Sorting and resizing only apply when multiple records are displayed.
+                                                            {t('sortingAndResizingOnlyApplyWhen')}
                                                         </p>
 
                                                         <SettingRow flow="wrap" label={(
                                                             <TooltipLabel
-                                                                label="Column Sorting"
-                                                                tooltip="Allow users to click column headers to sort data. Only active when multiple records are returned."
+                                                                label={t('columnSorting')}
+                                                                tooltip={t('allowUsersToClickColumnHeaders')}
                                                             />
                                                         )}>
 
@@ -5609,18 +5611,18 @@ const Setting = (props: SettingProps) => {
                                                                 <Switch
                                                                     checked={section.tableConfig?.enableSorting !== false}
                                                                     onChange={(e) => updateSectionTableConfig(section.sectionId, { enableSorting: (e.target as HTMLInputElement).checked })}
-                                                                    aria-label="Enable column sorting"
+                                                                    aria-label={t('enableColumnSorting')}
                                                                 />
                                                                 <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                                    Allow users to sort by column
+                                                                    {t('allowUsersToSortByColumn')}
                                                                 </span>
                                                             </div>
                                                         </SettingRow>
 
                                                         <SettingRow flow="wrap" label={(
                                                             <TooltipLabel
-                                                                label="Column Resizing"
-                                                                tooltip="Allow users to drag column borders to resize widths. Useful for tables with varying content lengths."
+                                                                label={t('columnResizing')}
+                                                                tooltip={t('allowUsersToDragColumnBorders')}
                                                             />
                                                         )}>
 
@@ -5628,18 +5630,18 @@ const Setting = (props: SettingProps) => {
                                                                 <Switch
                                                                     checked={section.tableConfig?.resizableColumns || false}
                                                                     onChange={(e) => updateSectionTableConfig(section.sectionId, { resizableColumns: (e.target as HTMLInputElement).checked })}
-                                                                    aria-label="Enable column resizing"
+                                                                    aria-label={t('enableColumnResizing')}
                                                                 />
                                                                 <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                                    Allow users to resize columns
+                                                                    {t('allowUsersToResizeColumns')}
                                                                 </span>
                                                             </div>
                                                         </SettingRow>
 
                                                         <SettingRow flow="wrap" label={(
                                                             <TooltipLabel
-                                                                label="Striped Rows"
-                                                                tooltip="Alternate row background colors (zebra striping) to improve readability of multi-row tables."
+                                                                label={t('stripedRows')}
+                                                                tooltip={t('alternateRowBackgroundColorsZebraStriping')}
                                                             />
                                                         )}>
 
@@ -5647,18 +5649,18 @@ const Setting = (props: SettingProps) => {
                                                                 <Switch
                                                                     checked={section.tableConfig?.stripedRows !== false}
                                                                     onChange={(e) => updateSectionTableConfig(section.sectionId, { stripedRows: (e.target as HTMLInputElement).checked })}
-                                                                    aria-label="Enable striped rows"
+                                                                    aria-label={t('enableStripedRows')}
                                                                 />
                                                                 <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                                    Alternating row colors
+                                                                    {t('alternatingRowColors')}
                                                                 </span>
                                                             </div>
                                                         </SettingRow>
 
                                                         <SettingRow flow="wrap" label={(
                                                             <TooltipLabel
-                                                                label="Highlight on Hover"
-                                                                tooltip="Show a visual highlight when the user hovers over a table row. Helps track which row is being viewed."
+                                                                label={t('highlightOnHover')}
+                                                                tooltip={t('showAVisualHighlightWhenThe')}
                                                             />
                                                         )}>
 
@@ -5666,18 +5668,18 @@ const Setting = (props: SettingProps) => {
                                                                 <Switch
                                                                     checked={section.tableConfig?.highlightOnHover !== false}
                                                                     onChange={(e) => updateSectionTableConfig(section.sectionId, { highlightOnHover: (e.target as HTMLInputElement).checked })}
-                                                                    aria-label="Enable highlight on hover"
+                                                                    aria-label={t('enableHighlightOnHover')}
                                                                 />
                                                                 <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                                    Highlight row on hover
+                                                                    {t('highlightRowOnHover')}
                                                                 </span>
                                                             </div>
                                                         </SettingRow>
 
                                                         <SettingRow flow="wrap" label={(
                                                             <TooltipLabel
-                                                                label="Compact Mode"
-                                                                tooltip="Reduce row padding to fit more data in less vertical space. Useful for dense information displays."
+                                                                label={t('compactMode')}
+                                                                tooltip={t('reduceRowPaddingToFitMore')}
                                                             />
                                                         )}>
 
@@ -5685,18 +5687,18 @@ const Setting = (props: SettingProps) => {
                                                                 <Switch
                                                                     checked={section.tableConfig?.compactMode || false}
                                                                     onChange={(e) => updateSectionTableConfig(section.sectionId, { compactMode: (e.target as HTMLInputElement).checked })}
-                                                                    aria-label="Enable compact mode"
+                                                                    aria-label={t('enableCompactMode')}
                                                                 />
                                                                 <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                                    Reduce row padding
+                                                                    {t('reduceRowPadding')}
                                                                 </span>
                                                             </div>
                                                         </SettingRow>
 
                                                         <SettingRow flow="wrap" label={(
                                                             <TooltipLabel
-                                                                label="Pagination"
-                                                                tooltip="Split large tables into pages. Improves performance and usability for datasets with many records."
+                                                                label={t('pagination')}
+                                                                tooltip={t('splitLargeTablesIntoPagesImproves')}
                                                             />
                                                         )}>
 
@@ -5704,10 +5706,10 @@ const Setting = (props: SettingProps) => {
                                                                 <Switch
                                                                     checked={section.tableConfig?.enablePagination !== false}
                                                                     onChange={(e) => updateSectionTableConfig(section.sectionId, { enablePagination: (e.target as HTMLInputElement).checked })}
-                                                                    aria-label="Enable pagination"
+                                                                    aria-label={t('enablePagination')}
                                                                 />
                                                                 <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                                    Paginate large tables
+                                                                    {t('paginateLargeTables')}
                                                                 </span>
                                                             </div>
                                                         </SettingRow>
@@ -5715,8 +5717,8 @@ const Setting = (props: SettingProps) => {
                                                         {section.tableConfig?.enablePagination !== false && (
                                                             <SettingRow flow="wrap" label={(
                                                                 <TooltipLabel
-                                                                    label="Page Size"
-                                                                    tooltip="Number of rows to display per page. Smaller values load faster; larger values show more data at once."
+                                                                    label={t('pageSize')}
+                                                                    tooltip={t('numberOfRowsToDisplayPer')}
                                                                 />
                                                             )}>
 
@@ -5735,29 +5737,29 @@ const Setting = (props: SettingProps) => {
 
                                                 {section.displayAsChart && (
                                                     <>
-                                                        <div className="subsection-divider">Chart Configuration</div>
+                                                        <div className="subsection-divider">{t('chartConfiguration')}</div>
 
                                                         {/* Chart Mode Toggle */}
                                                         <SettingRow flow="wrap" label={(
                                                             <TooltipLabel
-                                                                label="Chart Mode"
-                                                                tooltip="'Group by Category' aggregates records by a category field (e.g., count zones). 'Compare Fields' shows multiple numeric fields side-by-side."
+                                                                label={t('chartMode')}
+                                                                tooltip={t('groupByCategoryAggregatesRecordsBy')}
                                                             />
                                                         )}>
                                                             <Select
                                                                 size="sm"
                                                                 value={section.chartConfig?.chartMode || 'category'}
                                                                 onChange={(e) => updateSectionChartConfig(section.sectionId, { chartMode: e.target.value as ChartMode })}
-                                                                aria-label="Chart mode"
+                                                                aria-label={t('chartMode2')}
                                                             >
-                                                                <Option value="category">Group by Category</Option>
-                                                                <Option value="fields">Compare Fields</Option>
+                                                                <Option value="category">{t('groupByCategory')}</Option>
+                                                                <Option value="fields">{t('compareFields')}</Option>
                                                             </Select>
                                                         </SettingRow>
                                                         <p className="hint-text" style={{ marginTop: '4px', marginBottom: '8px' }}>
                                                             {section.chartConfig?.chartMode === 'fields'
-                                                                ? 'Compare values of multiple numeric fields directly'
-                                                                : 'Group records by a category field and aggregate values'
+                                                                ? t('compareValuesOfMultipleNumericFields')
+                                                                : t('groupRecordsByACategoryField')
                                                             }
                                                         </p>
 
@@ -5767,8 +5769,8 @@ const Setting = (props: SettingProps) => {
                                                                 {/* Category Field (X-axis / Labels) */}
                                                                 <SettingRow flow="wrap" label={(
                                                                     <TooltipLabel
-                                                                        label="Category Field"
-                                                                        tooltip="Field used to group data (e.g., ZONE_TYPE, DISTRICT). Each unique value becomes a bar/slice in the chart."
+                                                                        label={t('categoryField')}
+                                                                        tooltip={t('fieldUsedToGroupDataE')}
                                                                     />
                                                                 )}>
                                                                     <Select
@@ -5778,9 +5780,9 @@ const Setting = (props: SettingProps) => {
                                                                             updateSection(section.sectionId, { chartField: e.target.value })
                                                                             updateSectionChartConfig(section.sectionId, { categoryField: e.target.value })
                                                                         }}
-                                                                        aria-label="Category field for chart labels"
+                                                                        aria-label={t('categoryFieldForChartLabels')}
                                                                     >
-                                                                        <Option value="">-- Select Category Field --</Option>
+                                                                        <Option value="">{t('selectCategoryField')}</Option>
                                                                         {getSectionFields(section).map(field => (
                                                                             <Option key={field.name} value={field.name}>
                                                                                 {field.alias || field.name}
@@ -5792,21 +5794,21 @@ const Setting = (props: SettingProps) => {
                                                                 {/* Aggregation Type */}
                                                                 <SettingRow flow="wrap" label={(
                                                                     <TooltipLabel
-                                                                        label="Aggregation"
-                                                                        tooltip="How to calculate chart values: Count = number of records, Sum/Avg/Min/Max = aggregate a numeric value field."
+                                                                        label={t('aggregation')}
+                                                                        tooltip={t('howToCalculateChartValuesCount')}
                                                                     />
                                                                 )}>
                                                                     <Select
                                                                         size="sm"
                                                                         value={section.chartConfig?.aggregation || 'count'}
                                                                         onChange={(e) => updateSectionChartConfig(section.sectionId, { aggregation: e.target.value as AggregationType })}
-                                                                        aria-label="Aggregation type"
+                                                                        aria-label={t('aggregationType')}
                                                                     >
-                                                                        <Option value="count">Count Records</Option>
-                                                                        <Option value="sum">Sum Values</Option>
-                                                                        <Option value="avg">Average Values</Option>
-                                                                        <Option value="min">Minimum Value</Option>
-                                                                        <Option value="max">Maximum Value</Option>
+                                                                        <Option value="count">{t('countRecords')}</Option>
+                                                                        <Option value="sum">{t('sumValues')}</Option>
+                                                                        <Option value="avg">{t('averageValues')}</Option>
+                                                                        <Option value="min">{t('minimumValue')}</Option>
+                                                                        <Option value="max">{t('maximumValue')}</Option>
                                                                     </Select>
                                                                 </SettingRow>
 
@@ -5815,17 +5817,17 @@ const Setting = (props: SettingProps) => {
                                                                     <>
                                                                         <SettingRow flow="wrap" label={(
                                                                             <TooltipLabel
-                                                                                label="Value Field"
-                                                                                tooltip="Numeric field to aggregate (sum, average, etc.). Required when not using Count aggregation."
+                                                                                label={t('valueField')}
+                                                                                tooltip={t('numericFieldToAggregateSumAverage')}
                                                                             />
                                                                         )}>
                                                                             <Select
                                                                                 size="sm"
                                                                                 value={section.chartConfig?.valueField || ''}
                                                                                 onChange={(e) => updateSectionChartConfig(section.sectionId, { valueField: e.target.value })}
-                                                                                aria-label="Numeric value field to aggregate"
+                                                                                aria-label={t('numericValueFieldToAggregate')}
                                                                             >
-                                                                                <Option value="">-- Select Numeric Field --</Option>
+                                                                                <Option value="">{t('selectNumericField')}</Option>
                                                                                 {getSectionNumericFields(section).map(field => (
                                                                                     <Option key={field.name} value={field.name}>
                                                                                         {field.alias || field.name}
@@ -5834,7 +5836,7 @@ const Setting = (props: SettingProps) => {
                                                                             </Select>
                                                                         </SettingRow>
                                                                         {getSectionNumericFields(section).length === 0 && (
-                                                                            <NativeAlert type="warning" text="No numeric fields available. Add layers with numeric fields." style={{ marginBottom: '12px' }} />
+                                                                            <NativeAlert type="warning" text={t('noNumericFieldsAvailableAddLayers')} style={{ marginBottom: '12px' }} />
                                                                         )}
                                                                     </>
                                                                 )}
@@ -5846,13 +5848,13 @@ const Setting = (props: SettingProps) => {
                                                             <>
                                                                 <SettingRow flow="wrap" label={(
                                                                     <TooltipLabel
-                                                                        label="Compare Fields"
-                                                                        tooltip="Select numeric fields to compare side-by-side. Each field becomes a bar/series in the chart. Great for comparing metrics like area, value, count."
+                                                                        label={t('compareFields')}
+                                                                        tooltip={t('selectNumericFieldsToCompareSide')}
                                                                     />
                                                                 )}>
                                                                     <div style={{ width: '100%' }}>
                                                                         {getSectionNumericFields(section).length === 0 ? (
-                                                                            <NativeAlert type="info" text="Add data layers with numeric fields to enable field comparison." />
+                                                                            <NativeAlert type="info" text={t('addDataLayersWithNumericFields')} />
                                                                         ) : (
                                                                             <div className="field-checkbox-list" style={{
                                                                                 maxHeight: '200px',
@@ -5930,7 +5932,7 @@ const Setting = (props: SettingProps) => {
                                                                                                         border: 'none',
                                                                                                         cursor: 'pointer'
                                                                                                     }}
-                                                                                                    title="Change series color"
+                                                                                                    title={t('changeSeriesColor')}
                                                                                                 />
                                                                                             )}
                                                                                         </div>
@@ -5941,23 +5943,23 @@ const Setting = (props: SettingProps) => {
                                                                     </div>
                                                                 </SettingRow>
                                                                 <p className="hint-text" style={{ marginTop: '4px', marginBottom: '8px' }}>
-                                                                    Select fields to compare. Each field becomes a series in the chart.
+                                                                    {t('selectFieldsToCompareEachField')}
                                                                 </p>
 
                                                                 {/* Optional grouping for field comparison */}
                                                                 <SettingRow flow="wrap" label={(
                                                                     <TooltipLabel
-                                                                        label="Group By (Optional)"
-                                                                        tooltip="Optionally split field comparison by a category. Without grouping, values are summed across all records; with grouping, each category gets its own bar group."
+                                                                        label={t('groupByOptional')}
+                                                                        tooltip={t('optionallySplitFieldComparisonByA')}
                                                                     />
                                                                 )}>
                                                                     <Select
                                                                         size="sm"
                                                                         value={section.chartConfig?.groupByField || ''}
                                                                         onChange={(e) => updateSectionChartConfig(section.sectionId, { groupByField: e.target.value })}
-                                                                        aria-label="Optional grouping field"
+                                                                        aria-label={t('optionalGroupingField')}
                                                                     >
-                                                                        <Option value="">-- No Grouping (Sum All) --</Option>
+                                                                        <Option value="">{t('noGroupingSumAll')}</Option>
                                                                         {getSectionFields(section).map(field => (
                                                                             <Option key={field.name} value={field.name}>
                                                                                 {field.alias || field.name}
@@ -5966,7 +5968,7 @@ const Setting = (props: SettingProps) => {
                                                                     </Select>
                                                                 </SettingRow>
                                                                 <p className="hint-text" style={{ marginTop: '4px', marginBottom: '8px' }}>
-                                                                    Optionally group the field comparison by a category
+                                                                    {t('optionallyGroupTheFieldComparisonBy')}
                                                                 </p>
                                                             </>
                                                         )}
@@ -5974,22 +5976,22 @@ const Setting = (props: SettingProps) => {
                                                         {/* Chart Type */}
                                                         <SettingRow flow="wrap" label={(
                                                             <TooltipLabel
-                                                                label="Chart Type"
-                                                                tooltip="Bar/Area/Line best for comparisons, Pie/Donut for proportions. Radial Bar offers unique circular visualization."
+                                                                label={t('chartType')}
+                                                                tooltip={t('barAreaLineBestForComparisons')}
                                                             />
                                                         )}>
                                                             <Select
                                                                 size="sm"
                                                                 value={section.chartConfig?.chartType || config.defaultChartConfig?.chartType || 'bar'}
                                                                 onChange={(e) => updateSectionChartConfig(section.sectionId, { chartType: e.target.value as ChartType })}
-                                                                aria-label="Chart type"
+                                                                aria-label={t('chartType2')}
                                                             >
-                                                                <Option value="bar">Bar Chart</Option>
-                                                                <Option value="pie">Pie Chart</Option>
-                                                                <Option value="donut">Donut Chart</Option>
-                                                                <Option value="area">Area Chart</Option>
-                                                                <Option value="line">Line Chart</Option>
-                                                                <Option value="radialBar">Radial Bar</Option>
+                                                                <Option value="bar">{t('barChart')}</Option>
+                                                                <Option value="pie">{t('pieChart')}</Option>
+                                                                <Option value="donut">{t('donutChart')}</Option>
+                                                                <Option value="area">{t('areaChart')}</Option>
+                                                                <Option value="line">{t('lineChart')}</Option>
+                                                                <Option value="radialBar">{t('radialBar')}</Option>
                                                             </Select>
                                                         </SettingRow>
 
@@ -5999,8 +6001,8 @@ const Setting = (props: SettingProps) => {
                                                                 <div style={{ flex: 1 }}>
                                                                     <SettingRow flow="wrap" label={(
                                                                         <TooltipLabel
-                                                                            label="Sort By"
-                                                                            tooltip="How to order chart categories: by Value (numeric), by Label (alphabetical), or None (data order)."
+                                                                            label={t('sortBy')}
+                                                                            tooltip={t('howToOrderChartCategoriesBy')}
                                                                         />
                                                                     )}>
                                                                         <Select
@@ -6008,17 +6010,17 @@ const Setting = (props: SettingProps) => {
                                                                             value={section.chartConfig?.sortBy || 'value'}
                                                                             onChange={(e) => updateSectionChartConfig(section.sectionId, { sortBy: e.target.value as any })}
                                                                         >
-                                                                            <Option value="value">Value</Option>
-                                                                            <Option value="label">Label</Option>
-                                                                            <Option value="none">None</Option>
+                                                                            <Option value="value">{t('value')}</Option>
+                                                                            <Option value="label">{t('label')}</Option>
+                                                                            <Option value="none">{t('none')}</Option>
                                                                         </Select>
                                                                     </SettingRow>
                                                                 </div>
                                                                 <div style={{ flex: 1 }}>
                                                                     <SettingRow flow="wrap" label={(
                                                                         <TooltipLabel
-                                                                            label="Order"
-                                                                            tooltip="Descending shows largest values first; ascending shows smallest first."
+                                                                            label={t('order')}
+                                                                            tooltip={t('descendingShowsLargestValuesFirstAscending')}
                                                                         />
                                                                     )}>
                                                                         <Select
@@ -6026,8 +6028,8 @@ const Setting = (props: SettingProps) => {
                                                                             value={section.chartConfig?.sortOrder || 'desc'}
                                                                             onChange={(e) => updateSectionChartConfig(section.sectionId, { sortOrder: e.target.value as any })}
                                                                         >
-                                                                            <Option value="desc">Descending</Option>
-                                                                            <Option value="asc">Ascending</Option>
+                                                                            <Option value="desc">{t('descending')}</Option>
+                                                                            <Option value="asc">{t('ascending')}</Option>
                                                                         </Select>
                                                                     </SettingRow>
                                                                 </div>
@@ -6039,8 +6041,8 @@ const Setting = (props: SettingProps) => {
                                                             <>
                                                                 <SettingRow flow="wrap" label={(
                                                                     <TooltipLabel
-                                                                        label="Max Categories"
-                                                                        tooltip="Limit number of chart categories displayed. Additional categories are grouped into 'Other'. Prevents overcrowded charts."
+                                                                        label={t('maxCategories')}
+                                                                        tooltip={t('limitNumberOfChartCategoriesDisplayed')}
                                                                     />
                                                                 )}>
                                                                     <NumericInput
@@ -6053,14 +6055,14 @@ const Setting = (props: SettingProps) => {
                                                                     />
                                                                 </SettingRow>
                                                                 <p className="hint-text" style={{ marginTop: '4px', marginBottom: '8px' }}>
-                                                                    Extra categories grouped as "Other"
+                                                                    {t('extraCategoriesGroupedAsOther')}
                                                                 </p>
                                                             </>
                                                         )}
 
                                                         {/* Stacked option for multi-series */}
                                                         {section.chartConfig?.chartMode === 'fields' && (section.chartConfig?.chartType === 'bar' || section.chartConfig?.chartType === 'area') && (
-                                                            <SettingRow flow="wrap" label={(<TooltipLabel label="Stacked" tooltip="Stack bar/area segments on top of each other instead of side by side." />)}>
+                                                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('stacked')} tooltip={t('stackBarAreaSegmentsOnTop')} />)}>
                                                                 <Switch
                                                                     checked={section.chartConfig?.stacked || false}
                                                                     onChange={(e) => updateSectionChartConfig(section.sectionId, { stacked: (e.target as HTMLInputElement).checked })}
@@ -6069,28 +6071,28 @@ const Setting = (props: SettingProps) => {
                                                         )}
 
                                                         {/* Display Options */}
-                                                        <SettingRow flow="wrap" label="Display Options">
+                                                        <SettingRow flow="wrap" label={t('displayOptions')}>
                                                             <div className="display-options-row">
                                                                 <label className="display-option">
                                                                     <Checkbox
                                                                         checked={section.chartConfig?.showLegend !== false}
                                                                         onChange={(e) => updateSectionChartConfig(section.sectionId, { showLegend: (e.target as HTMLInputElement).checked })}
                                                                     />
-                                                                    <span>Legend</span>
+                                                                    <span>{t('legend')}</span>
                                                                 </label>
                                                                 <label className="display-option">
                                                                     <Checkbox
                                                                         checked={section.chartConfig?.showValues || false}
                                                                         onChange={(e) => updateSectionChartConfig(section.sectionId, { showValues: (e.target as HTMLInputElement).checked })}
                                                                     />
-                                                                    <span>Values</span>
+                                                                    <span>{t('values')}</span>
                                                                 </label>
                                                                 <label className="display-option">
                                                                     <Checkbox
                                                                         checked={section.chartConfig?.showGrid !== false}
                                                                         onChange={(e) => updateSectionChartConfig(section.sectionId, { showGrid: (e.target as HTMLInputElement).checked })}
                                                                     />
-                                                                    <span>Grid</span>
+                                                                    <span>{t('grid')}</span>
                                                                 </label>
                                                             </div>
                                                         </SettingRow>
@@ -6098,8 +6100,8 @@ const Setting = (props: SettingProps) => {
                                                         {/* Chart Height */}
                                                         <SettingRow flow="wrap" label={(
                                                             <TooltipLabel
-                                                                label="Chart Height (px)"
-                                                                tooltip="Height of the chart in pixels. 200px is good for dashboards, 300-400px for detailed analysis. Maximum 500px."
+                                                                label={t('chartHeightPx')}
+                                                                tooltip={t('heightOfTheChartInPixels')}
                                                             />
                                                         )}>
                                                             <NumericInput
@@ -6115,14 +6117,14 @@ const Setting = (props: SettingProps) => {
                                                         {/* Chart Description */}
                                                         <SettingRow flow="wrap" label={(
                                                             <TooltipLabel
-                                                                label="Chart Description"
-                                                                tooltip="Optional explanatory text shown with the chart. Supports HTML and {field} placeholders for dynamic values."
+                                                                label={t('chartDescription')}
+                                                                tooltip={t('optionalExplanatoryTextShownWithThe')}
                                                             />
                                                         )}>
                                                             <TextArea
                                                                 value={section.chartConfig?.chartDescription || ''}
                                                                 onChange={(e) => updateSectionChartConfig(section.sectionId, { chartDescription: e.target.value })}
-                                                                placeholder="Optional HTML description to explain the chart. Supports {field} placeholders, links, and basic HTML."
+                                                                placeholder={t('optionalHtmlDescriptionToExplainThe')}
                                                                 style={{ width: '100%', minHeight: '60px', fontSize: '12px' }}
                                                             />
                                                         </SettingRow>
@@ -6130,8 +6132,8 @@ const Setting = (props: SettingProps) => {
                                                         {section.chartConfig?.chartDescription && (
                                                             <SettingRow flow="wrap" label={(
                                                                 <TooltipLabel
-                                                                    label="Description Position"
-                                                                    tooltip="Where to display the description relative to the chart. 'Above' provides context first; 'Below' works as a caption."
+                                                                    label={t('descriptionPosition')}
+                                                                    tooltip={t('whereToDisplayTheDescriptionRelative')}
                                                                 />
                                                             )}>
                                                                 <Select
@@ -6140,39 +6142,39 @@ const Setting = (props: SettingProps) => {
                                                                     onChange={(e) => updateSectionChartConfig(section.sectionId, { chartDescriptionPosition: e.target.value as any })}
                                                                     style={{ width: '100%' }}
                                                                 >
-                                                                    <Option value="before">Above Chart</Option>
-                                                                    <Option value="after">Below Chart</Option>
+                                                                    <Option value="before">{t('aboveChart')}</Option>
+                                                                    <Option value="after">{t('belowChart')}</Option>
                                                                 </Select>
                                                             </SettingRow>
                                                         )}
 
                                                         {/* Exclude Chart from PDF */}
-                                                        <SettingRow flow="wrap" label="Show in Widget Only">
+                                                        <SettingRow flow="wrap" label={t('showInWidgetOnly')}>
                                                             <Switch
                                                                 checked={section.chartExcludeFromPdf || false}
                                                                 onChange={(e) => updateSection(section.sectionId, { chartExcludeFromPdf: (e.target as HTMLInputElement).checked })}
                                                             />
                                                         </SettingRow>
                                                         <p className="hint-text" style={{ marginTop: '4px', marginBottom: '8px' }}>
-                                                            When enabled, chart displays in widget but is excluded from PDF export
+                                                            {t('whenEnabledChartDisplaysInWidget')}
                                                         </p>
 
                                                         {getSectionFields(section).length === 0 && (
                                                             <NativeAlert
                                                                 type="info"
-                                                                text="Add data layers below and configure their data sources to see available fields for charting."
+                                                                text={t('addDataLayersBelowAndConfigure')}
                                                                 style={{ marginTop: '8px' }}
                                                             />
                                                         )}
                                                     </>
                                                 )}
 
-                                                <div className="subsection-divider">Data Layers ({layers.length})</div>
+                                                <div className="subsection-divider">{t('dataLayersLayersCount', { layersCount: layers.length })}</div>
 
                                                 {layers.length === 0 ? (
                                                     <div className="empty-state" style={{ padding: '16px' }}>
                                                         <LayersIcon />
-                                                        <span>No layers in this section</span>
+                                                        <span>{t('noLayersInThisSection')}</span>
                                                     </div>
                                                 ) : (
                                                     layers.map((layer) => {
@@ -6195,20 +6197,20 @@ const Setting = (props: SettingProps) => {
                                                                             {isLayerExpanded ? <ChevronDownIcon /> : <ChevronRightIcon />}
                                                                         </span>
                                                                         <span className="list-item-title" style={{ fontSize: '12px' }}>
-                                                                            {layer.layerTitle || 'Untitled Layer'}
+                                                                            {layer.layerTitle || t('untitledLayer')}
                                                                         </span>
                                                                         <span className="item-badge" style={{ fontSize: '10px', padding: '1px 6px' }}>
-                                                                            {selectedFields.length} field{selectedFields.length !== 1 ? 's' : ''}
+                                                                            {(selectedFields.length !== 1 ? t('selectedFieldsCountFields', { selectedFieldsCount: selectedFields.length }) : t('selectedFieldsCountField', { selectedFieldsCount: selectedFields.length }))}
                                                                         </span>
                                                                     </div>
-                                                                    <Tip title="Remove layer" placement="top">
+                                                                    <Tip title={t('removeLayer')} placement="top">
                                                                         <button
                                                                             className="delete-btn"
                                                                             onClick={(e) => {
                                                                                 e.stopPropagation()
                                                                                 removeLayerFromSection(section.sectionId, layer.layerId)
                                                                             }}
-                                                                            aria-label={`Remove ${layer.layerTitle || 'layer'}`}
+                                                                            aria-label={t('removeLayerTitle', { layerTitle: layer.layerTitle || 'layer' })}
                                                                         >
                                                                             <TrashIcon />
                                                                         </button>
@@ -6219,8 +6221,8 @@ const Setting = (props: SettingProps) => {
                                                                     <div className="nested-item-content">
                                                                         <SettingRow flow="wrap" label={(
                                                                             <TooltipLabel
-                                                                                label="Data Source"
-                                                                                tooltip="Select a feature layer from the web map. This layer will be queried when users search for a location."
+                                                                                label={t('dataSource')}
+                                                                                tooltip={t('selectAFeatureLayerFromThe')}
                                                                             />
                                                                         )}>
 
@@ -6235,18 +6237,18 @@ const Setting = (props: SettingProps) => {
                                                                                         isMultiple={false}
                                                                                         closeDataSourceListOnChange
                                                                                     />
-                                                                                ) : <div style={{ padding: "8px", fontSize: "12px", color: "var(--sys-color-text-secondary)" }}>Loading data source selector...</div>}
+                                                                                ) : <div style={{ padding: "8px", fontSize: "12px", color: "var(--sys-color-text-secondary)" }}>{t('loadingDataSourceSelector')}</div>}
                                                                             </div>
                                                                         </SettingRow>
 
                                                                         <div style={{ textAlign: 'center', color: 'var(--sys-color-text-light)', fontSize: '11px', margin: '8px 0' }}>
-                                                                            — OR use direct URL —
+                                                                            {t('orUseDirectUrl')}
                                                                         </div>
 
                                                                         <SettingRow flow="wrap" label={(
                                                                             <TooltipLabel
-                                                                                label="REST Service URL"
-                                                                                tooltip="Alternative: Enter a direct ArcGIS REST endpoint URL (e.g., .../FeatureServer/0). Useful for layers not in the web map or external services."
+                                                                                label={t('restServiceUrl')}
+                                                                                tooltip={t('alternativeEnterADirectArcGISRest')}
                                                                             />
                                                                         )}>
 
@@ -6264,7 +6266,7 @@ const Setting = (props: SettingProps) => {
                                                                                     }
                                                                                 }}
                                                                                 placeholder="https://services.arcgis.com/.../FeatureServer/0"
-                                                                                aria-label="REST Service URL"
+                                                                                aria-label={t('restServiceUrl')}
                                                                             />
                                                                             {layer.layerUrl && !layer.dataSourceId && layerFields.length === 0 && (
                                                                                 <button
@@ -6273,7 +6275,7 @@ const Setting = (props: SettingProps) => {
                                                                                     onClick={() => fetchFieldsFromUrl(layer.layerUrl)}
                                                                                     disabled={fetchLoading[`layer:${layer.layerUrl}`]}
                                                                                 >
-                                                                                    {fetchLoading[`layer:${layer.layerUrl}`] ? 'Loading...' : 'Fetch Fields'}
+                                                                                    {fetchLoading[`layer:${layer.layerUrl}`] ? 'Loading...' : t('fetchFields')}
                                                                                 </button>
                                                                             )}
                                                                             {fetchErrors[`layer:${layer.layerUrl}`] && (
@@ -6300,8 +6302,8 @@ const Setting = (props: SettingProps) => {
 
                                                                         <SettingRow flow="wrap" label={(
                                                                             <TooltipLabel
-                                                                                label="Layer Title"
-                                                                                tooltip="Display name for this layer in the results panel. Use a descriptive name like 'Zoning Districts' instead of the service layer name."
+                                                                                label={t('layerTitle')}
+                                                                                tooltip={t('displayNameForThisLayerIn')}
                                                                             />
                                                                         )}>
 
@@ -6309,59 +6311,59 @@ const Setting = (props: SettingProps) => {
                                                                                 size="sm"
                                                                                 value={layer.layerTitle}
                                                                                 onChange={(e) => updateLayer(section.sectionId, layer.layerId, { layerTitle: e.target.value })}
-                                                                                aria-label="Layer title"
+                                                                                aria-label={t('layerTitle2')}
                                                                             />
                                                                         </SettingRow>
 
                                                                         <SettingRow flow="wrap" label={(
                                                                             <TooltipLabel
-                                                                                label="Default Expanded"
-                                                                                tooltip="Controls whether this data layer is expanded or collapsed when query results are displayed. When collapsed, users can click to expand and view the data."
+                                                                                label={t('defaultExpanded')}
+                                                                                tooltip={t('controlsWhetherThisDataLayerIs')}
                                                                             />
                                                                         )}>
                                                                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                                                                 <Switch
                                                                                     checked={layer.expanded !== false}
                                                                                     onChange={(e) => updateLayer(section.sectionId, layer.layerId, { expanded: (e.target as HTMLInputElement).checked })}
-                                                                                    aria-label="Default expanded state"
+                                                                                    aria-label={t('defaultExpandedState2')}
                                                                                 />
                                                                                 <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                                                    {layer.expanded !== false ? 'Expanded by default' : 'Collapsed by default'}
+                                                                                    {layer.expanded !== false ? t('expandedByDefault') : t('collapsedByDefault')}
                                                                                 </span>
                                                                             </div>
                                                                         </SettingRow>
 
                                                                         <SettingRow flow="wrap" label={(
                                                                             <TooltipLabel
-                                                                                label="Display Mode"
-                                                                                tooltip="How to display records when multiple features are returned. Table shows traditional rows/columns. List shows records stacked with field values separated by pipes. Cards show each record as a grouped block with labeled fields."
+                                                                                label={t('displayMode')}
+                                                                                tooltip={t('howToDisplayRecordsWhenMultiple')}
                                                                             />
                                                                         )}>
                                                                             <Select
                                                                                 size="sm"
                                                                                 value={layer.displayMode || 'table'}
                                                                                 onChange={(e) => updateLayer(section.sectionId, layer.layerId, { displayMode: e.target.value as any })}
-                                                                                aria-label="Display mode"
+                                                                                aria-label={t('displayMode2')}
                                                                             >
-                                                                                <Option value="table">Table</Option>
-                                                                                <Option value="list">List</Option>
-                                                                                <Option value="card">Cards</Option>
+                                                                                <Option value="table">{t('table')}</Option>
+                                                                                <Option value="list">{t('list')}</Option>
+                                                                                <Option value="card">{t('cards')}</Option>
                                                                             </Select>
                                                                         </SettingRow>
 
                                                                         <SettingRow flow="wrap" label={(
                                                                             <TooltipLabel
-                                                                                label="Default Sort Field"
-                                                                                tooltip="Select a field to sort results by when they first load. Leave as 'None' to use the natural order from the query."
+                                                                                label={t('defaultSortField')}
+                                                                                tooltip={t('selectAFieldToSortResults')}
                                                                             />
                                                                         )}>
                                                                             <Select
                                                                                 size="sm"
                                                                                 value={layer.defaultSortField || ''}
                                                                                 onChange={(e) => updateLayer(section.sectionId, layer.layerId, { defaultSortField: e.target.value || undefined })}
-                                                                                aria-label="Default sort field"
+                                                                                aria-label={t('defaultSortField2')}
                                                                             >
-                                                                                <Option value="">None</Option>
+                                                                                <Option value="">{t('none')}</Option>
                                                                                 {(layer.fields || []).filter((f: any) => f.visible !== false).map((field: any) => (
                                                                                     <Option key={field.name} value={field.name}>
                                                                                         {field.alias || field.name}
@@ -6373,18 +6375,18 @@ const Setting = (props: SettingProps) => {
                                                                         {layer.defaultSortField && (
                                                                             <SettingRow flow="wrap" label={(
                                                                                 <TooltipLabel
-                                                                                    label="Sort Order"
-                                                                                    tooltip="Choose ascending (A-Z, 0-9, oldest to newest) or descending (Z-A, 9-0, newest to oldest) order for the default sort."
+                                                                                    label={t('sortOrder')}
+                                                                                    tooltip={t('chooseAscendingAZ09')}
                                                                                 />
                                                                             )}>
                                                                                 <Select
                                                                                     size="sm"
                                                                                     value={layer.defaultSortOrder || 'asc'}
                                                                                     onChange={(e) => updateLayer(section.sectionId, layer.layerId, { defaultSortOrder: e.target.value as any })}
-                                                                                    aria-label="Sort order"
+                                                                                    aria-label={t('sortOrder2')}
                                                                                 >
-                                                                                    <Option value="asc">Ascending (A→Z, 0→9, Oldest→Newest)</Option>
-                                                                                    <Option value="desc">Descending (Z→A, 9→0, Newest→Oldest)</Option>
+                                                                                    <Option value="asc">{t('ascendingAZ09Oldest')}</Option>
+                                                                                    <Option value="desc">{t('descendingZA90Newest')}</Option>
                                                                                 </Select>
                                                                             </SettingRow>
                                                                         )}
@@ -6393,8 +6395,8 @@ const Setting = (props: SettingProps) => {
                                                                             <>
                                                                                 <SettingRow flow="wrap" label={(
                                                                                     <TooltipLabel
-                                                                                        label="Buffer Distance"
-                                                                                        tooltip="Expand the search area around the point. Use for finding features near (not just intersecting) the search location. 0 = point-only query."
+                                                                                        label={t('bufferDistance')}
+                                                                                        tooltip={t('expandTheSearchAreaAroundThe')}
                                                                                     />
                                                                                 )}>
 
@@ -6405,40 +6407,40 @@ const Setting = (props: SettingProps) => {
                                                                                             min={0}
                                                                                             onChange={(value) => updateLayer(section.sectionId, layer.layerId, { bufferDistance: value })}
                                                                                             style={{ width: 80 }}
-                                                                                            aria-label="Buffer distance"
+                                                                                            aria-label={t('bufferDistance2')}
                                                                                         />
                                                                                         <Select
                                                                                             size="sm"
                                                                                             value={layer.bufferUnit || 'feet'}
                                                                                             onChange={(e) => updateLayer(section.sectionId, layer.layerId, { bufferUnit: e.target.value as any })}
                                                                                             style={{ width: 110 }}
-                                                                                            aria-label="Buffer unit"
+                                                                                            aria-label={t('bufferUnit')}
                                                                                         >
-                                                                                            <Option value="feet">Feet</Option>
-                                                                                            <Option value="meters">Meters</Option>
-                                                                                            <Option value="miles">Miles</Option>
-                                                                                            <Option value="kilometers">Kilometers</Option>
+                                                                                            <Option value="feet">{t('feet')}</Option>
+                                                                                            <Option value="meters">{t('meters')}</Option>
+                                                                                            <Option value="miles">{t('miles')}</Option>
+                                                                                            <Option value="kilometers">{t('kilometers')}</Option>
                                                                                         </Select>
                                                                                     </div>
                                                                                 </SettingRow>
 
                                                                                 {/* No Results Message Configuration */}
-                                                                                <div className="subsection-divider" style={{ marginTop: '12px' }}>No Results Message</div>
+                                                                                <div className="subsection-divider" style={{ marginTop: '12px' }}>{t('noResultsMessage')}</div>
 
                                                                                 <SettingRow flow="wrap" label={(
                                                                                     <TooltipLabel
-                                                                                        label="Use Custom Text"
-                                                                                        tooltip="When enabled, display custom text instead of the default 'No intersecting features found.' message when no features are returned for this layer."
+                                                                                        label={t('useCustomText')}
+                                                                                        tooltip={t('whenEnabledDisplayCustomTextInstead')}
                                                                                     />
                                                                                 )}>
                                                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                                                                         <Switch
                                                                                             checked={layer.useCustomNoResultsText || false}
                                                                                             onChange={(e) => updateLayer(section.sectionId, layer.layerId, { useCustomNoResultsText: (e.target as HTMLInputElement).checked })}
-                                                                                            aria-label="Use custom no results text"
+                                                                                            aria-label={t('useCustomNoResultsText')}
                                                                                         />
                                                                                         <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                                                            Use custom message when no features found
+                                                                                            {t('useCustomMessageWhenNoFeatures')}
                                                                                         </span>
                                                                                     </div>
                                                                                 </SettingRow>
@@ -6446,31 +6448,31 @@ const Setting = (props: SettingProps) => {
                                                                                 {layer.useCustomNoResultsText && (
                                                                                     <SettingRow flow="wrap" label={(
                                                                                         <TooltipLabel
-                                                                                            label="Custom Message"
-                                                                                            tooltip="Enter the text to display when no intersecting features are found for this layer. Leave blank to show nothing."
+                                                                                            label={t('customMessage')}
+                                                                                            tooltip={t('enterTheTextToDisplayWhen')}
                                                                                         />
                                                                                     )}>
                                                                                         <TextInput
                                                                                             size="sm"
                                                                                             value={layer.customNoResultsText || ''}
                                                                                             onChange={(e) => updateLayer(section.sectionId, layer.layerId, { customNoResultsText: e.target.value })}
-                                                                                            placeholder="e.g., No zoning restrictions apply to this location."
+                                                                                            placeholder={t('eGNoZoningRestrictionsApply')}
                                                                                             style={{ width: '100%' }}
-                                                                                            aria-label="Custom no results message"
+                                                                                            aria-label={t('customNoResultsMessage')}
                                                                                         />
                                                                                         <p className="hint-text" style={{ marginTop: '4px', marginBottom: 0 }}>
-                                                                                            Leave empty to hide the message entirely
+                                                                                            {t('leaveEmptyToHideTheMessage')}
                                                                                         </p>
                                                                                     </SettingRow>
                                                                                 )}
 
                                                                                 {/* Row Interaction with Map */}
-                                                                                <div className="subsection-divider" style={{ marginTop: '12px' }}>Row Map Interaction</div>
+                                                                                <div className="subsection-divider" style={{ marginTop: '12px' }}>{t('rowMapInteraction')}</div>
 
                                                                                 <SettingRow flow="wrap" label={(
                                                                                     <TooltipLabel
-                                                                                        label="Show All on Map"
-                                                                                        tooltip="Automatically display all queried features from this layer on the map when results load. Creates visual markers/highlights for each feature."
+                                                                                        label={t('showAllOnMap')}
+                                                                                        tooltip={t('automaticallyDisplayAllQueriedFeaturesFrom')}
                                                                                     />
                                                                                 )}>
 
@@ -6478,46 +6480,46 @@ const Setting = (props: SettingProps) => {
                                                                                         <Switch
                                                                                             checked={layer.showAllOnMap || false}
                                                                                             onChange={(e) => updateLayer(section.sectionId, layer.layerId, { showAllOnMap: (e.target as HTMLInputElement).checked })}
-                                                                                            aria-label="Show all features on map"
+                                                                                            aria-label={t('showAllFeaturesOnMap')}
                                                                                         />
                                                                                         <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                                                            Display all features on map when results load
+                                                                                            {t('displayAllFeaturesOnMapWhen')}
                                                                                         </span>
                                                                                     </div>
                                                                                 </SettingRow>
 
                                                                                 <SettingRow flow="wrap" label={(
                                                                                     <TooltipLabel
-                                                                                        label="Highlight on Hover"
-                                                                                        tooltip="Draw feature outline on map when user hovers over a table row. Great for visual correlation between data and geography."
+                                                                                        label={t('highlightOnHover')}
+                                                                                        tooltip={t('drawFeatureOutlineOnMapWhen')}
                                                                                     />
                                                                                 )}>
                                                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                                                                         <Switch
                                                                                             checked={layer.enableRowHighlight || false}
                                                                                             onChange={(e) => updateLayer(section.sectionId, layer.layerId, { enableRowHighlight: (e.target as HTMLInputElement).checked })}
-                                                                                            aria-label="Enable row highlight on hover"
+                                                                                            aria-label={t('enableRowHighlightOnHover')}
                                                                                         />
                                                                                         <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                                                            Highlight geometry when hovering rows
+                                                                                            {t('highlightGeometryWhenHoveringRows')}
                                                                                         </span>
                                                                                     </div>
                                                                                 </SettingRow>
 
                                                                                 <SettingRow flow="wrap" label={(
                                                                                     <TooltipLabel
-                                                                                        label="Zoom on Click"
-                                                                                        tooltip="Pan and zoom map to feature location when user clicks a table row. Helps users navigate to specific features."
+                                                                                        label={t('zoomOnClick')}
+                                                                                        tooltip={t('panAndZoomMapToFeature')}
                                                                                     />
                                                                                 )}>
                                                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                                                                         <Switch
                                                                                             checked={layer.enableRowZoom || false}
                                                                                             onChange={(e) => updateLayer(section.sectionId, layer.layerId, { enableRowZoom: (e.target as HTMLInputElement).checked })}
-                                                                                            aria-label="Enable zoom on row click"
+                                                                                            aria-label={t('enableZoomOnRowClick')}
                                                                                         />
                                                                                         <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                                                            Zoom to feature when clicking rows
+                                                                                            {t('zoomToFeatureWhenClickingRows')}
                                                                                         </span>
                                                                                     </div>
                                                                                 </SettingRow>
@@ -6525,8 +6527,8 @@ const Setting = (props: SettingProps) => {
                                                                                 {layer.enableRowZoom && (
                                                                                     <SettingRow flow="wrap" label={(
                                                                                         <TooltipLabel
-                                                                                            label="Zoom Scale"
-                                                                                            tooltip="Map scale when zooming to features. 1000 = very close (building level), 5000 = neighborhood, 25000 = city area."
+                                                                                            label={t('zoomScale')}
+                                                                                            tooltip={t('mapScaleWhenZoomingToFeatures')}
                                                                                         />
                                                                                     )}>
                                                                                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -6540,7 +6542,7 @@ const Setting = (props: SettingProps) => {
                                                                                                 style={{ width: 90 }}
                                                                                             />
                                                                                             <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                                                                Smaller = more zoomed in
+                                                                                                {t('smallerMoreZoomedIn')}
                                                                                             </span>
                                                                                         </div>
                                                                                     </SettingRow>
@@ -6549,8 +6551,8 @@ const Setting = (props: SettingProps) => {
                                                                                 {layer.showAllOnMap && (
                                                                                     <SettingRow flow="wrap" label={(
                                                                                         <TooltipLabel
-                                                                                            label="Show All Color"
-                                                                                            tooltip="Color used to display all features on the map when results load. Choose a different color from Highlight Color to distinguish between static display and hover interaction."
+                                                                                            label={t('showAllColor')}
+                                                                                            tooltip={t('colorUsedToDisplayAllFeatures')}
                                                                                         />
                                                                                     )}>
                                                                                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -6573,8 +6575,8 @@ const Setting = (props: SettingProps) => {
                                                                                 {(layer.enableRowHighlight || layer.enableRowZoom) && (
                                                                                     <SettingRow flow="wrap" label={(
                                                                                         <TooltipLabel
-                                                                                            label="Highlight Color"
-                                                                                            tooltip="Color used to highlight features on hover or when zooming. This is the interactive highlight color for row interactions."
+                                                                                            label={t('highlightColor')}
+                                                                                            tooltip={t('colorUsedToHighlightFeaturesOn')}
                                                                                         />
                                                                                     )}>
                                                                                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -6597,8 +6599,8 @@ const Setting = (props: SettingProps) => {
                                                                                 {(layer.showAllOnMap || layer.enableRowHighlight || layer.enableRowZoom) && (
                                                                                     <SettingRow flow="wrap" label={(
                                                                                         <TooltipLabel
-                                                                                            label="Fill Opacity"
-                                                                                            tooltip="Polygon interior transparency. 0 = outline only (see-through), 0.2 = subtle fill, 1 = solid opaque."
+                                                                                            label={t('fillOpacity')}
+                                                                                            tooltip={t('polygonInteriorTransparency0OutlineOnly')}
                                                                                         />
                                                                                     )}>
                                                                                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -6612,22 +6614,22 @@ const Setting = (props: SettingProps) => {
                                                                                                 style={{ width: 70 }}
                                                                                             />
                                                                                             <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                                                                For polygon fills (0-1)
+                                                                                                {t('forPolygonFills01')}
                                                                                             </span>
                                                                                         </div>
                                                                                     </SettingRow>
                                                                                 )}
 
                                                                                 {/* Nearby Display Mode */}
-                                                                                <div className="subsection-divider" style={{ marginTop: '12px' }}>Nearby Display Mode</div>
+                                                                                <div className="subsection-divider" style={{ marginTop: '12px' }}>{t('nearbyDisplayMode')}</div>
                                                                                 <p className="hint-text" style={{ marginBottom: '8px' }}>
-                                                                                    Display features sorted by distance with badges.
+                                                                                    {t('displayFeaturesSortedByDistanceWith')}
                                                                                 </p>
 
                                                                                 <SettingRow flow="wrap" label={(
                                                                                     <TooltipLabel
-                                                                                        label="Enable Nearby Mode"
-                                                                                        tooltip="Shows features as distance-sorted cards with distance badges instead of a table. Ideal for 'nearest parks' or 'nearby schools' displays."
+                                                                                        label={t('enableNearbyMode')}
+                                                                                        tooltip={t('showsFeaturesAsDistanceSortedCards')}
                                                                                     />
                                                                                 )}>
                                                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -6639,10 +6641,10 @@ const Setting = (props: SettingProps) => {
                                                                                                     enabled: (e.target as HTMLInputElement).checked
                                                                                                 }
                                                                                             })}
-                                                                                            aria-label="Enable nearby mode for this layer"
+                                                                                            aria-label={t('enableNearbyModeForThisLayer')}
                                                                                         />
                                                                                         <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                                                            Shows distance-sorted list instead of table
+                                                                                            {t('showsDistanceSortedListInsteadOf')}
                                                                                         </span>
                                                                                     </div>
                                                                                 </SettingRow>
@@ -6652,8 +6654,8 @@ const Setting = (props: SettingProps) => {
                                                                                         {/* Title Field */}
                                                                                         <SettingRow flow="wrap" label={(
                                                                                             <TooltipLabel
-                                                                                                label="Title Field"
-                                                                                                tooltip="Main display field for each nearby feature (e.g., park name, school name)."
+                                                                                                label={t('titleField')}
+                                                                                                tooltip={t('mainDisplayFieldForEachNearby')}
                                                                                             />
                                                                                         )}>
                                                                                             <Select
@@ -6663,7 +6665,7 @@ const Setting = (props: SettingProps) => {
                                                                                                     nearbyConfig: { ...layer.nearbyConfig, titleField: e.target.value }
                                                                                                 })}
                                                                                             >
-                                                                                                <Option value="">-- Select Field --</Option>
+                                                                                                <Option value="">{t('selectField')}</Option>
                                                                                                 {layerFields.map(field => (
                                                                                                     <Option key={field.name} value={field.name}>{field.alias || field.name}</Option>
                                                                                                 ))}
@@ -6673,8 +6675,8 @@ const Setting = (props: SettingProps) => {
                                                                                         {/* Subtitle Field */}
                                                                                         <SettingRow flow="wrap" label={(
                                                                                             <TooltipLabel
-                                                                                                label="Subtitle Field"
-                                                                                                tooltip="Secondary info shown below title (e.g., acreage, address, phone number)."
+                                                                                                label={t('subtitleField')}
+                                                                                                tooltip={t('secondaryInfoShownBelowTitleE')}
                                                                                             />
                                                                                         )}>
                                                                                             <Select
@@ -6684,7 +6686,7 @@ const Setting = (props: SettingProps) => {
                                                                                                     nearbyConfig: { ...layer.nearbyConfig, subtitleField: e.target.value }
                                                                                                 })}
                                                                                             >
-                                                                                                <Option value="">-- None --</Option>
+                                                                                                <Option value="">{t('none2')}</Option>
                                                                                                 {layerFields.map(field => (
                                                                                                     <Option key={field.name} value={field.name}>{field.alias || field.name}</Option>
                                                                                                 ))}
@@ -6694,7 +6696,7 @@ const Setting = (props: SettingProps) => {
                                                                                         {layer.nearbyConfig?.subtitleField && (
                                                                                             <div style={{ display: 'flex', gap: '8px' }}>
                                                                                                 <div style={{ flex: 1 }}>
-                                                                                                    <SettingRow flow="wrap" label="Prefix">
+                                                                                                    <SettingRow flow="wrap" label={t('prefix')}>
                                                                                                         <TextInput
                                                                                                             size="sm"
                                                                                                             value={layer.nearbyConfig?.subtitlePrefix || ''}
@@ -6706,11 +6708,11 @@ const Setting = (props: SettingProps) => {
                                                                                                     </SettingRow>
                                                                                                 </div>
                                                                                                 <div style={{ flex: 1 }}>
-                                                                                                    <SettingRow flow="wrap" label="Suffix">
+                                                                                                    <SettingRow flow="wrap" label={t('suffix')}>
                                                                                                         <TextInput
                                                                                                             size="sm"
                                                                                                             value={layer.nearbyConfig?.subtitleSuffix || ''}
-                                                                                                            placeholder="e.g., acres"
+                                                                                                            placeholder={t('eGAcres')}
                                                                                                             onChange={(e) => updateLayer(section.sectionId, layer.layerId, {
                                                                                                                 nearbyConfig: { ...layer.nearbyConfig, subtitleSuffix: e.target.value }
                                                                                                             })}
@@ -6721,7 +6723,7 @@ const Setting = (props: SettingProps) => {
                                                                                         )}
 
                                                                                         {/* Link URL Field */}
-                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Link URL Field" tooltip="Optional field containing a URL. When set, the title becomes a clickable link to this URL." />)}>
+                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('linkUrlField')} tooltip={t('optionalFieldContainingAUrlWhen')} />)}>
                                                                                             <Select
                                                                                                 size="sm"
                                                                                                 value={layer.nearbyConfig?.linkUrlField || ''}
@@ -6729,7 +6731,7 @@ const Setting = (props: SettingProps) => {
                                                                                                     nearbyConfig: { ...layer.nearbyConfig, linkUrlField: e.target.value }
                                                                                                 })}
                                                                                             >
-                                                                                                <Option value="">-- None --</Option>
+                                                                                                <Option value="">{t('none2')}</Option>
                                                                                                 {layerFields.map(field => (
                                                                                                     <Option key={field.name} value={field.name}>{field.alias || field.name}</Option>
                                                                                                 ))}
@@ -6738,10 +6740,10 @@ const Setting = (props: SettingProps) => {
 
                                                                                         {/* Query Settings */}
                                                                                         <div style={{ marginTop: '8px', fontSize: '11px', fontWeight: 500, color: 'var(--sys-color-text-dark)' }}>
-                                                                                            Query Settings
+                                                                                            {t('querySettings')}
                                                                                         </div>
 
-                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Max Features" tooltip="Maximum number of nearby features to display in the list." />)}>
+                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('maxFeatures')} tooltip={t('maximumNumberOfNearbyFeaturesTo')} />)}>
                                                                                             <NumericInput
                                                                                                 size="sm"
                                                                                                 value={layer.nearbyConfig?.maxFeatures || 5}
@@ -6756,7 +6758,7 @@ const Setting = (props: SettingProps) => {
 
                                                                                         <div style={{ display: 'flex', gap: '8px' }}>
                                                                                             <div style={{ flex: 1 }}>
-                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label="Search Radius" tooltip="Maximum distance to search for nearby features from the query point." />)}>
+                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('searchRadius')} tooltip={t('maximumDistanceToSearchForNearby')} />)}>
                                                                                                     <NumericInput
                                                                                                         size="sm"
                                                                                                         value={layer.nearbyConfig?.searchRadius || 5}
@@ -6769,7 +6771,7 @@ const Setting = (props: SettingProps) => {
                                                                                                 </SettingRow>
                                                                                             </div>
                                                                                             <div style={{ flex: 1 }}>
-                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label="Unit" tooltip="Distance unit for the search radius." />)}>
+                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('unit')} tooltip={t('distanceUnitForTheSearchRadius')} />)}>
                                                                                                     <Select
                                                                                                         size="sm"
                                                                                                         value={layer.nearbyConfig?.searchRadiusUnit || 'miles'}
@@ -6777,10 +6779,10 @@ const Setting = (props: SettingProps) => {
                                                                                                             nearbyConfig: { ...layer.nearbyConfig, searchRadiusUnit: e.target.value as any }
                                                                                                         })}
                                                                                                     >
-                                                                                                        <Option value="feet">Feet</Option>
-                                                                                                        <Option value="meters">Meters</Option>
-                                                                                                        <Option value="miles">Miles</Option>
-                                                                                                        <Option value="kilometers">Kilometers</Option>
+                                                                                                        <Option value="feet">{t('feet')}</Option>
+                                                                                                        <Option value="meters">{t('meters')}</Option>
+                                                                                                        <Option value="miles">{t('miles')}</Option>
+                                                                                                        <Option value="kilometers">{t('kilometers')}</Option>
                                                                                                     </Select>
                                                                                                 </SettingRow>
                                                                                             </div>
@@ -6788,12 +6790,12 @@ const Setting = (props: SettingProps) => {
 
                                                                                         {/* Distance Display */}
                                                                                         <div style={{ marginTop: '8px', fontSize: '11px', fontWeight: 500, color: 'var(--sys-color-text-dark)' }}>
-                                                                                            Distance Display
+                                                                                            {t('distanceDisplay')}
                                                                                         </div>
 
                                                                                         <div style={{ display: 'flex', gap: '8px' }}>
                                                                                             <div style={{ flex: 1 }}>
-                                                                                                <SettingRow flow="wrap" label="Display Unit">
+                                                                                                <SettingRow flow="wrap" label={t('displayUnit')}>
                                                                                                     <Select
                                                                                                         size="sm"
                                                                                                         value={layer.nearbyConfig?.distanceUnit || 'miles'}
@@ -6801,15 +6803,15 @@ const Setting = (props: SettingProps) => {
                                                                                                             nearbyConfig: { ...layer.nearbyConfig, distanceUnit: e.target.value as any }
                                                                                                         })}
                                                                                                     >
-                                                                                                        <Option value="feet">Feet</Option>
-                                                                                                        <Option value="meters">Meters</Option>
-                                                                                                        <Option value="miles">Miles</Option>
-                                                                                                        <Option value="kilometers">Kilometers</Option>
+                                                                                                        <Option value="feet">{t('feet')}</Option>
+                                                                                                        <Option value="meters">{t('meters')}</Option>
+                                                                                                        <Option value="miles">{t('miles')}</Option>
+                                                                                                        <Option value="kilometers">{t('kilometers')}</Option>
                                                                                                     </Select>
                                                                                                 </SettingRow>
                                                                                             </div>
                                                                                             <div style={{ flex: 1 }}>
-                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label="Precision" tooltip="Number of decimal places for distance values (0-4)." />)}>
+                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('precision')} tooltip={t('numberOfDecimalPlacesForDistance')} />)}>
                                                                                                     <NumericInput
                                                                                                         size="sm"
                                                                                                         value={layer.nearbyConfig?.distancePrecision ?? 2}
@@ -6824,7 +6826,7 @@ const Setting = (props: SettingProps) => {
                                                                                             </div>
                                                                                         </div>
 
-                                                                                        <SettingRow flow="no-wrap" label="Show Distance Badge">
+                                                                                        <SettingRow flow="no-wrap" label={t('showDistanceBadge')}>
                                                                                             <Switch
                                                                                                 checked={layer.nearbyConfig?.showDistanceBadge !== false}
                                                                                                 onChange={(e) => updateLayer(section.sectionId, layer.layerId, {
@@ -6835,10 +6837,10 @@ const Setting = (props: SettingProps) => {
 
                                                                                         {/* PDF Settings */}
                                                                                         <div style={{ marginTop: '8px', fontSize: '11px', fontWeight: 500, color: 'var(--sys-color-text-dark)' }}>
-                                                                                            PDF Export
+                                                                                            {t('pdfExport')}
                                                                                         </div>
 
-                                                                                        <SettingRow flow="no-wrap" label="Include in PDF">
+                                                                                        <SettingRow flow="no-wrap" label={t('includeInPdf')}>
                                                                                             <Switch
                                                                                                 checked={layer.nearbyConfig?.includeInPdf !== false}
                                                                                                 onChange={(e) => updateLayer(section.sectionId, layer.layerId, {
@@ -6848,7 +6850,7 @@ const Setting = (props: SettingProps) => {
                                                                                         </SettingRow>
 
                                                                                         {layer.nearbyConfig?.includeInPdf !== false && (
-                                                                                            <SettingRow flow="wrap" label="PDF Max Features">
+                                                                                            <SettingRow flow="wrap" label={t('pdfMaxFeatures')}>
                                                                                                 <NumericInput
                                                                                                     size="sm"
                                                                                                     value={layer.nearbyConfig?.pdfMaxFeatures || layer.nearbyConfig?.maxFeatures || 5}
@@ -6866,7 +6868,7 @@ const Setting = (props: SettingProps) => {
 
                                                                                 <SettingRow flow="wrap" label={(
                                                                                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                                                                                        <span>Fields to Display</span>
+                                                                                        <span>{t('fieldsToDisplay')}</span>
                                                                                         {selectedFields.length > 1 && layerFields.length > 0 && (() => {
                                                                                             const serviceOrder = layerFields.map(f => f.name)
                                                                                             const selectedInServiceOrder = selectedFields
@@ -6877,10 +6879,10 @@ const Setting = (props: SettingProps) => {
 
                                                                                             return isInServiceOrder ? (
                                                                                                 <span style={{ fontSize: '10px', color: 'var(--sys-color-success-main, #4caf50)' }}>
-                                                                                                    ✓ Service order
+                                                                                                    {t('serviceOrder')}
                                                                                                 </span>
                                                                                             ) : (
-                                                                                                <Tip title="Reorder selected fields to match service/data source order" placement="top">
+                                                                                                <Tip title={t('reorderSelectedFieldsToMatchService')} placement="top">
                                                                                                     <button
                                                                                                         type="button"
                                                                                                         style={{
@@ -6894,9 +6896,9 @@ const Setting = (props: SettingProps) => {
                                                                                                             e.stopPropagation()
                                                                                                             reorderFieldsToServiceOrder(section.sectionId, layer.layerId)
                                                                                                         }}
-                                                                                                        aria-label="Sort fields to service order"
+                                                                                                        aria-label={t('sortFieldsToServiceOrder')}
                                                                                                     >
-                                                                                                        ↕ Reset to service order
+                                                                                                        {t('resetToServiceOrder')}
                                                                                                     </button>
                                                                                                 </Tip>
                                                                                             )
@@ -6905,8 +6907,8 @@ const Setting = (props: SettingProps) => {
                                                                                 )}>
                                                                                     {/* Selected field order: drag to reorder. Live preview of report order; the arrows above still work too. */}
                                                                                     {selectedFields.length > 1 && (
-                                                                                        <div className="selected-field-order" role="list" aria-label="Selected field display order. Drag an item to reorder.">
-                                                                                            <div className="selected-field-order-label">Selected field order (drag to reorder)</div>
+                                                                                        <div className="selected-field-order" role="list" aria-label={t('selectedFieldDisplayOrderDragAn')}>
+                                                                                            <div className="selected-field-order-label">{t('selectedFieldOrderDragToReorder')}</div>
                                                                                             {selectedFields.map((orderField, orderIdx) => (
                                                                                                 <div
                                                                                                     key={orderField.name}
@@ -6930,8 +6932,8 @@ const Setting = (props: SettingProps) => {
                                                                                         {layerFields.length === 0 ? (
                                                                                             <div className="field-item" style={{ justifyContent: 'center', color: 'var(--sys-color-text-light)' }}>
                                                                                                 {layer.layerUrl && !layer.dataSourceId
-                                                                                                    ? 'Click "Fetch Fields" or enter URL and press Tab'
-                                                                                                    : 'No fields available - select a data source'}
+                                                                                                    ? t('clickFetchFieldsOrEnterUrl')
+                                                                                                    : t('noFieldsAvailableSelectAData')}
                                                                                             </div>
                                                                                         ) : (
                                                                                             layerFields.map(field => {
@@ -6949,7 +6951,7 @@ const Setting = (props: SettingProps) => {
                                                                                                             <Checkbox
                                                                                                                 checked={isSelected}
                                                                                                                 onChange={() => toggleFieldSelection(section.sectionId, layer.layerId, field.name)}
-                                                                                                                aria-label={`Select ${field.name}`}
+                                                                                                                aria-label={t('selectName', { name: field.name })}
                                                                                                             />
                                                                                                             {isSelected && (
                                                                                                                 <div style={{ display: 'inline-flex', alignItems: 'center', gap: '1px', flexShrink: 0 }}>
@@ -6963,8 +6965,8 @@ const Setting = (props: SettingProps) => {
                                                                                                                             color: displayOrder <= 1 ? '#999' : 'var(--sys-color-primary-main, #1976d2)',
                                                                                                                             opacity: displayOrder <= 1 ? 0.4 : 1
                                                                                                                         }}
-                                                                                                                        title="Move up"
-                                                                                                                        aria-label={`Move ${field.name} up`}
+                                                                                                                        title={t('moveUp')}
+                                                                                                                        aria-label={t('moveNameUp', { name: field.name })}
                                                                                                                     >▲</button>
                                                                                                                     <span
                                                                                                                         style={{
@@ -6973,7 +6975,7 @@ const Setting = (props: SettingProps) => {
                                                                                                                             backgroundColor: 'var(--sys-color-primary-main, #1976d2)',
                                                                                                                             color: '#fff', fontSize: '10px', fontWeight: 600, lineHeight: 1
                                                                                                                         }}
-                                                                                                                        title={`Display order: ${displayOrder}`}
+                                                                                                                        title={t('displayOrderDisplayOrder', { displayOrder })}
                                                                                                                     >
                                                                                                                         {displayOrder}
                                                                                                                     </span>
@@ -6987,8 +6989,8 @@ const Setting = (props: SettingProps) => {
                                                                                                                             color: displayOrder >= selectedFields.length ? '#999' : 'var(--sys-color-primary-main, #1976d2)',
                                                                                                                             opacity: displayOrder >= selectedFields.length ? 0.4 : 1
                                                                                                                         }}
-                                                                                                                        title="Move down"
-                                                                                                                        aria-label={`Move ${field.name} down`}
+                                                                                                                        title={t('moveDown')}
+                                                                                                                        aria-label={t('moveNameDown', { name: field.name })}
                                                                                                                     >▼</button>
                                                                                                                 </div>
                                                                                                             )}
@@ -6999,58 +7001,58 @@ const Setting = (props: SettingProps) => {
                                                                                                             <div style={{ width: '100%', marginTop: '8px', paddingLeft: '24px' }}>
                                                                                                                 {/* Alias input */}
                                                                                                                 <div style={{ marginBottom: '8px' }}>
-                                                                                                                    <Label style={{ fontSize: '11px', marginBottom: '2px', display: 'block' }}>Display Alias</Label>
+                                                                                                                    <Label style={{ fontSize: '11px', marginBottom: '2px', display: 'block' }}>{t('displayAlias2')}</Label>
                                                                                                                     <TextInput
                                                                                                                         size="sm"
                                                                                                                         value={currentAlias}
                                                                                                                         onChange={(e) => updateFieldAlias(section.sectionId, layer.layerId, field.name, e.target.value)}
-                                                                                                                        placeholder="Display alias"
-                                                                                                                        aria-label={`Alias for ${field.name}`}
+                                                                                                                        placeholder={t('displayAlias')}
+                                                                                                                        aria-label={t('aliasForName', { name: field.name })}
                                                                                                                     />
                                                                                                                 </div>
 
                                                                                                                 {/* Format type selector */}
                                                                                                                 <div style={{ marginBottom: '8px' }}>
-                                                                                                                    <Label style={{ fontSize: '11px', marginBottom: '2px', display: 'block' }}>Format Type</Label>
+                                                                                                                    <Label style={{ fontSize: '11px', marginBottom: '2px', display: 'block' }}>{t('formatType')}</Label>
                                                                                                                     <Select
                                                                                                                         size="sm"
                                                                                                                         value={currentFormat.type || 'auto'}
                                                                                                                         onChange={(e) => updateFieldFormat(section.sectionId, layer.layerId, field.name, { type: e.target.value as any })}
-                                                                                                                        aria-label="Format type"
+                                                                                                                        aria-label={t('formatType2')}
                                                                                                                     >
-                                                                                                                        <Option value="auto">Auto</Option>
-                                                                                                                        <Option value="text">Text</Option>
-                                                                                                                        <Option value="number">Number</Option>
-                                                                                                                        <Option value="date">Date</Option>
-                                                                                                                        <Option value="link">Link</Option>
+                                                                                                                        <Option value="auto">{t('auto')}</Option>
+                                                                                                                        <Option value="text">{t('text')}</Option>
+                                                                                                                        <Option value="number">{t('number')}</Option>
+                                                                                                                        <Option value="date">{t('date')}</Option>
+                                                                                                                        <Option value="link">{t('link')}</Option>
                                                                                                                     </Select>
                                                                                                                 </div>
 
                                                                                                                 {/* Number formatting options */}
                                                                                                                 {(currentFormat.type === 'number' || currentFormat.type === 'auto') && (
                                                                                                                     <div style={{ marginBottom: '8px' }}>
-                                                                                                                        <Label style={{ fontSize: '11px', marginBottom: '2px', display: 'block' }}>Number Format</Label>
+                                                                                                                        <Label style={{ fontSize: '11px', marginBottom: '2px', display: 'block' }}>{t('numberFormat')}</Label>
                                                                                                                         <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
                                                                                                                             <Select
                                                                                                                                 size="sm"
                                                                                                                                 value={currentFormat.numberFormat || 'default'}
                                                                                                                                 onChange={(e) => updateFieldFormat(section.sectionId, layer.layerId, field.name, { numberFormat: e.target.value as any })}
                                                                                                                                 style={{ width: '100px' }}
-                                                                                                                                aria-label="Number format"
+                                                                                                                                aria-label={t('numberFormat2')}
                                                                                                                             >
-                                                                                                                                <Option value="default">Default</Option>
-                                                                                                                                <Option value="none">No Format</Option>
-                                                                                                                                <Option value="decimal">Decimal</Option>
-                                                                                                                                <Option value="currency">Currency</Option>
-                                                                                                                                <Option value="percent">Percent</Option>
+                                                                                                                                <Option value="default">{t('default')}</Option>
+                                                                                                                                <Option value="none">{t('noFormat')}</Option>
+                                                                                                                                <Option value="decimal">{t('decimal')}</Option>
+                                                                                                                                <Option value="currency">{t('currency')}</Option>
+                                                                                                                                <Option value="percent">{t('percent')}</Option>
                                                                                                                             </Select>
                                                                                                                             <Label style={{ fontSize: '10px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                                                                                                                                 <Checkbox
                                                                                                                                     checked={currentFormat.useGrouping !== false}
                                                                                                                                     onChange={(e) => updateFieldFormat(section.sectionId, layer.layerId, field.name, { useGrouping: (e.target as HTMLInputElement).checked })}
-                                                                                                                                    aria-label="Use thousand separators"
+                                                                                                                                    aria-label={t('useThousandSeparators')}
                                                                                                                                 />
-                                                                                                                                Commas
+                                                                                                                                {t('commas')}
                                                                                                                             </Label>
                                                                                                                             {(currentFormat.numberFormat === 'decimal' || currentFormat.numberFormat === 'currency') && (
                                                                                                                                 <NumericInput
@@ -7060,7 +7062,7 @@ const Setting = (props: SettingProps) => {
                                                                                                                                     max={10}
                                                                                                                                     onChange={(value) => updateFieldFormat(section.sectionId, layer.layerId, field.name, { decimalPlaces: value })}
                                                                                                                                     style={{ width: '50px' }}
-                                                                                                                                    aria-label="Decimal places"
+                                                                                                                                    aria-label={t('decimalPlaces')}
                                                                                                                                 />
                                                                                                                             )}
                                                                                                                         </div>
@@ -7070,18 +7072,18 @@ const Setting = (props: SettingProps) => {
                                                                                                                 {/* Date formatting options */}
                                                                                                                 {currentFormat.type === 'date' && (
                                                                                                                     <div style={{ marginBottom: '8px' }}>
-                                                                                                                        <Label style={{ fontSize: '11px', marginBottom: '2px', display: 'block' }}>Date Format</Label>
+                                                                                                                        <Label style={{ fontSize: '11px', marginBottom: '2px', display: 'block' }}>{t('dateFormat')}</Label>
                                                                                                                         <Select
                                                                                                                             size="sm"
                                                                                                                             value={currentFormat.dateFormat || 'default'}
                                                                                                                             onChange={(e) => updateFieldFormat(section.sectionId, layer.layerId, field.name, { dateFormat: e.target.value as any })}
-                                                                                                                            aria-label="Date format"
+                                                                                                                            aria-label={t('dateFormat2')}
                                                                                                                         >
-                                                                                                                            <Option value="default">Default</Option>
-                                                                                                                            <Option value="short">Short (1/1/24)</Option>
-                                                                                                                            <Option value="medium">Medium (Jan 1, 2024)</Option>
-                                                                                                                            <Option value="long">Long (January 1, 2024)</Option>
-                                                                                                                            <Option value="year-only">Year Only (2024)</Option>
+                                                                                                                            <Option value="default">{t('default')}</Option>
+                                                                                                                            <Option value="short">{t('short1124')}</Option>
+                                                                                                                            <Option value="medium">{t('mediumJan12024')}</Option>
+                                                                                                                            <Option value="long">{t('longJanuary12024')}</Option>
+                                                                                                                            <Option value="year-only">{t('yearOnly2024')}</Option>
                                                                                                                         </Select>
                                                                                                                     </div>
                                                                                                                 )}
@@ -7089,17 +7091,17 @@ const Setting = (props: SettingProps) => {
                                                                                                                 {/* Text formatting options */}
                                                                                                                 {currentFormat.type === 'text' && (
                                                                                                                     <div style={{ marginBottom: '8px' }}>
-                                                                                                                        <Label style={{ fontSize: '11px', marginBottom: '2px', display: 'block' }}>Text Format</Label>
+                                                                                                                        <Label style={{ fontSize: '11px', marginBottom: '2px', display: 'block' }}>{t('textFormat')}</Label>
                                                                                                                         <Select
                                                                                                                             size="sm"
                                                                                                                             value={currentFormat.textFormat || 'default'}
                                                                                                                             onChange={(e) => updateFieldFormat(section.sectionId, layer.layerId, field.name, { textFormat: e.target.value as any })}
-                                                                                                                            aria-label="Text format"
+                                                                                                                            aria-label={t('textFormat2')}
                                                                                                                         >
-                                                                                                                            <Option value="default">Default</Option>
-                                                                                                                            <Option value="uppercase">UPPERCASE</Option>
-                                                                                                                            <Option value="lowercase">lowercase</Option>
-                                                                                                                            <Option value="titlecase">Title Case</Option>
+                                                                                                                            <Option value="default">{t('default')}</Option>
+                                                                                                                            <Option value="uppercase">{t('uppercase')}</Option>
+                                                                                                                            <Option value="lowercase">{t('lowercase')}</Option>
+                                                                                                                            <Option value="titlecase">{t('titleCase')}</Option>
                                                                                                                         </Select>
                                                                                                                     </div>
                                                                                                                 )}
@@ -7107,16 +7109,16 @@ const Setting = (props: SettingProps) => {
                                                                                                                 {/* Link display text option */}
                                                                                                                 {currentFormat.type === 'link' && (
                                                                                                                     <div style={{ marginBottom: '8px' }}>
-                                                                                                                        <Label style={{ fontSize: '11px', marginBottom: '2px', display: 'block' }}>Link Display Text</Label>
+                                                                                                                        <Label style={{ fontSize: '11px', marginBottom: '2px', display: 'block' }}>{t('linkDisplayText')}</Label>
                                                                                                                         <TextInput
                                                                                                                             size="sm"
                                                                                                                             value={currentFormat.linkText || ''}
                                                                                                                             onChange={(e) => updateFieldFormat(section.sectionId, layer.layerId, field.name, { linkText: e.target.value })}
-                                                                                                                            placeholder="e.g., View Document"
-                                                                                                                            aria-label="Link display text"
+                                                                                                                            placeholder={t('eGViewDocument')}
+                                                                                                                            aria-label={t('linkDisplayText2')}
                                                                                                                         />
                                                                                                                         <p className="hint-text" style={{ marginTop: '4px', marginBottom: 0 }}>
-                                                                                                                            Text shown instead of URL. Leave blank to show the URL.
+                                                                                                                            {t('textShownInsteadOfUrlLeave')}
                                                                                                                         </p>
                                                                                                                     </div>
                                                                                                                 )}
@@ -7128,12 +7130,12 @@ const Setting = (props: SettingProps) => {
                                                                                                                             <Switch
                                                                                                                                 checked={currentFormat.useLinkBaseUrl || false}
                                                                                                                                 onChange={(e) => updateFieldFormat(section.sectionId, layer.layerId, field.name, { useLinkBaseUrl: (e.target as HTMLInputElement).checked })}
-                                                                                                                                aria-label="Enable base URL"
+                                                                                                                                aria-label={t('enableBaseUrl')}
                                                                                                                             />
                                                                                                                             <Label style={{ fontSize: '11px', cursor: 'pointer' }}>
-                                                                                                                                Prepend Base URL
+                                                                                                                                {t('prependBaseUrl')}
                                                                                                                             </Label>
-                                                                                                                            <Tip title="Enable to prepend a base URL to the field value. Useful when field contains only filename (e.g., '12345.pdf') and needs full path." placement="top">
+                                                                                                                            <Tip title={t('enableToPrependABaseUrl')} placement="top">
                                                                                                                                 <span style={{ color: 'var(--sys-color-text-light)', cursor: 'help', fontSize: '11px' }}>ⓘ</span>
                                                                                                                             </Tip>
                                                                                                                         </div>
@@ -7144,10 +7146,10 @@ const Setting = (props: SettingProps) => {
                                                                                                                                     value={currentFormat.linkBaseUrl || ''}
                                                                                                                                     onChange={(e) => updateFieldFormat(section.sectionId, layer.layerId, field.name, { linkBaseUrl: e.target.value })}
                                                                                                                                     placeholder="https://example.com/documents/"
-                                                                                                                                    aria-label="Base URL"
+                                                                                                                                    aria-label={t('baseUrl')}
                                                                                                                                 />
                                                                                                                                 <p className="hint-text" style={{ marginTop: '4px', marginBottom: 0 }}>
-                                                                                                                                    URL prefix added before field value (e.g., base + "12345.pdf")
+                                                                                                                                    {t('urlPrefixAddedBeforeFieldValue')}
                                                                                                                                 </p>
                                                                                                                             </>
                                                                                                                         )}
@@ -7157,23 +7159,23 @@ const Setting = (props: SettingProps) => {
                                                                                                                 {/* Prefix/Suffix */}
                                                                                                                 <div style={{ display: 'flex', gap: '8px' }}>
                                                                                                                     <div style={{ flex: 1 }}>
-                                                                                                                        <Label style={{ fontSize: '11px', marginBottom: '2px', display: 'block' }}>Prefix</Label>
+                                                                                                                        <Label style={{ fontSize: '11px', marginBottom: '2px', display: 'block' }}>{t('prefix')}</Label>
                                                                                                                         <TextInput
                                                                                                                             size="sm"
                                                                                                                             value={currentFormat.prefix || ''}
                                                                                                                             onChange={(e) => updateFieldFormat(section.sectionId, layer.layerId, field.name, { prefix: e.target.value })}
                                                                                                                             placeholder="$"
-                                                                                                                            aria-label="Value prefix"
+                                                                                                                            aria-label={t('valuePrefix')}
                                                                                                                         />
                                                                                                                     </div>
                                                                                                                     <div style={{ flex: 1 }}>
-                                                                                                                        <Label style={{ fontSize: '11px', marginBottom: '2px', display: 'block' }}>Suffix</Label>
+                                                                                                                        <Label style={{ fontSize: '11px', marginBottom: '2px', display: 'block' }}>{t('suffix')}</Label>
                                                                                                                         <TextInput
                                                                                                                             size="sm"
                                                                                                                             value={currentFormat.suffix || ''}
                                                                                                                             onChange={(e) => updateFieldFormat(section.sectionId, layer.layerId, field.name, { suffix: e.target.value })}
                                                                                                                             placeholder="%"
-                                                                                                                            aria-label="Value suffix"
+                                                                                                                            aria-label={t('valueSuffix')}
                                                                                                                         />
                                                                                                                     </div>
                                                                                                                 </div>
@@ -7185,12 +7187,12 @@ const Setting = (props: SettingProps) => {
                                                                                                             <Switch
                                                                                                                 checked={getFieldExcludeFromPdf(section.sectionId, layer.layerId, field.name)}
                                                                                                                 onChange={() => toggleFieldExcludeFromPdf(section.sectionId, layer.layerId, field.name)}
-                                                                                                                aria-label={`Exclude ${field.name} from PDF`}
+                                                                                                                aria-label={t('excludeNameFromPdf', { name: field.name })}
                                                                                                             />
                                                                                                             <Label style={{ fontSize: '11px', cursor: 'pointer' }}>
-                                                                                                                Exclude from PDF
+                                                                                                                {t('excludeFromPdf')}
                                                                                                             </Label>
-                                                                                                            <Tip title="Field will display in widget but not in PDF export (useful for URLs)" placement="top">
+                                                                                                            <Tip title={t('fieldWillDisplayInWidgetBut')} placement="top">
                                                                                                                 <span style={{ color: 'var(--sys-color-text-light)', cursor: 'help' }}>ⓘ</span>
                                                                                                             </Tip>
                                                                                                         </div>
@@ -7200,12 +7202,12 @@ const Setting = (props: SettingProps) => {
                                                                                                             <Switch
                                                                                                                 checked={getFieldHideNull(section.sectionId, layer.layerId, field.name)}
                                                                                                                 onChange={() => toggleFieldHideNull(section.sectionId, layer.layerId, field.name)}
-                                                                                                                aria-label={`Hide ${field.name} when NULL`}
+                                                                                                                aria-label={t('hideNameWhenNull', { name: field.name })}
                                                                                                             />
                                                                                                             <Label style={{ fontSize: '11px', cursor: 'pointer' }}>
-                                                                                                                Hide when NULL
+                                                                                                                {t('hideWhenNull')}
                                                                                                             </Label>
-                                                                                                            <Tip title="Hide this field when value is NULL or empty" placement="top">
+                                                                                                            <Tip title={t('hideThisFieldWhenValueIs')} placement="top">
                                                                                                                 <span style={{ color: 'var(--sys-color-text-light)', cursor: 'help' }}>ⓘ</span>
                                                                                                             </Tip>
                                                                                                         </div>
@@ -7217,12 +7219,12 @@ const Setting = (props: SettingProps) => {
                                                                                 </SettingRow>
 
                                                                                 {/* Nearby Display Mode Configuration */}
-                                                                                <div className="subsection-divider" style={{ marginTop: '16px' }}>Nearby Display Mode</div>
+                                                                                <div className="subsection-divider" style={{ marginTop: '16px' }}>{t('nearbyDisplayMode')}</div>
                                                                                 <p className="hint-text" style={{ marginTop: '4px', marginBottom: '8px' }}>
-                                                                                    Display features as a distance-sorted list.
+                                                                                    {t('displayFeaturesAsADistanceSorted')}
                                                                                 </p>
 
-                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label="Enable Nearby Mode" tooltip="Display features as a distance-sorted list instead of a table. Ideal for showing closest facilities, parks, schools, etc." />)}>
+                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('enableNearbyMode')} tooltip={t('displayFeaturesAsADistanceSorted2')} />)}>
                                                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                                                                         <Switch
                                                                                             checked={layer.nearbyConfig?.enabled || false}
@@ -7232,9 +7234,9 @@ const Setting = (props: SettingProps) => {
                                                                                                     enabled: (e.target as HTMLInputElement).checked
                                                                                                 }
                                                                                             } as any)}
-                                                                                            aria-label="Enable nearby mode for this layer"
+                                                                                            aria-label={t('enableNearbyModeForThisLayer')}
                                                                                         />
-                                                                                        <Tip title="Shows features sorted by distance from search point instead of in a table" placement="top">
+                                                                                        <Tip title={t('showsFeaturesSortedByDistanceFrom')} placement="top">
                                                                                             <span style={{ color: 'var(--sys-color-text-light)', cursor: 'help' }}>ⓘ</span>
                                                                                         </Tip>
                                                                                     </div>
@@ -7242,7 +7244,7 @@ const Setting = (props: SettingProps) => {
 
                                                                                 {layer.nearbyConfig?.enabled && (
                                                                                     <div style={{ marginLeft: '8px', paddingLeft: '8px', borderLeft: '2px solid var(--sys-color-primary-main)' }}>
-                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Title Field" tooltip="Field displayed as the main heading for each nearby feature (e.g., NAME, FACILITY_NAME)." />)}>
+                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('titleField')} tooltip={t('fieldDisplayedAsTheMainHeading')} />)}>
                                                                                             <Select
                                                                                                 size="sm"
                                                                                                 value={layer.nearbyConfig?.titleField || ''}
@@ -7253,17 +7255,17 @@ const Setting = (props: SettingProps) => {
                                                                                                     }
                                                                                                 } as any)}
                                                                                             >
-                                                                                                <Option value="">-- Select Field --</Option>
+                                                                                                <Option value="">{t('selectField')}</Option>
                                                                                                 {layerFields.map(field => (
                                                                                                     <Option key={field.name} value={field.name}>{field.alias || field.name}</Option>
                                                                                                 ))}
                                                                                             </Select>
                                                                                             <span style={{ fontSize: '10px', color: 'var(--sys-color-text-light)', display: 'block', marginTop: '4px' }}>
-                                                                                                Main display name (required)
+                                                                                                {t('mainDisplayNameRequired')}
                                                                                             </span>
                                                                                         </SettingRow>
 
-                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Subtitle Field" tooltip="Optional field for secondary information shown below the title (e.g., ADDRESS, PHONE, HOURS)." />)}>
+                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('subtitleField')} tooltip={t('optionalFieldForSecondaryInformationShown')} />)}>
                                                                                             <Select
                                                                                                 size="sm"
                                                                                                 value={layer.nearbyConfig?.subtitleField || ''}
@@ -7274,7 +7276,7 @@ const Setting = (props: SettingProps) => {
                                                                                                     }
                                                                                                 } as any)}
                                                                                             >
-                                                                                                <Option value="">-- None --</Option>
+                                                                                                <Option value="">{t('none2')}</Option>
                                                                                                 {layerFields.map(field => (
                                                                                                     <Option key={field.name} value={field.name}>{field.alias || field.name}</Option>
                                                                                                 ))}
@@ -7283,7 +7285,7 @@ const Setting = (props: SettingProps) => {
 
                                                                                         <div style={{ display: 'flex', gap: '8px' }}>
                                                                                             <div style={{ flex: 1 }}>
-                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label="Subtitle Prefix" tooltip="Text added before the subtitle value (e.g., 'Size: ' or 'Area: ')." />)}>
+                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('subtitlePrefix')} tooltip={t('textAddedBeforeTheSubtitleValue')} />)}>
                                                                                                     <TextInput
                                                                                                         size="sm"
                                                                                                         value={layer.nearbyConfig?.subtitlePrefix || ''}
@@ -7297,11 +7299,11 @@ const Setting = (props: SettingProps) => {
                                                                                                 </SettingRow>
                                                                                             </div>
                                                                                             <div style={{ flex: 1 }}>
-                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label="Subtitle Suffix" tooltip="Text added after the subtitle value (e.g., ' acres' or ' sq ft')." />)}>
+                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('subtitleSuffix')} tooltip={t('textAddedAfterTheSubtitleValue')} />)}>
                                                                                                     <TextInput
                                                                                                         size="sm"
                                                                                                         value={layer.nearbyConfig?.subtitleSuffix || ''}
-                                                                                                        placeholder="e.g., acres"
+                                                                                                        placeholder={t('eGAcres')}
                                                                                                         onChange={(e) => updateLayer(section.sectionId, layer.layerId, {
                                                                                                             nearbyConfig: {
                                                                                                                 ...layer.nearbyConfig,
@@ -7313,7 +7315,7 @@ const Setting = (props: SettingProps) => {
                                                                                             </div>
                                                                                         </div>
 
-                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Link URL Field" tooltip="Field containing a URL. Makes the title a clickable link that opens this URL." />)}>
+                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('linkUrlField')} tooltip={t('fieldContainingAUrlMakesThe')} />)}>
                                                                                             <Select
                                                                                                 size="sm"
                                                                                                 value={layer.nearbyConfig?.linkUrlField || ''}
@@ -7324,21 +7326,21 @@ const Setting = (props: SettingProps) => {
                                                                                                     }
                                                                                                 } as any)}
                                                                                             >
-                                                                                                <Option value="">-- None --</Option>
+                                                                                                <Option value="">{t('none2')}</Option>
                                                                                                 {layerFields.map(field => (
                                                                                                     <Option key={field.name} value={field.name}>{field.alias || field.name}</Option>
                                                                                                 ))}
                                                                                             </Select>
                                                                                             <span style={{ fontSize: '10px', color: 'var(--sys-color-text-light)', display: 'block', marginTop: '4px' }}>
-                                                                                                Field with URL to open on click
+                                                                                                {t('fieldWithUrlToOpenOn')}
                                                                                             </span>
                                                                                         </SettingRow>
 
-                                                                                        <div style={{ marginTop: '12px', fontSize: '11px', fontWeight: 500, marginBottom: '6px' }}>Search Settings</div>
+                                                                                        <div style={{ marginTop: '12px', fontSize: '11px', fontWeight: 500, marginBottom: '6px' }}>{t('searchSettings')}</div>
 
                                                                                         <div style={{ display: 'flex', gap: '8px' }}>
                                                                                             <div style={{ flex: 1 }}>
-                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label="Search Radius" tooltip="Maximum distance to search for nearby features." />)}>
+                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('searchRadius')} tooltip={t('maximumDistanceToSearchForNearby2')} />)}>
                                                                                                     <NumericInput
                                                                                                         size="sm"
                                                                                                         value={layer.nearbyConfig?.searchRadius || 5}
@@ -7355,7 +7357,7 @@ const Setting = (props: SettingProps) => {
                                                                                                 </SettingRow>
                                                                                             </div>
                                                                                             <div style={{ flex: 1 }}>
-                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label="Unit" tooltip="Distance unit for the radius." />)}>
+                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('unit')} tooltip={t('distanceUnitForTheRadius')} />)}>
                                                                                                     <Select
                                                                                                         size="sm"
                                                                                                         value={layer.nearbyConfig?.searchRadiusUnit || 'miles'}
@@ -7366,16 +7368,16 @@ const Setting = (props: SettingProps) => {
                                                                                                             }
                                                                                                         } as any)}
                                                                                                     >
-                                                                                                        <Option value="feet">Feet</Option>
-                                                                                                        <Option value="meters">Meters</Option>
-                                                                                                        <Option value="miles">Miles</Option>
-                                                                                                        <Option value="kilometers">Kilometers</Option>
+                                                                                                        <Option value="feet">{t('feet')}</Option>
+                                                                                                        <Option value="meters">{t('meters')}</Option>
+                                                                                                        <Option value="miles">{t('miles')}</Option>
+                                                                                                        <Option value="kilometers">{t('kilometers')}</Option>
                                                                                                     </Select>
                                                                                                 </SettingRow>
                                                                                             </div>
                                                                                         </div>
 
-                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Max Features" tooltip="Maximum number of nearby features to return. Set higher for comprehensive lists." />)}>
+                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('maxFeatures')} tooltip={t('maximumNumberOfNearbyFeaturesTo2')} />)}>
                                                                                             <NumericInput
                                                                                                 size="sm"
                                                                                                 value={layer.nearbyConfig?.maxFeatures || 5}
@@ -7390,11 +7392,11 @@ const Setting = (props: SettingProps) => {
                                                                                             />
                                                                                         </SettingRow>
 
-                                                                                        <div style={{ marginTop: '12px', fontSize: '11px', fontWeight: 500, marginBottom: '6px' }}>Distance Display</div>
+                                                                                        <div style={{ marginTop: '12px', fontSize: '11px', fontWeight: 500, marginBottom: '6px' }}>{t('distanceDisplay')}</div>
 
                                                                                         <div style={{ display: 'flex', gap: '8px' }}>
                                                                                             <div style={{ flex: 1 }}>
-                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label="Distance Unit" tooltip="Unit for displaying the calculated distance to each feature." />)}>
+                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('distanceUnit')} tooltip={t('unitForDisplayingTheCalculatedDistance')} />)}>
                                                                                                     <Select
                                                                                                         size="sm"
                                                                                                         value={layer.nearbyConfig?.distanceUnit || 'miles'}
@@ -7405,15 +7407,15 @@ const Setting = (props: SettingProps) => {
                                                                                                             }
                                                                                                         } as any)}
                                                                                                     >
-                                                                                                        <Option value="feet">Feet</Option>
-                                                                                                        <Option value="meters">Meters</Option>
-                                                                                                        <Option value="miles">Miles</Option>
-                                                                                                        <Option value="kilometers">Kilometers</Option>
+                                                                                                        <Option value="feet">{t('feet')}</Option>
+                                                                                                        <Option value="meters">{t('meters')}</Option>
+                                                                                                        <Option value="miles">{t('miles')}</Option>
+                                                                                                        <Option value="kilometers">{t('kilometers')}</Option>
                                                                                                     </Select>
                                                                                                 </SettingRow>
                                                                                             </div>
                                                                                             <div style={{ flex: 1 }}>
-                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label="Precision" tooltip="Decimal places for distance display." />)}>
+                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('precision')} tooltip={t('decimalPlacesForDistanceDisplay')} />)}>
                                                                                                     <NumericInput
                                                                                                         size="sm"
                                                                                                         value={layer.nearbyConfig?.distancePrecision ?? 2}
@@ -7430,7 +7432,7 @@ const Setting = (props: SettingProps) => {
                                                                                             </div>
                                                                                         </div>
 
-                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Show Distance Badge" tooltip="Display a badge on the right side showing the distance to each feature." />)}>
+                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('showDistanceBadge')} tooltip={t('displayABadgeOnTheRight')} />)}>
                                                                                             <Switch
                                                                                                 checked={layer.nearbyConfig?.showDistanceBadge !== false}
                                                                                                 onChange={(e) => updateLayer(section.sectionId, layer.layerId, {
@@ -7442,9 +7444,9 @@ const Setting = (props: SettingProps) => {
                                                                                             />
                                                                                         </SettingRow>
 
-                                                                                        <div style={{ marginTop: '12px', fontSize: '11px', fontWeight: 500, marginBottom: '6px' }}>PDF Export</div>
+                                                                                        <div style={{ marginTop: '12px', fontSize: '11px', fontWeight: 500, marginBottom: '6px' }}>{t('pdfExport')}</div>
 
-                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Include in PDF" tooltip="Whether to include this nearby features list in PDF exports." />)}>
+                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('includeInPdf')} tooltip={t('whetherToIncludeThisNearbyFeatures')} />)}>
                                                                                             <Switch
                                                                                                 checked={layer.nearbyConfig?.includeInPdf !== false}
                                                                                                 onChange={(e) => updateLayer(section.sectionId, layer.layerId, {
@@ -7457,7 +7459,7 @@ const Setting = (props: SettingProps) => {
                                                                                         </SettingRow>
 
                                                                                         {layer.nearbyConfig?.includeInPdf !== false && (
-                                                                                            <SettingRow flow="wrap" label="PDF Max Features">
+                                                                                            <SettingRow flow="wrap" label={t('pdfMaxFeatures')}>
                                                                                                 <NumericInput
                                                                                                     size="sm"
                                                                                                     value={layer.nearbyConfig?.pdfMaxFeatures || layer.nearbyConfig?.maxFeatures || 5}
@@ -7476,67 +7478,67 @@ const Setting = (props: SettingProps) => {
                                                                                 )}
 
                                                                                 {/* Layer Info Content (Optional) */}
-                                                                                <div className="subsection-divider" style={{ marginTop: '16px' }}>Layer Info Content (Optional)</div>
+                                                                                <div className="subsection-divider" style={{ marginTop: '16px' }}>{t('layerInfoContentOptional')}</div>
                                                                                 <p className="hint-text" style={{ marginTop: '4px', marginBottom: '8px' }}>
-                                                                                    Add supplementary text, contact info, links, or action buttons specific to this data layer.
+                                                                                    {t('addSupplementaryTextContactInfoLinks')}
                                                                                 </p>
 
-                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label="Rich Text Position" tooltip="Show the rich text content before or after the data table for this layer." />)}>
+                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('richTextPosition')} tooltip={t('showTheRichTextContentBefore')} />)}>
                                                                                     <div className="position-buttons">
                                                                                         <button
                                                                                             className={`position-btn ${(layer.layerRichTextPosition || 'after') === 'before' ? 'active' : ''}`}
                                                                                             onClick={() => updateLayer(section.sectionId, layer.layerId, { layerRichTextPosition: 'before' })}
-                                                                                        >Before Data</button>
+                                                                                        >{t('beforeData')}</button>
                                                                                         <button
                                                                                             className={`position-btn ${(layer.layerRichTextPosition || 'after') === 'after' ? 'active' : ''}`}
                                                                                             onClick={() => updateLayer(section.sectionId, layer.layerId, { layerRichTextPosition: 'after' })}
-                                                                                        >After Data</button>
+                                                                                        >{t('afterData')}</button>
                                                                                     </div>
                                                                                 </SettingRow>
 
-                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label="HTML Content" tooltip="Rich text content supporting HTML formatting, links, phone numbers, and email addresses. Uses field placeholders from this specific layer." />)}>
+                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('htmlContent')} tooltip={t('richTextContentSupportingHtmlFormatting')} />)}>
                                                                                     <textarea
                                                                                         className="rich-text-editor"
                                                                                         value={layer.layerRichTextContent || ''}
                                                                                         onChange={(e) => updateLayer(section.sectionId, layer.layerId, { layerRichTextContent: e.target.value })}
                                                                                         placeholder="<p>For more information, contact...</p>"
-                                                                                        aria-label="Layer rich text HTML content"
+                                                                                        aria-label={t('layerRichTextHtmlContent')}
                                                                                     />
                                                                                     <div className="rich-text-help">
-                                                                                        <strong>Supported HTML:</strong><br />
-                                                                                        • Links: <code>&lt;a href="url"&gt;text&lt;/a&gt;</code><br />
-                                                                                        • Email: <code>&lt;a href="mailto:email"&gt;text&lt;/a&gt;</code><br />
-                                                                                        • Phone: <code>&lt;a href="tel:number"&gt;text&lt;/a&gt;</code><br />
-                                                                                        • Bold: <code>&lt;strong&gt;text&lt;/strong&gt;</code><br />
-                                                                                        <strong>Field Placeholders:</strong> <code>{'{'}FieldName{'}'}</code><br />
-                                                                                        <em>Uses fields from this layer's data (first result), or header info fields.</em>
+                                                                                        <strong>{t('supportedHtml')}</strong><br />
+                                                                                        {t('links')} <code>&lt;a href="url"&gt;text&lt;/a&gt;</code><br />
+                                                                                        {t('email')} <code>&lt;a href="mailto:email"&gt;text&lt;/a&gt;</code><br />
+                                                                                        {t('phone')} <code>&lt;a href="tel:number"&gt;text&lt;/a&gt;</code><br />
+                                                                                        {t('bold')} <code>&lt;strong&gt;text&lt;/strong&gt;</code><br />
+                                                                                        <strong>{t('fieldPlaceholders')}</strong> <code>{'{'}FieldName{'}'}</code><br />
+                                                                                        <em>{t('usesFieldsFromThisLayerS')}</em>
                                                                                     </div>
                                                                                 </SettingRow>
 
                                                                                 {/* Exclude layer rich text from PDF toggle */}
-                                                                                <SettingRow flow="wrap" label="Exclude from PDF">
+                                                                                <SettingRow flow="wrap" label={t('excludeFromPdf')}>
                                                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                                                                         <Switch
                                                                                             checked={layer.layerRichTextExcludeFromPdf || false}
                                                                                             onChange={(e) => updateLayer(section.sectionId, layer.layerId, { layerRichTextExcludeFromPdf: (e.target as HTMLInputElement).checked })}
-                                                                                            aria-label="Exclude layer rich text from PDF"
+                                                                                            aria-label={t('excludeLayerRichTextFromPdf')}
                                                                                         />
                                                                                         <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                                                            Show in widget only (not in PDF export)
+                                                                                            {t('showInWidgetOnlyNotIn')}
                                                                                         </span>
                                                                                     </div>
                                                                                 </SettingRow>
 
                                                                                 {/* Hide layer rich text when no features toggle */}
-                                                                                <SettingRow flow="wrap" label="Hide When No Features">
+                                                                                <SettingRow flow="wrap" label={t('hideWhenNoFeatures')}>
                                                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                                                                         <Switch
                                                                                             checked={layer.hideLayerRichTextWhenNoResults || false}
                                                                                             onChange={(e) => updateLayer(section.sectionId, layer.layerId, { hideLayerRichTextWhenNoResults: (e.target as HTMLInputElement).checked })}
-                                                                                            aria-label="Hide layer rich text when no features returned"
+                                                                                            aria-label={t('hideLayerRichTextWhenNo')}
                                                                                         />
                                                                                         <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                                                            Only show if this layer has results
+                                                                                            {t('onlyShowIfThisLayerHas')}
                                                                                         </span>
                                                                                     </div>
                                                                                 </SettingRow>
@@ -7547,46 +7549,46 @@ const Setting = (props: SettingProps) => {
                                                                                         <div className="button-item" key={button.buttonId}>
                                                                                             <div className="button-item-header">
                                                                                                 <Label style={{ fontSize: '11px', fontWeight: 600 }}>
-                                                                                                    <LinkIcon /> Action Button
+                                                                                                    <LinkIcon /> {t('actionButton')}
                                                                                                 </Label>
                                                                                                 <button
                                                                                                     className="delete-btn"
                                                                                                     onClick={() => removeLayerRichTextButton(section.sectionId, layer.layerId, button.buttonId)}
-                                                                                                    aria-label="Remove button"
+                                                                                                    aria-label={t('removeButton')}
                                                                                                 >
                                                                                                     <TrashIcon />
                                                                                                 </button>
                                                                                             </div>
                                                                                             <div className="button-item-row">
                                                                                                 <div>
-                                                                                                    <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>Label</Label>
+                                                                                                    <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>{t('label')}</Label>
                                                                                                     <TextInput
                                                                                                         size="sm"
                                                                                                         value={button.label}
                                                                                                         onChange={(e) => updateLayerRichTextButton(section.sectionId, layer.layerId, button.buttonId, { label: e.target.value })}
-                                                                                                        placeholder="Button text"
+                                                                                                        placeholder={t('buttonText')}
                                                                                                     />
                                                                                                 </div>
                                                                                                 <div>
-                                                                                                    <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>Style</Label>
+                                                                                                    <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>{t('style')}</Label>
                                                                                                     <div className="style-buttons">
                                                                                                         <button
                                                                                                             className={`style-btn ${button.style === 'default' || !button.style ? 'active' : ''}`}
                                                                                                             onClick={() => updateLayerRichTextButton(section.sectionId, layer.layerId, button.buttonId, { style: 'default' })}
-                                                                                                        >Default</button>
+                                                                                                        >{t('default')}</button>
                                                                                                         <button
                                                                                                             className={`style-btn ${button.style === 'primary' ? 'active' : ''}`}
                                                                                                             onClick={() => updateLayerRichTextButton(section.sectionId, layer.layerId, button.buttonId, { style: 'primary' })}
-                                                                                                        >Primary</button>
+                                                                                                        >{t('primary')}</button>
                                                                                                         <button
                                                                                                             className={`style-btn ${button.style === 'outline' ? 'active' : ''}`}
                                                                                                             onClick={() => updateLayerRichTextButton(section.sectionId, layer.layerId, button.buttonId, { style: 'outline' })}
-                                                                                                        >Outline</button>
+                                                                                                        >{t('outline')}</button>
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div>
-                                                                                                <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>URL (supports {'{'}field{'}'} from this layer)</Label>
+                                                                                                <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>{t('urlSupportsFieldFromThisLayer')}</Label>
                                                                                                 <TextInput
                                                                                                     size="sm"
                                                                                                     value={button.url}
@@ -7599,7 +7601,7 @@ const Setting = (props: SettingProps) => {
                                                                                                     checked={button.openInNewTab !== false}
                                                                                                     onChange={(e) => updateLayerRichTextButton(section.sectionId, layer.layerId, button.buttonId, { openInNewTab: (e.target as HTMLInputElement).checked })}
                                                                                                 />
-                                                                                                <span>Open in new tab</span>
+                                                                                                <span>{t('openInNewTab')}</span>
                                                                                             </label>
                                                                                         </div>
                                                                                     ))}
@@ -7609,17 +7611,17 @@ const Setting = (props: SettingProps) => {
                                                                                     className="add-button add-button-secondary"
                                                                                     type="tertiary"
                                                                                     onClick={() => addLayerRichTextButton(section.sectionId, layer.layerId)}
-                                                                                    aria-label="Add layer action button"
+                                                                                    aria-label={t('addLayerActionButton')}
                                                                                     style={{ marginBottom: '12px' }}
                                                                                 >
                                                                                     <PlusIcon />
-                                                                                    Add Action Button
+                                                                                    {t('addActionButton')}
                                                                                 </Button>
 
                                                                                 {/* Related Tables Configuration */}
-                                                                                <div className="subsection-divider" style={{ marginTop: '16px' }}>Related Tables</div>
+                                                                                <div className="subsection-divider" style={{ marginTop: '16px' }}>{t('relatedTables')}</div>
                                                                                 <p className="hint-text" style={{ marginTop: '4px', marginBottom: '8px' }}>
-                                                                                    Query related tables using relationship keys to show linked records.
+                                                                                    {t('queryRelatedTablesUsingRelationshipKeys')}
                                                                                 </p>
 
                                                                                 {(layer.relatedTables?.length || 0) === 0 ? (
@@ -7631,7 +7633,7 @@ const Setting = (props: SettingProps) => {
                                                                                         color: 'var(--sys-color-text-light)',
                                                                                         fontSize: '12px'
                                                                                     }}>
-                                                                                        No related tables configured
+                                                                                        {t('noRelatedTablesConfigured')}
                                                                                     </div>
                                                                                 ) : (
                                                                                     <div className="related-tables-list">
@@ -7644,19 +7646,19 @@ const Setting = (props: SettingProps) => {
                                                                                                 background: 'var(--sys-color-secondary-light)'
                                                                                             }}>
                                                                                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                                                                                                    <span style={{ fontWeight: 600, fontSize: '12px' }}>{relTable.tableName || 'Untitled Table'}</span>
-                                                                                                    <Tip title="Remove related table" placement="top">
+                                                                                                    <span style={{ fontWeight: 600, fontSize: '12px' }}>{relTable.tableName || t('untitledTable')}</span>
+                                                                                                    <Tip title={t('removeRelatedTable')} placement="top">
                                                                                                         <button
                                                                                                             className="delete-btn"
                                                                                                             onClick={() => removeRelatedTable(section.sectionId, layer.layerId, relTable.tableId)}
-                                                                                                            aria-label="Remove related table"
+                                                                                                            aria-label={t('removeRelatedTable')}
                                                                                                         >
                                                                                                             <TrashIcon />
                                                                                                         </button>
                                                                                                     </Tip>
                                                                                                 </div>
 
-                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label="Table Name" tooltip="Display name for this related table shown in headers and PDF export." />)}>
+                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('tableName')} tooltip={t('displayNameForThisRelatedTable')} />)}>
                                                                                                     <TextInput
                                                                                                         size="sm"
                                                                                                         value={relTable.tableName}
@@ -7664,7 +7666,7 @@ const Setting = (props: SettingProps) => {
                                                                                                     />
                                                                                                 </SettingRow>
 
-                                                                                                <SettingRow flow="wrap" label="Data Source">
+                                                                                                <SettingRow flow="wrap" label={t('dataSource')}>
                                                                                                     <div className="ds-selector-container">
                                                                                                         {DataSourceSelector ? (
                                                                                                             <DataSourceSelector
@@ -7676,7 +7678,7 @@ const Setting = (props: SettingProps) => {
                                                                                                                 isMultiple={false}
                                                                                                                 closeDataSourceListOnChange
                                                                                                             />
-                                                                                                        ) : <div style={{ padding: "8px", fontSize: "12px", color: "var(--sys-color-text-secondary)" }}>Loading data source selector...</div>}
+                                                                                                        ) : <div style={{ padding: "8px", fontSize: "12px", color: "var(--sys-color-text-secondary)" }}>{t('loadingDataSourceSelector')}</div>}
                                                                                                     </div>
                                                                                                     {/* Show reload button if data source selected but fields not loaded */}
                                                                                                     {relTable.dataSourceId && getRelatedTableFields(relTable.tableId).length === 0 && (
@@ -7717,16 +7719,16 @@ const Setting = (props: SettingProps) => {
                                                                                                             }}
                                                                                                             disabled={fetchLoading[`related-table:${relTable.tableId}`]}
                                                                                                         >
-                                                                                                            {fetchLoading[`related-table:${relTable.tableId}`] ? 'Loading...' : 'Reload Fields'}
+                                                                                                            {fetchLoading[`related-table:${relTable.tableId}`] ? 'Loading...' : t('reloadFields')}
                                                                                                         </button>
                                                                                                     )}
                                                                                                 </SettingRow>
 
                                                                                                 <div style={{ textAlign: 'center', color: 'var(--sys-color-text-light)', fontSize: '11px', margin: '8px 0' }}>
-                                                                                                    — OR use direct URL —
+                                                                                                    {t('orUseDirectUrl')}
                                                                                                 </div>
 
-                                                                                                <SettingRow flow="wrap" label="Table URL">
+                                                                                                <SettingRow flow="wrap" label={t('tableUrl')}>
                                                                                                     <TextInput
                                                                                                         size="sm"
                                                                                                         value={relTable.tableUrl || ''}
@@ -7749,7 +7751,7 @@ const Setting = (props: SettingProps) => {
                                                                                                             onClick={() => fetchRelatedTableFields(relTable.tableId, relTable.tableUrl)}
                                                                                                             disabled={fetchLoading[`related-table:${relTable.tableId}`]}
                                                                                                         >
-                                                                                                            {fetchLoading[`related-table:${relTable.tableId}`] ? 'Loading...' : 'Fetch Fields'}
+                                                                                                            {fetchLoading[`related-table:${relTable.tableId}`] ? 'Loading...' : t('fetchFields')}
                                                                                                         </button>
                                                                                                     )}
                                                                                                     {fetchErrors[`related-table:${relTable.tableId}`] && (
@@ -7764,27 +7766,27 @@ const Setting = (props: SettingProps) => {
                                                                                                     )}
                                                                                                 </SettingRow>
 
-                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label="Relationship Type" tooltip="How to join data: 'Key' uses matching field values, 'Relationship Class' uses ArcGIS Server relationships, 'Spatial' queries by geometry." />)}>
+                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('relationshipType')} tooltip={t('howToJoinDataKeyUses')} />)}>
                                                                                                     <Select
                                                                                                         size="sm"
                                                                                                         value={relTable.relationshipType || 'key'}
                                                                                                         onChange={(e) => updateRelatedTable(section.sectionId, layer.layerId, relTable.tableId, { relationshipType: e.target.value as any })}
                                                                                                     >
-                                                                                                        <Option value="key">Foreign Key</Option>
-                                                                                                        <Option value="relationshipClass">Relationship Class</Option>
-                                                                                                        <Option value="spatial">Spatial</Option>
+                                                                                                        <Option value="key">{t('foreignKey')}</Option>
+                                                                                                        <Option value="relationshipClass">{t('relationshipClass')}</Option>
+                                                                                                        <Option value="spatial">{t('spatial')}</Option>
                                                                                                     </Select>
                                                                                                 </SettingRow>
 
                                                                                                 {relTable.relationshipType === 'key' || !relTable.relationshipType ? (
                                                                                                     <>
-                                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Primary Key Field" tooltip="Field in the parent layer that matches records (e.g., PARCEL_ID, OBJECTID)." />)}>
+                                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('primaryKeyField')} tooltip={t('fieldInTheParentLayerThat')} />)}>
                                                                                                             <Select
                                                                                                                 size="sm"
                                                                                                                 value={relTable.primaryKeyField || ''}
                                                                                                                 onChange={(e) => updateRelatedTable(section.sectionId, layer.layerId, relTable.tableId, { primaryKeyField: e.target.value })}
                                                                                                             >
-                                                                                                                <Option value="">-- Select field from parent layer --</Option>
+                                                                                                                <Option value="">{t('selectFieldFromParentLayer')}</Option>
                                                                                                                 {layerFields.map(field => (
                                                                                                                     <Option key={field.name} value={field.name}>
                                                                                                                         {field.alias !== field.name ? `${field.alias} (${field.name})` : field.name}
@@ -7793,17 +7795,17 @@ const Setting = (props: SettingProps) => {
                                                                                                             </Select>
                                                                                                             {layerFields.length === 0 && (
                                                                                                                 <p className="hint-text" style={{ marginTop: '4px', color: '#f5a623' }}>
-                                                                                                                    Select a data source or fetch fields for parent layer first
+                                                                                                                    {t('selectADataSourceOrFetch')}
                                                                                                                 </p>
                                                                                                             )}
                                                                                                         </SettingRow>
-                                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Foreign Key Field" tooltip="Field in the related table that matches the primary key field." />)}>
+                                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('foreignKeyField')} tooltip={t('fieldInTheRelatedTableThat')} />)}>
                                                                                                             <Select
                                                                                                                 size="sm"
                                                                                                                 value={relTable.foreignKeyField || ''}
                                                                                                                 onChange={(e) => updateRelatedTable(section.sectionId, layer.layerId, relTable.tableId, { foreignKeyField: e.target.value })}
                                                                                                             >
-                                                                                                                <Option value="">-- Select field from related table --</Option>
+                                                                                                                <Option value="">{t('selectFieldFromRelatedTable')}</Option>
                                                                                                                 {getRelatedTableFields(relTable.tableId).map(field => (
                                                                                                                     <Option key={field.name} value={field.name}>
                                                                                                                         {field.alias !== field.name ? `${field.alias} (${field.name})` : field.name}
@@ -7812,29 +7814,29 @@ const Setting = (props: SettingProps) => {
                                                                                                             </Select>
                                                                                                             {getRelatedTableFields(relTable.tableId).length === 0 && (
                                                                                                                 <p className="hint-text" style={{ marginTop: '4px', color: '#f5a623' }}>
-                                                                                                                    Click "Fetch Fields" above to load available fields
+                                                                                                                    {t('clickFetchFieldsAboveToLoad')}
                                                                                                                 </p>
                                                                                                             )}
                                                                                                         </SettingRow>
                                                                                                     </>
                                                                                                 ) : relTable.relationshipType === 'spatial' ? (
                                                                                                     <>
-                                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Spatial Relationship" tooltip="How geometries should relate: intersects (overlap), contains, within, touches, etc." />)}>
+                                                                                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('spatialRelationship')} tooltip={t('howGeometriesShouldRelateIntersectsOverlap')} />)}>
                                                                                                             <Select
                                                                                                                 size="sm"
                                                                                                                 value={relTable.spatialRelationship || 'intersects'}
                                                                                                                 onChange={(e) => updateRelatedTable(section.sectionId, layer.layerId, relTable.tableId, { spatialRelationship: e.target.value as any })}
                                                                                                             >
-                                                                                                                <Option value="intersects">Intersects</Option>
-                                                                                                                <Option value="contains">Contains</Option>
-                                                                                                                <Option value="within">Within</Option>
-                                                                                                                <Option value="crosses">Crosses</Option>
-                                                                                                                <Option value="touches">Touches</Option>
-                                                                                                                <Option value="overlaps">Overlaps</Option>
-                                                                                                                <Option value="nearby">Nearby (with buffer)</Option>
+                                                                                                                <Option value="intersects">{t('intersects')}</Option>
+                                                                                                                <Option value="contains">{t('contains2')}</Option>
+                                                                                                                <Option value="within">{t('within')}</Option>
+                                                                                                                <Option value="crosses">{t('crosses')}</Option>
+                                                                                                                <Option value="touches">{t('touches')}</Option>
+                                                                                                                <Option value="overlaps">{t('overlaps')}</Option>
+                                                                                                                <Option value="nearby">{t('nearbyWithBuffer')}</Option>
                                                                                                             </Select>
                                                                                                         </SettingRow>
-                                                                                                        <SettingRow flow="wrap" label="Buffer Distance">
+                                                                                                        <SettingRow flow="wrap" label={t('bufferDistance')}>
                                                                                                             <div className="input-row">
                                                                                                                 <NumericInput
                                                                                                                     size="sm"
@@ -7849,27 +7851,27 @@ const Setting = (props: SettingProps) => {
                                                                                                                     onChange={(e) => updateRelatedTable(section.sectionId, layer.layerId, relTable.tableId, { spatialBufferUnit: e.target.value as any })}
                                                                                                                     style={{ width: 100 }}
                                                                                                                 >
-                                                                                                                    <Option value="feet">Feet</Option>
-                                                                                                                    <Option value="meters">Meters</Option>
-                                                                                                                    <Option value="miles">Miles</Option>
-                                                                                                                    <Option value="kilometers">Kilometers</Option>
+                                                                                                                    <Option value="feet">{t('feet')}</Option>
+                                                                                                                    <Option value="meters">{t('meters')}</Option>
+                                                                                                                    <Option value="miles">{t('miles')}</Option>
+                                                                                                                    <Option value="kilometers">{t('kilometers')}</Option>
                                                                                                                 </Select>
                                                                                                             </div>
                                                                                                         </SettingRow>
-                                                                                                        <SettingRow flow="wrap" label="Use Parent Geometry">
+                                                                                                        <SettingRow flow="wrap" label={t('useParentGeometry')}>
                                                                                                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                                                                                                 <Switch
                                                                                                                     checked={relTable.useParentGeometry !== false}
                                                                                                                     onChange={(e) => updateRelatedTable(section.sectionId, layer.layerId, relTable.tableId, { useParentGeometry: (e.target as HTMLInputElement).checked })}
                                                                                                                 />
                                                                                                                 <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                                                                                    {relTable.useParentGeometry !== false ? 'Parent feature geometry' : 'Query point'}
+                                                                                                                    {relTable.useParentGeometry !== false ? t('parentFeatureGeometry') : t('queryPoint')}
                                                                                                                 </span>
                                                                                                             </div>
                                                                                                         </SettingRow>
                                                                                                     </>
                                                                                                 ) : (
-                                                                                                    <SettingRow flow="wrap" label="Relationship ID">
+                                                                                                    <SettingRow flow="wrap" label={t('relationshipId')}>
                                                                                                         <NumericInput
                                                                                                             size="sm"
                                                                                                             value={relTable.relationshipId || 0}
@@ -7880,26 +7882,26 @@ const Setting = (props: SettingProps) => {
                                                                                                     </SettingRow>
                                                                                                 )}
 
-                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label="Display Mode" tooltip="How to show related records: table (rows/columns), list (stacked), or card (grouped)." />)}>
+                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('displayMode')} tooltip={t('howToShowRelatedRecordsTable')} />)}>
                                                                                                     <Select
                                                                                                         size="sm"
                                                                                                         value={relTable.displayMode || 'table'}
                                                                                                         onChange={(e) => updateRelatedTable(section.sectionId, layer.layerId, relTable.tableId, { displayMode: e.target.value as any })}
                                                                                                     >
-                                                                                                        <Option value="table">Table</Option>
-                                                                                                        <Option value="list">List</Option>
-                                                                                                        <Option value="card">Cards</Option>
+                                                                                                        <Option value="table">{t('table')}</Option>
+                                                                                                        <Option value="list">{t('list')}</Option>
+                                                                                                        <Option value="card">{t('cards')}</Option>
                                                                                                     </Select>
                                                                                                 </SettingRow>
 
-                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label="Default Sort Field" tooltip="Select a field to sort records by when they first load. Leave as 'None' to use the natural order from the query." />)}>
+                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('defaultSortField')} tooltip={t('selectAFieldToSortRecords')} />)}>
                                                                                                     <Select
                                                                                                         size="sm"
                                                                                                         value={relTable.defaultSortField || ''}
                                                                                                         onChange={(e) => updateRelatedTable(section.sectionId, layer.layerId, relTable.tableId, { defaultSortField: e.target.value || undefined })}
-                                                                                                        aria-label="Default sort field"
+                                                                                                        aria-label={t('defaultSortField2')}
                                                                                                     >
-                                                                                                        <Option value="">None</Option>
+                                                                                                        <Option value="">{t('none')}</Option>
                                                                                                         {(relTable.fields || []).filter((f: any) => f.visible !== false).map((field: any) => (
                                                                                                             <Option key={field.name} value={field.name}>
                                                                                                                 {field.alias || field.name}
@@ -7909,74 +7911,74 @@ const Setting = (props: SettingProps) => {
                                                                                                 </SettingRow>
 
                                                                                                 {relTable.defaultSortField && (
-                                                                                                    <SettingRow flow="wrap" label={(<TooltipLabel label="Sort Order" tooltip="Choose ascending (A-Z, 0-9, oldest to newest) or descending (Z-A, 9-0, newest to oldest) order for the default sort." />)}>
+                                                                                                    <SettingRow flow="wrap" label={(<TooltipLabel label={t('sortOrder')} tooltip={t('chooseAscendingAZ09')} />)}>
                                                                                                         <Select
                                                                                                             size="sm"
                                                                                                             value={relTable.defaultSortOrder || 'asc'}
                                                                                                             onChange={(e) => updateRelatedTable(section.sectionId, layer.layerId, relTable.tableId, { defaultSortOrder: e.target.value as any })}
-                                                                                                            aria-label="Sort order"
+                                                                                                            aria-label={t('sortOrder2')}
                                                                                                         >
-                                                                                                            <Option value="asc">Ascending (A→Z, 0→9, Oldest→Newest)</Option>
-                                                                                                            <Option value="desc">Descending (Z→A, 9→0, Newest→Oldest)</Option>
+                                                                                                            <Option value="asc">{t('ascendingAZ09Oldest')}</Option>
+                                                                                                            <Option value="desc">{t('descendingZA90Newest')}</Option>
                                                                                                         </Select>
                                                                                                     </SettingRow>
                                                                                                 )}
 
-                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label="Display Pane" tooltip="'Inline' shows records in the current section. 'Separate' opens a dedicated pane for the data." />)}>
+                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('displayPane')} tooltip={t('inlineShowsRecordsInTheCurrent')} />)}>
                                                                                                     <Select
                                                                                                         size="sm"
                                                                                                         value={relTable.displayPane || 'inline'}
                                                                                                         onChange={(e) => updateRelatedTable(section.sectionId, layer.layerId, relTable.tableId, { displayPane: e.target.value as any })}
                                                                                                     >
-                                                                                                        <Option value="inline">Inline (Current Section)</Option>
-                                                                                                        <Option value="separate">Separate Pane</Option>
+                                                                                                        <Option value="inline">{t('inlineCurrentSection')}</Option>
+                                                                                                        <Option value="separate">{t('separatePane')}</Option>
                                                                                                     </Select>
                                                                                                 </SettingRow>
 
                                                                                                 {relTable.displayPane === 'separate' && (
-                                                                                                    <SettingRow flow="wrap" label="Pane Title">
+                                                                                                    <SettingRow flow="wrap" label={t('paneTitle')}>
                                                                                                         <TextInput
                                                                                                             size="sm"
                                                                                                             value={relTable.separatePaneTitle || ''}
-                                                                                                            placeholder={relTable.tableName || 'Related Records'}
+                                                                                                            placeholder={relTable.tableName || t('relatedRecords')}
                                                                                                             onChange={(e) => updateRelatedTable(section.sectionId, layer.layerId, relTable.tableId, { separatePaneTitle: e.target.value })}
                                                                                                         />
                                                                                                     </SettingRow>
                                                                                                 )}
 
-                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label="Default Expanded" tooltip="Controls whether this related table section is expanded or collapsed when results are displayed. When collapsed, users can click to expand and view the data." />)}>
+                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('defaultExpanded')} tooltip={t('controlsWhetherThisRelatedTableSection')} />)}>
                                                                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                                                                                         <Switch
                                                                                                             checked={relTable.expanded !== false}
                                                                                                             onChange={(e) => updateRelatedTable(section.sectionId, layer.layerId, relTable.tableId, { expanded: (e.target as HTMLInputElement).checked })}
-                                                                                                            aria-label="Default expanded state"
+                                                                                                            aria-label={t('defaultExpandedState2')}
                                                                                                         />
                                                                                                         <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                                                                            {relTable.expanded !== false ? 'Expanded by default' : 'Collapsed by default'}
+                                                                                                            {relTable.expanded !== false ? t('expandedByDefault') : t('collapsedByDefault')}
                                                                                                         </span>
                                                                                                     </div>
                                                                                                 </SettingRow>
 
-                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label="Interactive Sorting" tooltip="Allow users to click column headers to sort data in the widget table." />)}>
+                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('interactiveSorting')} tooltip={t('allowUsersToClickColumnHeaders2')} />)}>
                                                                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                                                                                         <Switch
                                                                                                             checked={relTable.enableInteractiveSorting !== false}
                                                                                                             onChange={(e) => updateRelatedTable(section.sectionId, layer.layerId, relTable.tableId, { enableInteractiveSorting: (e.target as HTMLInputElement).checked })}
                                                                                                         />
                                                                                                         <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                                                                            Click column headers to sort
+                                                                                                            {t('clickColumnHeadersToSort')}
                                                                                                         </span>
                                                                                                     </div>
                                                                                                 </SettingRow>
 
-                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label="Enable Chart" tooltip="Show a chart visualization of the related table data." />)}>
+                                                                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('enableChart')} tooltip={t('showAChartVisualizationOfThe')} />)}>
                                                                                                     <Switch
                                                                                                         checked={relTable.enableChart || false}
                                                                                                         onChange={(e) => updateRelatedTable(section.sectionId, layer.layerId, relTable.tableId, { enableChart: (e.target as HTMLInputElement).checked })}
                                                                                                     />
                                                                                                 </SettingRow>
 
-                                                                                                <SettingRow flow="wrap" label="Max Records">
+                                                                                                <SettingRow flow="wrap" label={t('maxRecords')}>
                                                                                                     <NumericInput
                                                                                                         size="sm"
                                                                                                         value={relTable.maxRecords || 50}
@@ -7991,7 +7993,7 @@ const Setting = (props: SettingProps) => {
                                                                                                 {(relTable.tableUrl || relTable.dataSourceId) && (
                                                                                                     <>
                                                                                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '12px', marginBottom: '8px' }}>
-                                                                                                            <Label style={{ fontWeight: 600, fontSize: '12px' }}>Fields to Display</Label>
+                                                                                                            <Label style={{ fontWeight: 600, fontSize: '12px' }}>{t('fieldsToDisplay')}</Label>
                                                                                                             {relTable.tableUrl && !relTable.dataSourceId && (
                                                                                                                 <Button
                                                                                                                     type="tertiary"
@@ -7999,7 +8001,7 @@ const Setting = (props: SettingProps) => {
                                                                                                                     onClick={() => fetchRelatedTableFields(relTable.tableId, relTable.tableUrl)}
                                                                                                                     disabled={fetchLoading[`related-table:${relTable.tableId}`]}
                                                                                                                 >
-                                                                                                                    {fetchLoading[`related-table:${relTable.tableId}`] ? 'Loading...' : 'Fetch Fields'}
+                                                                                                                    {fetchLoading[`related-table:${relTable.tableId}`] ? 'Loading...' : t('fetchFields')}
                                                                                                                 </Button>
                                                                                                             )}
                                                                                                         </div>
@@ -8021,7 +8023,7 @@ const Setting = (props: SettingProps) => {
                                                                                                                         updateRelatedTable(section.sectionId, layer.layerId, relTable.tableId, { fields: newFields })
                                                                                                                     }}
                                                                                                                 >
-                                                                                                                    Select All
+                                                                                                                    {t('selectAll')}
                                                                                                                 </Button>
                                                                                                                 <Button
                                                                                                                     type="tertiary"
@@ -8031,14 +8033,14 @@ const Setting = (props: SettingProps) => {
                                                                                                                         updateRelatedTable(section.sectionId, layer.layerId, relTable.tableId, { fields: [] })
                                                                                                                     }}
                                                                                                                 >
-                                                                                                                    Select None
+                                                                                                                    {t('selectNone')}
                                                                                                                 </Button>
                                                                                                             </div>
                                                                                                         )}
                                                                                                         <p style={{ fontSize: '10px', color: 'var(--sys-color-text-light)', margin: '0 0 6px 0', fontStyle: 'italic' }}>
                                                                                                             {(relTable.fields?.length || 0) === 0
-                                                                                                                ? '⚠ No fields selected - showing first 5 fields by default'
-                                                                                                                : `${relTable.fields?.length || 0} field(s) selected`}
+                                                                                                                ? t('noFieldsSelectedShowingFirst5')
+                                                                                                                : t('fieldsCountFieldSSelected', { fieldsCount: relTable.fields?.length || 0 })}
                                                                                                         </p>
                                                                                                         <div className="fields-container">
                                                                                                             {(() => {
@@ -8048,7 +8050,7 @@ const Setting = (props: SettingProps) => {
                                                                                                                 if (rtFields.length === 0) {
                                                                                                                     return (
                                                                                                                         <div className="field-item" style={{ justifyContent: 'center', color: 'var(--sys-color-text-light)', fontSize: '11px' }}>
-                                                                                                                            Click "Fetch Fields" to load available fields
+                                                                                                                            {t('clickFetchFieldsToLoadAvailable')}
                                                                                                                         </div>
                                                                                                                     )
                                                                                                                 }
@@ -8065,7 +8067,7 @@ const Setting = (props: SettingProps) => {
                                                                                                                                 <Checkbox
                                                                                                                                     checked={isSelected}
                                                                                                                                     onChange={() => toggleRelatedTableFieldSelection(section.sectionId, layer.layerId, relTable.tableId, field.name)}
-                                                                                                                                    aria-label={`Select ${field.name}`}
+                                                                                                                                    aria-label={t('selectName', { name: field.name })}
                                                                                                                                 />
                                                                                                                                 <span className="field-name" style={{ fontSize: '11px' }}>{field.name}</span>
                                                                                                                                 {displayAlias && <span className="field-alias" style={{ color: 'var(--sys-color-text-light)', fontSize: '10px' }}>{displayAlias}</span>}
@@ -8073,31 +8075,31 @@ const Setting = (props: SettingProps) => {
                                                                                                                             {isSelected && (
                                                                                                                                 <div style={{ width: '100%', marginTop: '6px', paddingLeft: '24px' }}>
                                                                                                                                     <div style={{ marginBottom: '6px' }}>
-                                                                                                                                        <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>Display Alias</Label>
+                                                                                                                                        <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>{t('displayAlias2')}</Label>
                                                                                                                                         <TextInput
                                                                                                                                             size="sm"
                                                                                                                                             value={currentAlias}
                                                                                                                                             onChange={(e) => updateRelatedTableFieldAlias(section.sectionId, layer.layerId, relTable.tableId, field.name, e.target.value)}
-                                                                                                                                            placeholder="Display alias"
+                                                                                                                                            placeholder={t('displayAlias')}
                                                                                                                                         />
                                                                                                                                     </div>
                                                                                                                                     <div style={{ marginBottom: '6px' }}>
-                                                                                                                                        <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>Format Type</Label>
+                                                                                                                                        <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>{t('formatType')}</Label>
                                                                                                                                         <Select
                                                                                                                                             size="sm"
                                                                                                                                             value={currentFormat.type || 'auto'}
                                                                                                                                             onChange={(e) => updateRelatedTableFieldFormat(section.sectionId, layer.layerId, relTable.tableId, field.name, { type: e.target.value as any })}
                                                                                                                                         >
-                                                                                                                                            <Option value="auto">Auto</Option>
-                                                                                                                                            <Option value="text">Text</Option>
-                                                                                                                                            <Option value="number">Number</Option>
-                                                                                                                                            <Option value="date">Date</Option>
-                                                                                                                                            <Option value="link">Link</Option>
+                                                                                                                                            <Option value="auto">{t('auto')}</Option>
+                                                                                                                                            <Option value="text">{t('text')}</Option>
+                                                                                                                                            <Option value="number">{t('number')}</Option>
+                                                                                                                                            <Option value="date">{t('date')}</Option>
+                                                                                                                                            <Option value="link">{t('link')}</Option>
                                                                                                                                         </Select>
                                                                                                                                     </div>
                                                                                                                                     {(currentFormat.type === 'number' || currentFormat.type === 'auto') && (
                                                                                                                                         <div style={{ marginBottom: '6px' }}>
-                                                                                                                                            <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>Number Format</Label>
+                                                                                                                                            <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>{t('numberFormat')}</Label>
                                                                                                                                             <div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>
                                                                                                                                                 <Select
                                                                                                                                                     size="sm"
@@ -8105,46 +8107,46 @@ const Setting = (props: SettingProps) => {
                                                                                                                                                     onChange={(e) => updateRelatedTableFieldFormat(section.sectionId, layer.layerId, relTable.tableId, field.name, { numberFormat: e.target.value as any })}
                                                                                                                                                     style={{ width: '90px' }}
                                                                                                                                                 >
-                                                                                                                                                    <Option value="default">Default</Option>
-                                                                                                                                                    <Option value="none">No Format</Option>
-                                                                                                                                                    <Option value="decimal">Decimal</Option>
-                                                                                                                                                    <Option value="currency">Currency</Option>
-                                                                                                                                                    <Option value="percent">Percent</Option>
+                                                                                                                                                    <Option value="default">{t('default')}</Option>
+                                                                                                                                                    <Option value="none">{t('noFormat')}</Option>
+                                                                                                                                                    <Option value="decimal">{t('decimal')}</Option>
+                                                                                                                                                    <Option value="currency">{t('currency')}</Option>
+                                                                                                                                                    <Option value="percent">{t('percent')}</Option>
                                                                                                                                                 </Select>
                                                                                                                                                 <Label style={{ fontSize: '9px', display: 'flex', alignItems: 'center', gap: '3px' }}>
                                                                                                                                                     <Checkbox
                                                                                                                                                         checked={currentFormat.useGrouping !== false}
                                                                                                                                                         onChange={(e) => updateRelatedTableFieldFormat(section.sectionId, layer.layerId, relTable.tableId, field.name, { useGrouping: (e.target as HTMLInputElement).checked })}
                                                                                                                                                     />
-                                                                                                                                                    Commas
+                                                                                                                                                    {t('commas')}
                                                                                                                                                 </Label>
                                                                                                                                             </div>
                                                                                                                                         </div>
                                                                                                                                     )}
                                                                                                                                     {currentFormat.type === 'date' && (
                                                                                                                                         <div style={{ marginBottom: '6px' }}>
-                                                                                                                                            <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>Date Format</Label>
+                                                                                                                                            <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>{t('dateFormat')}</Label>
                                                                                                                                             <Select
                                                                                                                                                 size="sm"
                                                                                                                                                 value={currentFormat.dateFormat || 'default'}
                                                                                                                                                 onChange={(e) => updateRelatedTableFieldFormat(section.sectionId, layer.layerId, relTable.tableId, field.name, { dateFormat: e.target.value as any })}
                                                                                                                                             >
-                                                                                                                                                <Option value="default">Default</Option>
-                                                                                                                                                <Option value="short">Short (1/1/24)</Option>
-                                                                                                                                                <Option value="medium">Medium (Jan 1, 2024)</Option>
-                                                                                                                                                <Option value="long">Long (January 1, 2024)</Option>
-                                                                                                                                                <Option value="iso">ISO (2024-01-01)</Option>
+                                                                                                                                                <Option value="default">{t('default')}</Option>
+                                                                                                                                                <Option value="short">{t('short1124')}</Option>
+                                                                                                                                                <Option value="medium">{t('mediumJan12024')}</Option>
+                                                                                                                                                <Option value="long">{t('longJanuary12024')}</Option>
+                                                                                                                                                <Option value="iso">{t('iso20240101')}</Option>
                                                                                                                                             </Select>
                                                                                                                                         </div>
                                                                                                                                     )}
                                                                                                                                     {currentFormat.type === 'link' && (
                                                                                                                                         <div style={{ marginBottom: '6px' }}>
-                                                                                                                                            <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>Link Text</Label>
+                                                                                                                                            <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>{t('linkText')}</Label>
                                                                                                                                             <TextInput
                                                                                                                                                 size="sm"
                                                                                                                                                 value={currentFormat.linkText || ''}
                                                                                                                                                 onChange={(e) => updateRelatedTableFieldFormat(section.sectionId, layer.layerId, relTable.tableId, field.name, { linkText: e.target.value })}
-                                                                                                                                                placeholder="Click here"
+                                                                                                                                                placeholder={t('clickHere')}
                                                                                                                                             />
                                                                                                                                         </div>
                                                                                                                                     )}
@@ -8154,12 +8156,12 @@ const Setting = (props: SettingProps) => {
                                                                                                                                                 <Switch
                                                                                                                                                     checked={currentFormat.useLinkBaseUrl || false}
                                                                                                                                                     onChange={(e) => updateRelatedTableFieldFormat(section.sectionId, layer.layerId, relTable.tableId, field.name, { useLinkBaseUrl: (e.target as HTMLInputElement).checked })}
-                                                                                                                                                    aria-label="Enable base URL"
+                                                                                                                                                    aria-label={t('enableBaseUrl')}
                                                                                                                                                 />
                                                                                                                                                 <Label style={{ fontSize: '10px', cursor: 'pointer' }}>
-                                                                                                                                                    Prepend Base URL
+                                                                                                                                                    {t('prependBaseUrl')}
                                                                                                                                                 </Label>
-                                                                                                                                                <Tip title="Prepend a base URL to the field value" placement="top">
+                                                                                                                                                <Tip title={t('prependABaseUrlToThe')} placement="top">
                                                                                                                                                     <span style={{ color: 'var(--sys-color-text-light)', cursor: 'help', fontSize: '10px' }}>ⓘ</span>
                                                                                                                                                 </Tip>
                                                                                                                                             </div>
@@ -8179,12 +8181,12 @@ const Setting = (props: SettingProps) => {
                                                                                                                                         <Switch
                                                                                                                                             checked={getRelatedTableFieldHideNull(relTable, field.name)}
                                                                                                                                             onChange={() => toggleRelatedTableFieldHideNull(section.sectionId, layer.layerId, relTable.tableId, field.name)}
-                                                                                                                                            aria-label={`Hide ${field.name} when NULL`}
+                                                                                                                                            aria-label={t('hideNameWhenNull', { name: field.name })}
                                                                                                                                         />
                                                                                                                                         <Label style={{ fontSize: '10px', cursor: 'pointer' }}>
-                                                                                                                                            Hide when NULL
+                                                                                                                                            {t('hideWhenNull')}
                                                                                                                                         </Label>
-                                                                                                                                        <Tip title="Hide this column when all values are NULL or empty" placement="top">
+                                                                                                                                        <Tip title={t('hideThisColumnWhenAllValues')} placement="top">
                                                                                                                                             <span style={{ color: 'var(--sys-color-text-light)', cursor: 'help', fontSize: '11px' }}>ⓘ</span>
                                                                                                                                         </Tip>
                                                                                                                                     </div>
@@ -8209,7 +8211,7 @@ const Setting = (props: SettingProps) => {
                                                                                     style={{ marginTop: '8px' }}
                                                                                 >
                                                                                     <PlusIcon />
-                                                                                    Add Related Table
+                                                                                    {t('addRelatedTable')}
                                                                                 </Button>
                                                                             </>
                                                                         )}
@@ -8224,75 +8226,75 @@ const Setting = (props: SettingProps) => {
                                                     className="add-button add-button-primary"
                                                     type="tertiary"
                                                     onClick={() => addLayerToSection(section.sectionId)}
-                                                    aria-label="Add data source"
+                                                    aria-label={t('addDataSource2')}
                                                 >
                                                     <PlusIcon />
-                                                    Add Data Source
+                                                    {t('addDataSource')}
                                                 </Button>
 
 
                                                 {/* Rich Text / Info Content (Optional) */}
-                                                <div className="subsection-divider">Section Info Content (Optional)</div>
+                                                <div className="subsection-divider">{t('sectionInfoContentOptional')}</div>
                                                 <p className="hint-text">
-                                                    Add supplementary text, contact info, links, or action buttons to this section.
+                                                    {t('addSupplementaryTextContactInfoLinks2')}
                                                 </p>
 
-                                                <SettingRow flow="wrap" label={(<TooltipLabel label="Rich Text Position" tooltip="Show the rich text content before or after the data tables in this section." />)}>
+                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('richTextPosition')} tooltip={t('showTheRichTextContentBefore2')} />)}>
                                                     <div className="position-buttons">
                                                         <button
                                                             className={`position-btn ${(section.richTextPosition || 'after') === 'before' ? 'active' : ''}`}
                                                             onClick={() => updateSection(section.sectionId, { richTextPosition: 'before' })}
-                                                        >Before Data</button>
+                                                        >{t('beforeData')}</button>
                                                         <button
                                                             className={`position-btn ${(section.richTextPosition || 'after') === 'after' ? 'active' : ''}`}
                                                             onClick={() => updateSection(section.sectionId, { richTextPosition: 'after' })}
-                                                        >After Data</button>
+                                                        >{t('afterData')}</button>
                                                     </div>
                                                 </SettingRow>
 
-                                                <SettingRow flow="wrap" label={(<TooltipLabel label="HTML Content" tooltip="Rich text content supporting HTML formatting, links, phone numbers, and email addresses." />)}>
+                                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('htmlContent')} tooltip={t('richTextContentSupportingHtmlFormatting2')} />)}>
                                                     <textarea
                                                         className="rich-text-editor"
                                                         value={section.richTextContent || ''}
                                                         onChange={(e) => updateSection(section.sectionId, { richTextContent: e.target.value })}
                                                         placeholder="<p>For more information, contact...</p>"
-                                                        aria-label="Rich text HTML content"
+                                                        aria-label={t('richTextHtmlContent')}
                                                     />
                                                     <div className="rich-text-help">
-                                                        <strong>Supported HTML:</strong><br />
-                                                        • Links: <code>&lt;a href="url"&gt;text&lt;/a&gt;</code><br />
-                                                        • Email: <code>&lt;a href="mailto:email"&gt;text&lt;/a&gt;</code><br />
-                                                        • Phone: <code>&lt;a href="tel:number"&gt;text&lt;/a&gt;</code><br />
-                                                        • Bold: <code>&lt;strong&gt;text&lt;/strong&gt;</code><br />
-                                                        <strong>Field Placeholders:</strong> <code>{'{'}FieldName{'}'}</code><br />
-                                                        <em>Uses fields from this section's data layers (first result), or header info fields.</em>
+                                                        <strong>{t('supportedHtml')}</strong><br />
+                                                        {t('links')} <code>&lt;a href="url"&gt;text&lt;/a&gt;</code><br />
+                                                        {t('email')} <code>&lt;a href="mailto:email"&gt;text&lt;/a&gt;</code><br />
+                                                        {t('phone')} <code>&lt;a href="tel:number"&gt;text&lt;/a&gt;</code><br />
+                                                        {t('bold')} <code>&lt;strong&gt;text&lt;/strong&gt;</code><br />
+                                                        <strong>{t('fieldPlaceholders')}</strong> <code>{'{'}FieldName{'}'}</code><br />
+                                                        <em>{t('usesFieldsFromThisSectionS')}</em>
                                                     </div>
                                                 </SettingRow>
 
                                                 {/* Exclude rich text from PDF toggle */}
-                                                <SettingRow flow="wrap" label="Exclude from PDF">
+                                                <SettingRow flow="wrap" label={t('excludeFromPdf')}>
                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                                         <Switch
                                                             checked={section.richTextExcludeFromPdf || false}
                                                             onChange={(e) => updateSection(section.sectionId, { richTextExcludeFromPdf: (e.target as HTMLInputElement).checked })}
-                                                            aria-label="Exclude rich text from PDF"
+                                                            aria-label={t('excludeRichTextFromPdf')}
                                                         />
                                                         <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                            Show in widget only (not in PDF export)
+                                                            {t('showInWidgetOnlyNotIn')}
                                                         </span>
                                                     </div>
                                                 </SettingRow>
 
                                                 {/* Hide rich text when no features toggle */}
-                                                <SettingRow flow="wrap" label="Hide When No Features">
+                                                <SettingRow flow="wrap" label={t('hideWhenNoFeatures')}>
                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                                         <Switch
                                                             checked={section.hideRichTextWhenNoResults || false}
                                                             onChange={(e) => updateSection(section.sectionId, { hideRichTextWhenNoResults: (e.target as HTMLInputElement).checked })}
-                                                            aria-label="Hide rich text when no features returned"
+                                                            aria-label={t('hideRichTextWhenNoFeatures')}
                                                         />
                                                         <span style={{ fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                            Only show if at least one data layer has results
+                                                            {t('onlyShowIfAtLeastOne')}
                                                         </span>
                                                     </div>
                                                 </SettingRow>
@@ -8303,46 +8305,46 @@ const Setting = (props: SettingProps) => {
                                                         <div className="button-item" key={button.buttonId}>
                                                             <div className="button-item-header">
                                                                 <Label style={{ fontSize: '11px', fontWeight: 600 }}>
-                                                                    <LinkIcon /> Action Button
+                                                                    <LinkIcon /> {t('actionButton')}
                                                                 </Label>
                                                                 <button
                                                                     className="delete-btn"
                                                                     onClick={() => removeRichTextButton(section.sectionId, button.buttonId)}
-                                                                    aria-label="Remove button"
+                                                                    aria-label={t('removeButton')}
                                                                 >
                                                                     <TrashIcon />
                                                                 </button>
                                                             </div>
                                                             <div className="button-item-row">
                                                                 <div>
-                                                                    <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>Label</Label>
+                                                                    <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>{t('label')}</Label>
                                                                     <TextInput
                                                                         size="sm"
                                                                         value={button.label}
                                                                         onChange={(e) => updateRichTextButton(section.sectionId, button.buttonId, { label: e.target.value })}
-                                                                        placeholder="Button text"
+                                                                        placeholder={t('buttonText')}
                                                                     />
                                                                 </div>
                                                                 <div>
-                                                                    <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>Style</Label>
+                                                                    <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>{t('style')}</Label>
                                                                     <div className="button-style-selector">
                                                                         <button
                                                                             className={`button-style-btn ${(button.style || 'default') === 'default' ? 'active' : ''}`}
                                                                             onClick={() => updateRichTextButton(section.sectionId, button.buttonId, { style: 'default' })}
-                                                                        >Default</button>
+                                                                        >{t('default')}</button>
                                                                         <button
                                                                             className={`button-style-btn ${button.style === 'primary' ? 'active' : ''}`}
                                                                             onClick={() => updateRichTextButton(section.sectionId, button.buttonId, { style: 'primary' })}
-                                                                        >Primary</button>
+                                                                        >{t('primary')}</button>
                                                                         <button
                                                                             className={`button-style-btn ${button.style === 'outline' ? 'active' : ''}`}
                                                                             onClick={() => updateRichTextButton(section.sectionId, button.buttonId, { style: 'outline' })}
-                                                                        >Outline</button>
+                                                                        >{t('outline')}</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div>
-                                                                <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>URL (supports {'{'}field{'}'} from section layers)</Label>
+                                                                <Label style={{ fontSize: '10px', marginBottom: '2px', display: 'block' }}>{t('urlSupportsFieldFromSectionLayers')}</Label>
                                                                 <TextInput
                                                                     size="sm"
                                                                     value={button.url}
@@ -8355,7 +8357,7 @@ const Setting = (props: SettingProps) => {
                                                                     checked={button.openInNewTab !== false}
                                                                     onChange={(e) => updateRichTextButton(section.sectionId, button.buttonId, { openInNewTab: (e.target as HTMLInputElement).checked })}
                                                                 />
-                                                                <span>Open in new tab</span>
+                                                                <span>{t('openInNewTab')}</span>
                                                             </label>
                                                         </div>
                                                     ))}
@@ -8365,10 +8367,10 @@ const Setting = (props: SettingProps) => {
                                                     className="add-button add-button-secondary"
                                                     type="tertiary"
                                                     onClick={() => addRichTextButton(section.sectionId)}
-                                                    aria-label="Add action button"
+                                                    aria-label={t('addActionButton2')}
                                                 >
                                                     <PlusIcon />
-                                                    Add Action Button
+                                                    {t('addActionButton')}
                                                 </Button>
                                             </div>
                                         </div>
@@ -8381,10 +8383,10 @@ const Setting = (props: SettingProps) => {
                             className="add-button add-button-primary"
                             type="tertiary"
                             onClick={() => addSection()}
-                            aria-label="Add section"
+                            aria-label={t('addSection2')}
                         >
                             <PlusIcon />
-                            Add Section
+                            {t('addSection')}
                         </Button>
                     </div>
                 </div>
@@ -8403,7 +8405,7 @@ const Setting = (props: SettingProps) => {
                     aria-expanded={expandedPanels.has('pdf-export')}
                 >
                     <div className="collapsible-panel-header-left">
-                        <span className="collapsible-panel-title">PDF Export Settings</span>
+                        <span className="collapsible-panel-title">{t('pdfExportSettings')}</span>
                     </div>
                     <span className={`collapsible-panel-toggle ${!expandedPanels.has('pdf-export') ? 'collapsed' : ''}`}>
                         <ChevronDownIcon />
@@ -8412,14 +8414,14 @@ const Setting = (props: SettingProps) => {
                 <div className={`collapsible-panel-content ${expandedPanels.has('pdf-export') ? 'expanded' : ''}`}>
                     <div className="collapsible-panel-inner">
                         <p className="hint-text">
-                            Configure the appearance of exported PDF reports (portrait 8.5" × 11" format).
+                            {t('configureTheAppearanceOfExportedPdf')}
                         </p>
 
                         {/* Logo Upload Section */}
                         <div className="pdf-section-card">
                             <div className="pdf-section-title">
                                 <ImageIcon />
-                                Logo / Image
+                                {t('logoImage')}
                             </div>
 
                             <input
@@ -8428,7 +8430,7 @@ const Setting = (props: SettingProps) => {
                                 accept="image/*"
                                 onChange={handleLogoUpload}
                                 style={{ display: 'none' }}
-                                aria-label="Upload logo"
+                                aria-label={t('uploadLogo')}
                             />
 
                             {pdfHeader.logoBase64 ? (
@@ -8436,7 +8438,7 @@ const Setting = (props: SettingProps) => {
                                     <div className="logo-preview-container">
                                         <img
                                             src={pdfHeader.logoBase64}
-                                            alt={logoConfig.altText || 'Logo preview'}
+                                            alt={logoConfig.altText || t('logoPreview')}
                                             className="logo-preview"
                                             style={{
                                                 borderRadius: logoConfig.shape === 'circle' ? '50%' :
@@ -8448,16 +8450,16 @@ const Setting = (props: SettingProps) => {
                                             {pdfHeader.logoFileName}
                                             {logoConfig.originalWidth && logoConfig.originalHeight && (
                                                 <span style={{ marginLeft: '8px' }}>
-                                                    ({logoConfig.originalWidth} × {logoConfig.originalHeight}px)
+                                                    {t('originalWidthOriginalHeightPx', { originalWidth: logoConfig.originalWidth, originalHeight: logoConfig.originalHeight })}
                                                 </span>
                                             )}
                                         </div>
                                         <div className="logo-actions">
                                             <Button size="sm" type="secondary" onClick={() => logoInputRef.current?.click()}>
-                                                Change
+                                                {t('change')}
                                             </Button>
                                             <Button size="sm" type="secondary" onClick={removeLogo}>
-                                                Remove
+                                                {t('remove')}
                                             </Button>
                                         </div>
                                     </div>
@@ -8465,35 +8467,35 @@ const Setting = (props: SettingProps) => {
                                     {/* Size Settings Subsection */}
                                     <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid var(--sys-color-divider-secondary)' }}>
                                         <div style={{ fontWeight: 500, fontSize: '12px', marginBottom: '8px', color: 'var(--sys-color-primary-main)' }}>
-                                            Size Settings
+                                            {t('sizeSettings')}
                                         </div>
 
-                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Size Mode" tooltip="Auto: maintains aspect ratio within max dimensions. Fit: scales to fit container. Stretch: fills exact dimensions. Custom: specify exact size." />)}>
+                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('sizeMode')} tooltip={t('autoMaintainsAspectRatioWithinMax')} />)}>
                                             <Select
                                                 size="sm"
                                                 value={logoConfig.sizeMode || 'auto'}
                                                 onChange={(e) => updateLogo({ sizeMode: e.target.value as ImageSizeMode })}
                                                 style={{ width: '100%' }}
                                             >
-                                                <Option value="auto">Auto (fit within max size, keep aspect ratio)</Option>
-                                                <Option value="fit">Fit (scale to max size, keep aspect ratio)</Option>
-                                                <Option value="custom">Custom (exact size, keep aspect ratio)</Option>
-                                                <Option value="stretch">Stretch (exact size, may distort)</Option>
+                                                <Option value="auto">{t('autoFitWithinMaxSizeKeep')}</Option>
+                                                <Option value="fit">{t('fitScaleToMaxSizeKeep')}</Option>
+                                                <Option value="custom">{t('customExactSizeKeepAspectRatio')}</Option>
+                                                <Option value="stretch">{t('stretchExactSizeMayDistort')}</Option>
                                             </Select>
                                         </SettingRow>
                                         <p className="hint-text" style={{ marginTop: '2px', marginBottom: '8px' }}>
                                             {logoConfig.sizeMode === 'stretch'
-                                                ? 'Image will be stretched to exact dimensions (may distort)'
+                                                ? t('imageWillBeStretchedToExact')
                                                 : logoConfig.sizeMode === 'custom'
-                                                    ? 'Image will scale to exact width, height calculated from aspect ratio'
-                                                    : 'Image will scale to fit within maximum dimensions'
+                                                    ? t('imageWillScaleToExactWidth')
+                                                    : t('imageWillScaleToFitWithin')
                                             }
                                         </p>
 
                                         {/* Auto/Fit Mode: Max dimensions */}
                                         {(!logoConfig.sizeMode || logoConfig.sizeMode === 'auto' || logoConfig.sizeMode === 'fit') && (
                                             <div style={{ display: 'flex', gap: '12px' }}>
-                                                <SettingRow flow="wrap" label="Max Width (mm)" style={{ flex: 1 }}>
+                                                <SettingRow flow="wrap" label={t('maxWidthMm')} style={{ flex: 1 }}>
                                                     <NumericInput
                                                         size="sm"
                                                         value={logoConfig.maxWidth ?? 50}
@@ -8503,7 +8505,7 @@ const Setting = (props: SettingProps) => {
                                                         style={{ width: '100%' }}
                                                     />
                                                 </SettingRow>
-                                                <SettingRow flow="wrap" label="Max Height (mm)" style={{ flex: 1 }}>
+                                                <SettingRow flow="wrap" label={t('maxHeightMm')} style={{ flex: 1 }}>
                                                     <NumericInput
                                                         size="sm"
                                                         value={logoConfig.maxHeight ?? 25}
@@ -8518,7 +8520,7 @@ const Setting = (props: SettingProps) => {
 
                                         {/* Custom Mode: Width only (height from aspect ratio) */}
                                         {logoConfig.sizeMode === 'custom' && (
-                                            <SettingRow flow="wrap" label="Width (mm)">
+                                            <SettingRow flow="wrap" label={t('widthMm')}>
                                                 <NumericInput
                                                     size="sm"
                                                     value={logoConfig.customWidth ?? 40}
@@ -8528,7 +8530,7 @@ const Setting = (props: SettingProps) => {
                                                     style={{ width: 100 }}
                                                 />
                                                 <span style={{ marginLeft: '8px', fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                    Height auto-calculated from aspect ratio
+                                                    {t('heightAutoCalculatedFromAspectRatio')}
                                                 </span>
                                             </SettingRow>
                                         )}
@@ -8536,7 +8538,7 @@ const Setting = (props: SettingProps) => {
                                         {/* Stretch Mode: Both dimensions */}
                                         {logoConfig.sizeMode === 'stretch' && (
                                             <div style={{ display: 'flex', gap: '12px' }}>
-                                                <SettingRow flow="wrap" label="Width (mm)" style={{ flex: 1 }}>
+                                                <SettingRow flow="wrap" label={t('widthMm')} style={{ flex: 1 }}>
                                                     <NumericInput
                                                         size="sm"
                                                         value={logoConfig.customWidth ?? 40}
@@ -8546,7 +8548,7 @@ const Setting = (props: SettingProps) => {
                                                         style={{ width: '100%' }}
                                                     />
                                                 </SettingRow>
-                                                <SettingRow flow="wrap" label="Height (mm)" style={{ flex: 1 }}>
+                                                <SettingRow flow="wrap" label={t('heightMm')} style={{ flex: 1 }}>
                                                     <NumericInput
                                                         size="sm"
                                                         value={logoConfig.customHeight ?? 20}
@@ -8563,50 +8565,50 @@ const Setting = (props: SettingProps) => {
                                     {/* Position & Layout Subsection */}
                                     <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid var(--sys-color-divider-secondary)' }}>
                                         <div style={{ fontWeight: 500, fontSize: '12px', marginBottom: '8px', color: 'var(--sys-color-primary-main)' }}>
-                                            Position &amp; Layout
+                                            {t('positionLayout')}
                                         </div>
 
-                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Horizontal Position" tooltip="Where the logo appears horizontally in the PDF header." />)}>
+                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('horizontalPosition')} tooltip={t('whereTheLogoAppearsHorizontallyIn')} />)}>
                                             <div className="position-buttons">
                                                 <button
                                                     className={`position-btn ${(logoConfig.position || 'left') === 'left' ? 'active' : ''}`}
                                                     onClick={() => updateLogo({ position: 'left' })}
-                                                    title="Align logo to left"
-                                                >Left</button>
+                                                    title={t('alignLogoToLeft')}
+                                                >{t('left')}</button>
                                                 <button
                                                     className={`position-btn ${logoConfig.position === 'center' ? 'active' : ''}`}
                                                     onClick={() => updateLogo({ position: 'center' })}
-                                                    title="Center logo horizontally"
-                                                >Center</button>
+                                                    title={t('centerLogoHorizontally')}
+                                                >{t('center')}</button>
                                                 <button
                                                     className={`position-btn ${logoConfig.position === 'right' ? 'active' : ''}`}
                                                     onClick={() => updateLogo({ position: 'right' })}
-                                                    title="Align logo to right"
-                                                >Right</button>
+                                                    title={t('alignLogoToRight')}
+                                                >{t('right')}</button>
                                             </div>
                                         </SettingRow>
 
-                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Vertical Alignment" tooltip="How the logo aligns vertically within the header space." />)}>
+                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('verticalAlignment')} tooltip={t('howTheLogoAlignsVerticallyWithin')} />)}>
                                             <div className="position-buttons">
                                                 <button
                                                     className={`position-btn ${logoConfig.verticalAlign === 'top' ? 'active' : ''}`}
                                                     onClick={() => updateLogo({ verticalAlign: 'top' })}
-                                                    title="Align logo to top"
-                                                >Top</button>
+                                                    title={t('alignLogoToTop')}
+                                                >{t('top')}</button>
                                                 <button
                                                     className={`position-btn ${(!logoConfig.verticalAlign || logoConfig.verticalAlign === 'middle') ? 'active' : ''}`}
                                                     onClick={() => updateLogo({ verticalAlign: 'middle' })}
-                                                    title="Center logo vertically"
-                                                >Middle</button>
+                                                    title={t('centerLogoVertically')}
+                                                >{t('middle')}</button>
                                                 <button
                                                     className={`position-btn ${logoConfig.verticalAlign === 'bottom' ? 'active' : ''}`}
                                                     onClick={() => updateLogo({ verticalAlign: 'bottom' })}
-                                                    title="Align logo to bottom"
-                                                >Bottom</button>
+                                                    title={t('alignLogoToBottom')}
+                                                >{t('bottom')}</button>
                                             </div>
                                         </SettingRow>
 
-                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Padding (mm)" tooltip="Space around the logo in millimeters. Adds visual breathing room between logo and other elements." />)}>
+                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('paddingMm')} tooltip={t('spaceAroundTheLogoInMillimeters')} />)}>
                                             <NumericInput
                                                 size="sm"
                                                 value={logoConfig.padding ?? 0}
@@ -8617,7 +8619,7 @@ const Setting = (props: SettingProps) => {
                                             />
                                         </SettingRow>
 
-                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Header Height (mm)" tooltip="Total height of the PDF header area including logo, title, and date. Increase if content is overlapping." />)}>
+                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('headerHeightMm')} tooltip={t('totalHeightOfThePdfHeader')} />)}>
                                             <NumericInput
                                                 size="sm"
                                                 value={pdfHeader.headerHeight ?? 35}
@@ -8627,7 +8629,7 @@ const Setting = (props: SettingProps) => {
                                                 style={{ width: 80 }}
                                             />
                                             <span style={{ marginLeft: '8px', fontSize: '11px', color: 'var(--sys-color-text-light)' }}>
-                                                Total header area height
+                                                {t('totalHeaderAreaHeight')}
                                             </span>
                                         </SettingRow>
                                     </div>
@@ -8635,25 +8637,25 @@ const Setting = (props: SettingProps) => {
                                     {/* Appearance Subsection */}
                                     <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid var(--sys-color-divider-secondary)' }}>
                                         <div style={{ fontWeight: 500, fontSize: '12px', marginBottom: '8px', color: 'var(--sys-color-primary-main)' }}>
-                                            Appearance
+                                            {t('appearance')}
                                         </div>
 
-                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Shape" tooltip="Logo shape: default (rectangle), circle (circular crop), or rounded (rounded corners)." />)}>
+                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('shape')} tooltip={t('logoShapeDefaultRectangleCircleCircular')} />)}>
                                             <Select
                                                 size="sm"
                                                 value={logoConfig.shape || 'default'}
                                                 onChange={(e) => updateLogo({ shape: e.target.value as any })}
                                                 style={{ width: '100%' }}
                                             >
-                                                <Option value="default">Default (rectangular)</Option>
-                                                <Option value="rounded">Rounded corners</Option>
-                                                <Option value="circle">Circle</Option>
+                                                <Option value="default">{t('defaultRectangular')}</Option>
+                                                <Option value="rounded">{t('roundedCorners')}</Option>
+                                                <Option value="circle">{t('circle')}</Option>
                                             </Select>
                                         </SettingRow>
 
                                         {/* Border radius for rounded shape */}
                                         {logoConfig.shape === 'rounded' && (
-                                            <SettingRow flow="wrap" label={(<TooltipLabel label="Corner Radius (mm)" tooltip="How rounded the corners should be. Higher values create more rounded corners." />)}>
+                                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('cornerRadiusMm')} tooltip={t('howRoundedTheCornersShouldBe')} />)}>
                                                 <NumericInput
                                                     size="sm"
                                                     value={logoConfig.borderRadius ?? 2}
@@ -8665,7 +8667,7 @@ const Setting = (props: SettingProps) => {
                                             </SettingRow>
                                         )}
 
-                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Background Color" tooltip="Background color behind the logo. Useful for logos with transparent backgrounds. Leave empty for transparent." />)}>
+                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('backgroundColor')} tooltip={t('backgroundColorBehindTheLogoUseful')} />)}>
                                             <div className="color-input-row">
                                                 <input
                                                     type="color"
@@ -8677,7 +8679,7 @@ const Setting = (props: SettingProps) => {
                                                     size="sm"
                                                     value={logoConfig.backgroundColor || ''}
                                                     onChange={(e) => updateLogo({ backgroundColor: e.target.value })}
-                                                    placeholder="Transparent"
+                                                    placeholder={t('transparent')}
                                                     style={{ width: 90 }}
                                                 />
                                                 {logoConfig.backgroundColor && (
@@ -8687,31 +8689,31 @@ const Setting = (props: SettingProps) => {
                                                         onClick={() => updateLogo({ backgroundColor: undefined })}
                                                         style={{ padding: '0 8px' }}
                                                     >
-                                                        Clear
+                                                        {t('clear')}
                                                     </Button>
                                                 )}
                                             </div>
                                         </SettingRow>
 
-                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Alt Text (Accessibility)" tooltip="WCAG 1.1.1: Descriptive text for screen readers. Describe the logo content, e.g., 'City of Grand Junction logo'." />)}>
+                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('altTextAccessibility')} tooltip={t('wcag111DescriptiveText')} />)}>
                                             <TextInput
                                                 size="sm"
                                                 value={logoConfig.altText || ''}
                                                 onChange={(e) => updateLogo({ altText: e.target.value })}
-                                                placeholder="e.g., City of Grand Junction logo"
+                                                placeholder={t('eGCityOfGrandJunction')}
                                             />
                                         </SettingRow>
                                         <p className="hint-text" style={{ marginTop: '2px' }}>
-                                            WCAG 1.1.1: Describes the logo for screen readers
+                                            {t('wcag111DescribesThe')}
                                         </p>
                                     </div>
                                 </>
                             ) : (
                                 <div className="logo-upload-area" onClick={() => logoInputRef.current?.click()}>
                                     <UploadIcon />
-                                    <div style={{ marginTop: '8px', fontSize: '12px' }}>Click to upload logo</div>
+                                    <div style={{ marginTop: '8px', fontSize: '12px' }}>{t('clickToUploadLogo')}</div>
                                     <div style={{ fontSize: '10px', color: 'var(--sys-color-text-light)', marginTop: '4px' }}>
-                                        PNG, JPG, GIF, SVG (max 1MB)
+                                        {t('pngJpgGifSvgMax1mb')}
                                     </div>
                                 </div>
                             )}
@@ -8721,57 +8723,57 @@ const Setting = (props: SettingProps) => {
                         <div className="pdf-section-card">
                             <div className="pdf-section-title">
                                 <PdfIcon />
-                                Header Content
+                                {t('headerContent')}
                             </div>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Title Mode" tooltip="'Default' uses the searched address as title. 'Custom' lets you specify a fixed report title." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('titleMode')} tooltip={t('defaultUsesTheSearchedAddressAs')} />)}>
                                 <Select
                                     size="sm"
                                     value={pdfHeader.titleMode || 'default'}
                                     onChange={(e) => updatePdfHeader({ titleMode: e.target.value as 'default' | 'custom' })}
                                     style={{ width: '100%' }}
                                 >
-                                    <Option value="default">Default (Address/Parcel)</Option>
-                                    <Option value="custom">Custom Title</Option>
+                                    <Option value="default">{t('defaultAddressParcel')}</Option>
+                                    <Option value="custom">{t('customTitle')}</Option>
                                 </Select>
                             </SettingRow>
 
                             {pdfHeader.titleMode === 'custom' && (
-                                <SettingRow flow="wrap" label={(<TooltipLabel label="Report Title" tooltip="Custom title text to display at the top of each PDF report instead of the searched address." />)}>
+                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('reportTitle')} tooltip={t('customTitleTextToDisplayAt')} />)}>
                                     <TextInput
                                         size="sm"
                                         value={pdfHeader.reportTitle || ''}
                                         onChange={(e) => updatePdfHeader({ reportTitle: e.target.value })}
-                                        placeholder="Property Report"
+                                        placeholder={t('propertyReport')}
                                     />
                                 </SettingRow>
                             )}
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Title Position" tooltip="Horizontal alignment of the report title in the PDF header." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('titlePosition')} tooltip={t('horizontalAlignmentOfTheReportTitle')} />)}>
                                 <div className="position-buttons">
                                     <button
                                         className={`position-btn ${(pdfHeader.titlePosition || 'center') === 'left' ? 'active' : ''}`}
                                         onClick={() => updatePdfHeader({ titlePosition: 'left' })}
-                                    >Left</button>
+                                    >{t('left')}</button>
                                     <button
                                         className={`position-btn ${(pdfHeader.titlePosition || 'center') === 'center' ? 'active' : ''}`}
                                         onClick={() => updatePdfHeader({ titlePosition: 'center' })}
-                                    >Center</button>
+                                    >{t('center')}</button>
                                     <button
                                         className={`position-btn ${(pdfHeader.titlePosition || 'center') === 'right' ? 'active' : ''}`}
                                         onClick={() => updatePdfHeader({ titlePosition: 'right' })}
-                                    >Right</button>
+                                    >{t('right')}</button>
                                 </div>
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Show Date" tooltip="Display the report generation date in the PDF header." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('showDate')} tooltip={t('displayTheReportGenerationDateIn')} />)}>
                                 <Switch
                                     checked={pdfHeader.showGeneratedDate !== false}
                                     onChange={(e) => updatePdfHeader({ showGeneratedDate: (e.target as HTMLInputElement).checked })}
                                 />
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Header Background" tooltip="Background color for the PDF header area. Use white for a clean look or match your organization's branding." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('headerBackground')} tooltip={t('backgroundColorForThePdfHeader')} />)}>
                                 <div className="color-input-row">
                                     <input
                                         type="color"
@@ -8788,7 +8790,7 @@ const Setting = (props: SettingProps) => {
                                 </div>
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Header Text Color" tooltip="Text color for title and date in the PDF header. Ensure good contrast with the background color." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('headerTextColor')} tooltip={t('textColorForTitleAndDate')} />)}>
                                 <div className="color-input-row">
                                     <input
                                         type="color"
@@ -8810,13 +8812,13 @@ const Setting = (props: SettingProps) => {
                         <div className="pdf-section-card">
                             <div className="pdf-section-title">
                                 <FooterIcon />
-                                Footer
+                                {t('footer')}
                             </div>
 
                             <SettingRow flow="wrap" label={(
                                 <TooltipLabel
-                                    label="Show Footer"
-                                    tooltip="Include a footer on each PDF page. Contains page numbers, contact info, and disclaimer text."
+                                    label={t('showFooter')}
+                                    tooltip={t('includeAFooterOnEachPdf')}
                                 />
                             )}>
 
@@ -8830,8 +8832,8 @@ const Setting = (props: SettingProps) => {
                                 <>
                                     <SettingRow flow="wrap" label={(
                                         <TooltipLabel
-                                            label="Show Page Numbers"
-                                            tooltip="Display page numbers in the footer (e.g., 'Page 1 of 5'). Helps readers navigate multi-page reports."
+                                            label={t('showPageNumbers')}
+                                            tooltip={t('displayPageNumbersInTheFooter')}
                                         />
                                     )}>
 
@@ -8843,8 +8845,8 @@ const Setting = (props: SettingProps) => {
 
                                     <SettingRow flow="wrap" label={(
                                         <TooltipLabel
-                                            label="Page Number Position"
-                                            tooltip="Where to place page numbers in the footer. Right is most common for formal documents."
+                                            label={t('pageNumberPosition')}
+                                            tooltip={t('whereToPlacePageNumbersIn')}
                                         />
                                     )}>
 
@@ -8852,22 +8854,22 @@ const Setting = (props: SettingProps) => {
                                             <button
                                                 className={`position-btn ${(pdfFooter.pageNumberPosition || 'right') === 'left' ? 'active' : ''}`}
                                                 onClick={() => updatePdfFooter({ pageNumberPosition: 'left' })}
-                                            >Left</button>
+                                            >{t('left')}</button>
                                             <button
                                                 className={`position-btn ${(pdfFooter.pageNumberPosition || 'right') === 'center' ? 'active' : ''}`}
                                                 onClick={() => updatePdfFooter({ pageNumberPosition: 'center' })}
-                                            >Center</button>
+                                            >{t('center')}</button>
                                             <button
                                                 className={`position-btn ${(pdfFooter.pageNumberPosition || 'right') === 'right' ? 'active' : ''}`}
                                                 onClick={() => updatePdfFooter({ pageNumberPosition: 'right' })}
-                                            >Right</button>
+                                            >{t('right')}</button>
                                         </div>
                                     </SettingRow>
 
                                     <SettingRow flow="wrap" label={(
                                         <TooltipLabel
-                                            label="Contact Info"
-                                            tooltip="Department name, phone number, or other contact information for questions about the report."
+                                            label={t('contactInfo')}
+                                            tooltip={t('departmentNamePhoneNumberOrOther')}
                                         />
                                     )}>
 
@@ -8875,33 +8877,33 @@ const Setting = (props: SettingProps) => {
                                             size="sm"
                                             value={pdfFooter.contactText || ''}
                                             onChange={(e) => updatePdfFooter({ contactText: e.target.value })}
-                                            placeholder="e.g., Planning Department | 970-555-1234"
+                                            placeholder={t('eGPlanningDepartment970555')}
                                         />
                                     </SettingRow>
 
                                     {pdfFooter.contactText && (
-                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Contact Position" tooltip="Horizontal position of the contact information in the PDF footer." />)}>
+                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('contactPosition')} tooltip={t('horizontalPositionOfTheContactInformation')} />)}>
                                             <div className="position-buttons">
                                                 <button
                                                     className={`position-btn ${(pdfFooter.contactPosition || 'left') === 'left' ? 'active' : ''}`}
                                                     onClick={() => updatePdfFooter({ contactPosition: 'left' })}
-                                                >Left</button>
+                                                >{t('left')}</button>
                                                 <button
                                                     className={`position-btn ${pdfFooter.contactPosition === 'center' ? 'active' : ''}`}
                                                     onClick={() => updatePdfFooter({ contactPosition: 'center' })}
-                                                >Center</button>
+                                                >{t('center')}</button>
                                                 <button
                                                     className={`position-btn ${pdfFooter.contactPosition === 'right' ? 'active' : ''}`}
                                                     onClick={() => updatePdfFooter({ contactPosition: 'right' })}
-                                                >Right</button>
+                                                >{t('right')}</button>
                                             </div>
                                         </SettingRow>
                                     )}
 
                                     <SettingRow flow="wrap" label={(
                                         <TooltipLabel
-                                            label="Disclaimer Text"
-                                            tooltip="Legal disclaimer text shown in small print at the bottom of each page. Common for government reports to note data accuracy limitations."
+                                            label={t('disclaimerText')}
+                                            tooltip={t('legalDisclaimerTextShownInSmall')}
                                         />
                                     )}>
 
@@ -8909,11 +8911,11 @@ const Setting = (props: SettingProps) => {
                                             className="textarea-input"
                                             value={pdfFooter.disclaimerText || ''}
                                             onChange={(e) => updatePdfFooter({ disclaimerText: e.target.value })}
-                                            placeholder="DISCLAIMER: This product is for informational purposes..."
+                                            placeholder={t('disclaimerThisProductIsForInformational')}
                                         />
                                     </SettingRow>
 
-                                    <SettingRow flow="wrap" label={(<TooltipLabel label="Footer Height (mm)" tooltip="Height of the footer area in millimeters. Increase if disclaimer text is getting cut off." />)}>
+                                    <SettingRow flow="wrap" label={(<TooltipLabel label={t('footerHeightMm')} tooltip={t('heightOfTheFooterAreaIn')} />)}>
                                         <NumericInput
                                             size="sm"
                                             value={pdfFooter.footerHeight || 18}
@@ -8931,10 +8933,10 @@ const Setting = (props: SettingProps) => {
                         <div className="pdf-section-card">
                             <div className="pdf-section-title">
                                 <MapIcon />
-                                Map Screenshot
+                                {t('mapScreenshot')}
                             </div>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Include Map" tooltip="Include a screenshot of the map showing the selected location in the PDF header." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('includeMap')} tooltip={t('includeAScreenshotOfTheMap')} />)}>
                                 <Switch
                                     checked={pdfHeader.includeMap !== false}
                                     onChange={(e) => updatePdfHeader({ includeMap: (e.target as HTMLInputElement).checked })}
@@ -8942,7 +8944,7 @@ const Setting = (props: SettingProps) => {
                             </SettingRow>
 
                             {pdfHeader.includeMap !== false && (
-                                <SettingRow flow="wrap" label={(<TooltipLabel label="Map Height (mm)" tooltip="Height of the map image in millimeters. Larger maps show more context but use more page space." />)}>
+                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('mapHeightMm')} tooltip={t('heightOfTheMapImageIn')} />)}>
                                     <NumericInput
                                         size="sm"
                                         value={pdfHeader.mapHeight || 75}
@@ -8955,20 +8957,20 @@ const Setting = (props: SettingProps) => {
                             )}
 
                             {pdfHeader.includeMap !== false && (
-                                <SettingRow flow="wrap" label={(<TooltipLabel label="Map Scale Mode" tooltip="How to determine the map zoom level. 'Fixed Scale' uses a specific scale value you define. 'Fit to Geometry' automatically zooms to show the entire highlighted geometry (e.g., parcel boundary) from the Highlight Layer, useful when features vary in size." />)}>
+                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('mapScaleMode')} tooltip={t('howToDetermineTheMapZoom')} />)}>
                                     <Select
                                         size="sm"
                                         value={pdfHeader.mapScaleMode || 'fixed'}
                                         onChange={(e) => updatePdfHeader({ mapScaleMode: e.target.value as 'fixed' | 'fitGeometry' })}
                                     >
-                                        <Option value="fixed">Fixed Scale</Option>
-                                        <Option value="fitGeometry">Fit to Geometry</Option>
+                                        <Option value="fixed">{t('fixedScale')}</Option>
+                                        <Option value="fitGeometry">{t('fitToGeometry')}</Option>
                                     </Select>
                                 </SettingRow>
                             )}
 
                             {pdfHeader.includeMap !== false && (pdfHeader.mapScaleMode || 'fixed') === 'fixed' && (
-                                <SettingRow flow="wrap" label={(<TooltipLabel label="Map Scale" tooltip="Map scale for the PDF screenshot. Smaller values = more zoomed in, larger values = more zoomed out. Note: Very small scales (under ~500) may result in blurry imagery if the basemap lacks high-resolution tiles. Examples: 564 = building detail, 1500 = parcel level, 2500 = default, 5000 = neighborhood, 10000 = district." />)}>
+                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('mapScale')} tooltip={t('mapScaleForThePdfScreenshot')} />)}>
                                     <NumericInput
                                         size="sm"
                                         value={pdfHeader.mapScale || 2500}
@@ -8980,7 +8982,7 @@ const Setting = (props: SettingProps) => {
                             )}
 
                             {pdfHeader.includeMap !== false && pdfHeader.mapScaleMode === 'fitGeometry' && (
-                                <SettingRow flow="wrap" label={(<TooltipLabel label="Fit Padding" tooltip="Padding factor around the geometry when using Fit to Geometry mode. 1.0 = no padding (geometry fills entire map), 1.2 = 20% padding (default), 1.5 = 50% padding. Higher values show more context around the feature." />)}>
+                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('fitPadding')} tooltip={t('paddingFactorAroundTheGeometryWhen')} />)}>
                                     <NumericInput
                                         size="sm"
                                         value={pdfHeader.mapFitPadding || 1.2}
@@ -8998,13 +9000,13 @@ const Setting = (props: SettingProps) => {
                         <div className="pdf-section-card">
                             <div className="pdf-section-title">
                                 <LayoutIcon />
-                                Data Layout
+                                {t('dataLayout')}
                             </div>
 
                             <SettingRow flow="wrap" label={(
                                 <TooltipLabel
-                                    label="Layout Style"
-                                    tooltip="How single-record data is arranged: Two-Column (label: value pairs), Table (rows/columns), Cards (boxed groups), Auto (chooses based on record count)."
+                                    label={t('layoutStyle')}
+                                    tooltip={t('howSingleRecordDataIsArranged')}
                                 />
                             )}>
 
@@ -9013,17 +9015,17 @@ const Setting = (props: SettingProps) => {
                                     value={pdfStyle.dataLayout || 'two-column'}
                                     onChange={(e) => updatePdfStyle({ dataLayout: e.target.value as any })}
                                 >
-                                    <Option value="two-column">Two-Column</Option>
-                                    <Option value="table">Table</Option>
-                                    <Option value="cards">Cards</Option>
-                                    <Option value="auto">Auto</Option>
+                                    <Option value="two-column">{t('twoColumn')}</Option>
+                                    <Option value="table">{t('table')}</Option>
+                                    <Option value="cards">{t('cards')}</Option>
+                                    <Option value="auto">{t('auto')}</Option>
                                 </Select>
                             </SettingRow>
 
                             <SettingRow flow="wrap" label={(
                                 <TooltipLabel
-                                    label="Section Headers"
-                                    tooltip="Background color for section header bars in the PDF. Should contrast with white text for readability."
+                                    label={t('sectionHeaders')}
+                                    tooltip={t('backgroundColorForSectionHeaderBars')}
                                 />
                             )}>
 
@@ -9045,8 +9047,8 @@ const Setting = (props: SettingProps) => {
 
                             <SettingRow flow="wrap" label={(
                                 <TooltipLabel
-                                    label="Alternate Row"
-                                    tooltip="Background color for alternate table rows (zebra striping). Use a subtle color like light gray for best results."
+                                    label={t('alternateRow')}
+                                    tooltip={t('backgroundColorForAlternateTableRows')}
                                 />
                             )}>
 
@@ -9068,8 +9070,8 @@ const Setting = (props: SettingProps) => {
 
                             <SettingRow flow="wrap" label={(
                                 <TooltipLabel
-                                    label="Link Color"
-                                    tooltip="Color for hyperlinks in the PDF. Standard web blue (#0066CC) is recommended for familiarity."
+                                    label={t('linkColor')}
+                                    tooltip={t('colorForHyperlinksInThePdf')}
                                 />
                             )}>
 
@@ -9094,13 +9096,13 @@ const Setting = (props: SettingProps) => {
                         <div className="pdf-section-card">
                             <div className="pdf-section-title">
                                 <TextIcon />
-                                Typography
+                                {t('typography')}
                             </div>
 
                             <SettingRow flow="wrap" label={(
                                 <TooltipLabel
-                                    label="Font Family"
-                                    tooltip="PDF font. Built-in fonts (Helvetica, Times, Courier) support ASCII only. For Polish/Unicode characters, use Noto Sans or other Google Fonts which are downloaded at PDF generation time."
+                                    label={t('fontFamily')}
+                                    tooltip={t('pdfFontBuiltInFontsHelvetica')}
                                 />
                             )}>
 
@@ -9110,32 +9112,32 @@ const Setting = (props: SettingProps) => {
                                     onChange={(e) => updatePdfStyle({ fontFamily: e.target.value as any })}
                                     style={{ width: '100%' }}
                                 >
-                                    <Option value="helvetica">Helvetica (Default)</Option>
-                                    <Option value="times">Times New Roman</Option>
-                                    <Option value="courier">Courier (Monospace)</Option>
-                                    <Option disabled>── Google Fonts ──</Option>
-                                    <Option value="Roboto">Roboto</Option>
-                                    <Option value="Open Sans">Open Sans</Option>
-                                    <Option value="Lato">Lato</Option>
-                                    <Option value="Montserrat">Montserrat</Option>
-                                    <Option value="Oswald">Oswald</Option>
-                                    <Option value="Raleway">Raleway</Option>
-                                    <Option value="Poppins">Poppins</Option>
-                                    <Option value="Nunito">Nunito</Option>
-                                    <Option value="Ubuntu">Ubuntu</Option>
-                                    <Option value="Merriweather">Merriweather</Option>
-                                    <Option value="PT Sans">PT Sans</Option>
-                                    <Option value="Playfair Display">Playfair Display</Option>
-                                    <Option value="Source Sans Pro">Source Sans Pro</Option>
-                                    <Option value="Noto Sans">Noto Sans</Option>
-                                    <Option disabled>── Custom ──</Option>
-                                    <Option value="custom">Upload Custom Font (TTF)</Option>
+                                    <Option value="helvetica">{t('helveticaDefault')}</Option>
+                                    <Option value="times">{t('timesNewRoman')}</Option>
+                                    <Option value="courier">{t('courierMonospace')}</Option>
+                                    <Option disabled>{t('googleFonts')}</Option>
+                                    <Option value="Roboto">{t('roboto')}</Option>
+                                    <Option value="Open Sans">{t('openSans')}</Option>
+                                    <Option value="Lato">{t('lato')}</Option>
+                                    <Option value="Montserrat">{t('montserrat')}</Option>
+                                    <Option value="Oswald">{t('oswald')}</Option>
+                                    <Option value="Raleway">{t('raleway')}</Option>
+                                    <Option value="Poppins">{t('poppins')}</Option>
+                                    <Option value="Nunito">{t('nunito')}</Option>
+                                    <Option value="Ubuntu">{t('ubuntu')}</Option>
+                                    <Option value="Merriweather">{t('merriweather')}</Option>
+                                    <Option value="PT Sans">{t('ptSans')}</Option>
+                                    <Option value="Playfair Display">{t('playfairDisplay')}</Option>
+                                    <Option value="Source Sans Pro">{t('sourceSansPro')}</Option>
+                                    <Option value="Noto Sans">{t('notoSans')}</Option>
+                                    <Option disabled>{t('custom')}</Option>
+                                    <Option value="custom">{t('uploadCustomFontTtf')}</Option>
                                 </Select>
                             </SettingRow>
 
                             {!['helvetica', 'times', 'courier', 'custom'].includes(pdfStyle.fontFamily || 'helvetica') && (
                                 <p className="hint-text" style={{ color: 'var(--sys-color-primary-main)' }}>
-                                    Google Fonts are loaded automatically when generating PDF.
+                                    {t('googleFontsAreLoadedAutomaticallyWhen')}
                                 </p>
                             )}
 
@@ -9148,7 +9150,7 @@ const Setting = (props: SettingProps) => {
                                             accept=".ttf"
                                             onChange={(e) => handleFontUpload(e, 'regular')}
                                             style={{ display: 'none' }}
-                                            aria-label="Upload regular font"
+                                            aria-label={t('uploadRegularFont')}
                                         />
                                         <input
                                             ref={fontBoldInputRef}
@@ -9156,27 +9158,27 @@ const Setting = (props: SettingProps) => {
                                             accept=".ttf"
                                             onChange={(e) => handleFontUpload(e, 'bold')}
                                             style={{ display: 'none' }}
-                                            aria-label="Upload bold font"
+                                            aria-label={t('uploadBoldFont')}
                                         />
 
-                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Regular Font (Required)" tooltip="Upload a TrueType (.ttf) font file for regular text. This is required for custom fonts to work." />)}>
+                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('regularFontRequired')} tooltip={t('uploadATrueTypeTtfFontFile')} />)}>
                                             <div style={{ display: 'flex', gap: '8px', alignItems: 'center', width: '100%' }}>
                                                 <Button
                                                     size="sm"
                                                     type="secondary"
                                                     onClick={() => fontRegularInputRef.current?.click()}
                                                 >
-                                                    <UploadIcon /> Upload TTF
+                                                    <UploadIcon /> {t('uploadTtf')}
                                                 </Button>
                                                 {pdfStyle.customFont?.regularBase64 && (
                                                     <span style={{ fontSize: '11px', color: 'var(--sys-color-success-main)' }}>
-                                                        ✓ {pdfStyle.customFont.name || 'Font'} loaded
+                                                        ✓ {pdfStyle.customFont.name || t('font')} {t('loaded')}
                                                     </span>
                                                 )}
                                             </div>
                                         </SettingRow>
 
-                                        <SettingRow flow="wrap" label={(<TooltipLabel label="Bold Font (Optional)" tooltip="Upload a bold variant of your font. If not provided, the regular font will be used for bold text." />)}>
+                                        <SettingRow flow="wrap" label={(<TooltipLabel label={t('boldFontOptional')} tooltip={t('uploadABoldVariantOfYour')} />)}>
                                             <div style={{ display: 'flex', gap: '8px', alignItems: 'center', width: '100%' }}>
                                                 <Button
                                                     size="sm"
@@ -9184,18 +9186,18 @@ const Setting = (props: SettingProps) => {
                                                     onClick={() => fontBoldInputRef.current?.click()}
                                                     disabled={!pdfStyle.customFont?.regularBase64}
                                                 >
-                                                    <UploadIcon /> Upload TTF
+                                                    <UploadIcon /> {t('uploadTtf')}
                                                 </Button>
                                                 {pdfStyle.customFont?.boldBase64 && (
                                                     <span style={{ fontSize: '11px', color: 'var(--sys-color-success-main)' }}>
-                                                        ✓ Bold loaded
+                                                        {t('boldLoaded')}
                                                     </span>
                                                 )}
                                             </div>
                                         </SettingRow>
 
                                         {pdfStyle.customFont?.regularBase64 && (
-                                            <SettingRow flow="wrap" label={(<TooltipLabel label="Font Name" tooltip="Display name for the font. Used in the PDF metadata and for reference." />)}>
+                                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('fontName')} tooltip={t('displayNameForTheFontUsed')} />)}>
                                                 <TextInput
                                                     size="sm"
                                                     value={pdfStyle.customFont?.name || ''}
@@ -9205,7 +9207,7 @@ const Setting = (props: SettingProps) => {
                                                             name: e.target.value
                                                         }
                                                     })}
-                                                    placeholder="Custom Font Name"
+                                                    placeholder={t('customFontName')}
                                                 />
                                             </SettingRow>
                                         )}
@@ -9217,13 +9219,13 @@ const Setting = (props: SettingProps) => {
                                                 onClick={removeCustomFont}
                                                 style={{ marginTop: '8px' }}
                                             >
-                                                <TrashIcon /> Remove Custom Font
+                                                <TrashIcon /> {t('removeCustomFont')}
                                             </Button>
                                         )}
                                     </div>
 
                                     <p className="hint-text">
-                                        Upload TTF font files. Regular weight is required; bold is optional (will use regular if not provided).
+                                        {t('uploadTtfFontFilesRegularWeight')}
                                     </p>
                                 </>
                             )}
@@ -9233,13 +9235,13 @@ const Setting = (props: SettingProps) => {
                         <div className="pdf-section-card">
                             <div className="pdf-section-title">
                                 <TableIcon />
-                                PDF Table Settings
+                                {t('pdfTableSettings')}
                             </div>
                             <p className="hint-text" style={{ marginTop: 0, marginBottom: '12px' }}>
-                                These settings control table appearance in the PDF export, not the on-screen widget display.
+                                {t('theseSettingsControlTableAppearanceIn')}
                             </p>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Table Header Background" tooltip="Background color for table column headers. Use your organization's brand color or a dark color for good contrast with white text." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('tableHeaderBackground')} tooltip={t('backgroundColorForTableColumnHeaders')} />)}>
                                 <div className="color-input-row">
                                     <input
                                         type="color"
@@ -9256,7 +9258,7 @@ const Setting = (props: SettingProps) => {
                                 </div>
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Table Header Text" tooltip="Text color for column header labels. Use white or a light color when using a dark header background." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('tableHeaderText')} tooltip={t('textColorForColumnHeaderLabels')} />)}>
                                 <div className="color-input-row">
                                     <input
                                         type="color"
@@ -9275,8 +9277,8 @@ const Setting = (props: SettingProps) => {
 
                             <SettingRow flow="wrap" label={(
                                 <TooltipLabel
-                                    label="Layer Title Background"
-                                    tooltip="Background color for layer title headers that appear when a section contains multiple data layers. Use a different color from Table Header to distinguish between layer titles and column headers."
+                                    label={t('layerTitleBackground')}
+                                    tooltip={t('backgroundColorForLayerTitleHeaders')}
                                 />
                             )}>
                                 <div className="color-input-row">
@@ -9297,8 +9299,8 @@ const Setting = (props: SettingProps) => {
 
                             <SettingRow flow="wrap" label={(
                                 <TooltipLabel
-                                    label="Layer Title Text"
-                                    tooltip="Text color for layer title headers. Should contrast well with the Layer Title Background color for readability."
+                                    label={t('layerTitleText')}
+                                    tooltip={t('textColorForLayerTitleHeaders')}
                                 />
                             )}>
                                 <div className="color-input-row">
@@ -9317,35 +9319,35 @@ const Setting = (props: SettingProps) => {
                                 </div>
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Header Font Size" tooltip="Font size for table column headers in the PDF. Smaller sizes fit more columns but may be harder to read." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('headerFontSize')} tooltip={t('fontSizeForTableColumnHeaders')} />)}>
                                 <Select
                                     size="sm"
                                     value={String(pdfStyle.tableHeaderFontSize || 8)}
                                     onChange={(e) => updatePdfStyle({ tableHeaderFontSize: Number(e.target.value) })}
                                 >
-                                    <Option value="6">6pt (Small)</Option>
-                                    <Option value="7">7pt</Option>
-                                    <Option value="8">8pt (Default)</Option>
-                                    <Option value="9">9pt</Option>
-                                    <Option value="10">10pt (Large)</Option>
+                                    <Option value="6">{t('_6ptSmall')}</Option>
+                                    <Option value="7">{t('_7pt')}</Option>
+                                    <Option value="8">{t('_8ptDefault')}</Option>
+                                    <Option value="9">{t('_9pt')}</Option>
+                                    <Option value="10">{t('_10ptLarge')}</Option>
                                 </Select>
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Data Font Size" tooltip="Font size for table data cells in the PDF. Smaller sizes fit more content but may affect readability." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('dataFontSize')} tooltip={t('fontSizeForTableDataCells')} />)}>
                                 <Select
                                     size="sm"
                                     value={String(pdfStyle.tableDataFontSize || 8)}
                                     onChange={(e) => updatePdfStyle({ tableDataFontSize: Number(e.target.value) })}
                                 >
-                                    <Option value="6">6pt (Small)</Option>
-                                    <Option value="7">7pt</Option>
-                                    <Option value="8">8pt (Default)</Option>
-                                    <Option value="9">9pt</Option>
-                                    <Option value="10">10pt (Large)</Option>
+                                    <Option value="6">{t('_6ptSmall')}</Option>
+                                    <Option value="7">{t('_7pt')}</Option>
+                                    <Option value="8">{t('_8ptDefault')}</Option>
+                                    <Option value="9">{t('_9pt')}</Option>
+                                    <Option value="10">{t('_10ptLarge')}</Option>
                                 </Select>
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Data Text Color" tooltip="Text color for table data cells. Use dark colors for good contrast with light backgrounds." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('dataTextColor')} tooltip={t('textColorForTableDataCells')} />)}>
                                 <div className="color-input-row">
                                     <input
                                         type="color"
@@ -9362,7 +9364,7 @@ const Setting = (props: SettingProps) => {
                                 </div>
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Show Table Borders" tooltip="Display grid lines and borders around table cells. Helps visually separate data but uses more ink when printing." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('showTableBorders')} tooltip={t('displayGridLinesAndBordersAround')} />)}>
                                 <Switch
                                     checked={pdfStyle.tableShowBorders !== false}
                                     onChange={(e) => updatePdfStyle({ tableShowBorders: (e.target as HTMLInputElement).checked })}
@@ -9370,7 +9372,7 @@ const Setting = (props: SettingProps) => {
                             </SettingRow>
 
                             {pdfStyle.tableShowBorders !== false && (
-                                <SettingRow flow="wrap" label={(<TooltipLabel label="Border Color" tooltip="Color for table grid lines and borders. Light gray provides subtle separation without overwhelming the data." />)}>
+                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('borderColor')} tooltip={t('colorForTableGridLinesAnd')} />)}>
                                     <div className="color-input-row">
                                         <input
                                             type="color"
@@ -9388,95 +9390,95 @@ const Setting = (props: SettingProps) => {
                                 </SettingRow>
                             )}
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Striped Rows" tooltip="Alternate row background colors for easier reading. Recommended for tables with many rows." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('stripedRows')} tooltip={t('alternateRowBackgroundColorsForEasier')} />)}>
                                 <Switch
                                     checked={pdfStyle.tableStripedRows !== false}
                                     onChange={(e) => updatePdfStyle({ tableStripedRows: (e.target as HTMLInputElement).checked })}
                                 />
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Row Height" tooltip="Height of each data row in millimeters. Larger values improve readability but fit fewer rows per page." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('rowHeight')} tooltip={t('heightOfEachDataRowIn')} />)}>
                                 <Select
                                     size="sm"
                                     value={String(pdfStyle.tableRowHeight || 7)}
                                     onChange={(e) => updatePdfStyle({ tableRowHeight: Number(e.target.value) })}
                                 >
-                                    <Option value="5">5mm (Compact)</Option>
-                                    <Option value="6">6mm</Option>
-                                    <Option value="7">7mm (Default)</Option>
-                                    <Option value="8">8mm</Option>
-                                    <Option value="9">9mm (Spacious)</Option>
+                                    <Option value="5">{t('_5mmCompact')}</Option>
+                                    <Option value="6">{t('_6mm')}</Option>
+                                    <Option value="7">{t('_7mmDefault')}</Option>
+                                    <Option value="8">{t('_8mm')}</Option>
+                                    <Option value="9">{t('_9mmSpacious')}</Option>
                                 </Select>
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Max Columns" tooltip="Maximum number of columns to display in PDF tables. Additional columns will be truncated. Consider page width when setting this value." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('maxColumns')} tooltip={t('maximumNumberOfColumnsToDisplay')} />)}>
                                 <Select
                                     size="sm"
                                     value={String(pdfStyle.tableMaxColumns || 6)}
                                     onChange={(e) => updatePdfStyle({ tableMaxColumns: Number(e.target.value) })}
                                 >
-                                    <Option value="1">1 column</Option>
-                                    <Option value="2">2 columns</Option>
-                                    <Option value="3">3 columns</Option>
-                                    <Option value="4">4 columns</Option>
-                                    <Option value="5">5 columns</Option>
-                                    <Option value="6">6 columns (Default)</Option>
-                                    <Option value="8">8 columns</Option>
-                                    <Option value="10">10 columns</Option>
+                                    <Option value="1">{t('_1Column')}</Option>
+                                    <Option value="2">{t('_2Columns')}</Option>
+                                    <Option value="3">{t('_3Columns')}</Option>
+                                    <Option value="4">{t('_4Columns')}</Option>
+                                    <Option value="5">{t('_5Columns')}</Option>
+                                    <Option value="6">{t('_6ColumnsDefault')}</Option>
+                                    <Option value="8">{t('_8Columns')}</Option>
+                                    <Option value="10">{t('_10Columns')}</Option>
                                 </Select>
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Max Rows" tooltip="Maximum number of data rows per table in the PDF. Additional rows will be truncated. Use higher values for comprehensive reports." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('maxRows')} tooltip={t('maximumNumberOfDataRowsPer')} />)}>
                                 <Select
                                     size="sm"
                                     value={String(pdfStyle.tableMaxRows || 15)}
                                     onChange={(e) => updatePdfStyle({ tableMaxRows: Number(e.target.value) })}
                                 >
-                                    <Option value="5">5 rows</Option>
-                                    <Option value="10">10 rows</Option>
-                                    <Option value="15">15 rows (Default)</Option>
-                                    <Option value="20">20 rows</Option>
-                                    <Option value="25">25 rows</Option>
-                                    <Option value="50">50 rows</Option>
-                                    <Option value="100">100 rows (All)</Option>
+                                    <Option value="5">{t('_5Rows')}</Option>
+                                    <Option value="10">{t('_10Rows')}</Option>
+                                    <Option value="15">{t('_15RowsDefault')}</Option>
+                                    <Option value="20">{t('_20Rows')}</Option>
+                                    <Option value="25">{t('_25Rows')}</Option>
+                                    <Option value="50">{t('_50Rows')}</Option>
+                                    <Option value="100">{t('_100RowsAll')}</Option>
                                 </Select>
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Header Row Height" tooltip="Height of the table header row in millimeters. May need to be larger if column names are long." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('headerRowHeight')} tooltip={t('heightOfTheTableHeaderRow')} />)}>
                                 <Select
                                     size="sm"
                                     value={String(pdfStyle.tableHeaderHeight || 8)}
                                     onChange={(e) => updatePdfStyle({ tableHeaderHeight: Number(e.target.value) })}
                                 >
-                                    <Option value="6">6mm (Compact)</Option>
-                                    <Option value="7">7mm</Option>
-                                    <Option value="8">8mm (Default)</Option>
-                                    <Option value="9">9mm</Option>
-                                    <Option value="10">10mm (Spacious)</Option>
+                                    <Option value="6">{t('_6mmCompact')}</Option>
+                                    <Option value="7">{t('_7mm')}</Option>
+                                    <Option value="8">{t('_8mmDefault')}</Option>
+                                    <Option value="9">{t('_9mm')}</Option>
+                                    <Option value="10">{t('_10mmSpacious')}</Option>
                                 </Select>
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Cell Padding" tooltip="Space between cell content and cell borders in millimeters. More padding improves readability but uses more space." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('cellPadding')} tooltip={t('spaceBetweenCellContentAndCell')} />)}>
                                 <Select
                                     size="sm"
                                     value={String(pdfStyle.tableCellPadding || 2)}
                                     onChange={(e) => updatePdfStyle({ tableCellPadding: Number(e.target.value) })}
                                 >
-                                    <Option value="1">1mm (Tight)</Option>
-                                    <Option value="2">2mm (Default)</Option>
-                                    <Option value="3">3mm</Option>
-                                    <Option value="4">4mm (Spacious)</Option>
+                                    <Option value="1">{t('_1mmTight')}</Option>
+                                    <Option value="2">{t('_2mmDefault')}</Option>
+                                    <Option value="3">{t('_3mm')}</Option>
+                                    <Option value="4">{t('_4mmSpacious')}</Option>
                                 </Select>
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Include Related Tables" tooltip="Include related table data (child records, linked tables) in the PDF export. Disable if PDFs are too long." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('includeRelatedTables')} tooltip={t('includeRelatedTableDataChildRecords')} />)}>
                                 <Switch
                                     checked={config.pdfIncludeRelatedTables || false}
                                     onChange={(e) => updateConfig('pdfIncludeRelatedTables', (e.target as HTMLInputElement).checked)}
                                 />
                             </SettingRow>
                             <p className="hint-text" style={{ marginTop: '4px', marginBottom: '8px' }}>
-                                When enabled, related table data configured on layers will be included in PDF export
+                                {t('whenEnabledRelatedTableDataConfigured')}
                             </p>
                         </div>
 
@@ -9486,196 +9488,196 @@ const Setting = (props: SettingProps) => {
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor">
                                     <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 12.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zM8 4a.75.75 0 0 0-.75.75v3.5a.75.75 0 0 0 1.5 0v-3.5A.75.75 0 0 0 8 4zm0 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
                                 </svg>
-                                Accessibility (WCAG 2.1)
+                                {t('accessibilityWcag21')}
                             </div>
                             <p className="hint-text" style={{ marginBottom: '12px' }}>
-                                These options enhance PDF accessibility for users with disabilities. Enabling all options ensures WCAG 2.1 AA compliance.
+                                {t('theseOptionsEnhancePdfAccessibilityFor')}
                             </p>
 
                             {/* Document Metadata */}
                             <div style={{ marginBottom: '8px', fontWeight: 500, fontSize: '12px', color: 'var(--sys-color-primary-main)' }}>
-                                Document Metadata (WCAG 2.4.2)
+                                {t('documentMetadataWcag242')}
                             </div>
 
                             <div style={{ marginBottom: '12px' }}>
-                                <SettingRow flow="wrap" label="Document Language">
+                                <SettingRow flow="wrap" label={t('documentLanguage')}>
                                     <Select
                                         size="sm"
                                         value={pdfAccessibility.documentLanguage || 'en-US'}
                                         onChange={(e) => updatePdfAccessibility({ documentLanguage: e.target.value })}
                                     >
-                                        <Option value="af">Afrikaans</Option>
-                                        <Option value="sq">Albanian (Shqip)</Option>
-                                        <Option value="am">Amharic (አማርኛ)</Option>
-                                        <Option value="ar">Arabic (العربية)</Option>
-                                        <Option value="ar-EG">Arabic (Egypt)</Option>
-                                        <Option value="ar-SA">Arabic (Saudi Arabia)</Option>
-                                        <Option value="hy">Armenian (Hayeren)</Option>
-                                        <Option value="ast">Asturian (Asturianu)</Option>
-                                        <Option value="az">Azerbaijani (Azərbaycan)</Option>
-                                        <Option value="eu">Basque (Euskara)</Option>
-                                        <Option value="be">Belarusian (Беларуская)</Option>
-                                        <Option value="bn">Bengali (বাংলা)</Option>
-                                        <Option value="bs">Bosnian (Bosanski)</Option>
-                                        <Option value="br">Breton (Brezhoneg)</Option>
-                                        <Option value="bg">Bulgarian (Български)</Option>
-                                        <Option value="my">Burmese (မြန်မာ)</Option>
-                                        <Option value="ca">Catalan (Català)</Option>
-                                        <Option value="zh">Chinese (中文)</Option>
-                                        <Option value="zh-HK">Chinese (Hong Kong)</Option>
-                                        <Option value="zh-CN">Chinese (Simplified)</Option>
-                                        <Option value="zh-TW">Chinese (Traditional)</Option>
-                                        <Option value="co">Corsican (Corsu)</Option>
-                                        <Option value="hr">Croatian (Hrvatski)</Option>
-                                        <Option value="cs">Czech (Čeština)</Option>
-                                        <Option value="da">Danish (Dansk)</Option>
-                                        <Option value="nl">Dutch (Nederlands)</Option>
-                                        <Option value="nl-BE">Dutch (Belgium/Flemish)</Option>
-                                        <Option value="en-AU">English (Australia)</Option>
-                                        <Option value="en-CA">English (Canada)</Option>
-                                        <Option value="en-IE">English (Ireland)</Option>
-                                        <Option value="en-NZ">English (New Zealand)</Option>
-                                        <Option value="en-ZA">English (South Africa)</Option>
-                                        <Option value="en-GB">English (UK)</Option>
-                                        <Option value="en-US">English (US)</Option>
-                                        <Option value="eo">Esperanto</Option>
-                                        <Option value="et">Estonian (Eesti)</Option>
-                                        <Option value="fo">Faroese (Føroyskt)</Option>
-                                        <Option value="tl">Filipino/Tagalog</Option>
-                                        <Option value="fi">Finnish (Suomi)</Option>
-                                        <Option value="fr">French (Français)</Option>
-                                        <Option value="fr-BE">French (Belgium)</Option>
-                                        <Option value="fr-CA">French (Canada)</Option>
-                                        <Option value="fr-CH">French (Switzerland)</Option>
-                                        <Option value="fy">Frisian (Frysk)</Option>
-                                        <Option value="gl">Galician (Galego)</Option>
-                                        <Option value="ka">Georgian (ქართული)</Option>
-                                        <Option value="de">German (Deutsch)</Option>
-                                        <Option value="de-AT">German (Austria)</Option>
-                                        <Option value="de-CH">German (Switzerland)</Option>
-                                        <Option value="el">Greek (Ελληνικά)</Option>
-                                        <Option value="gu">Gujarati (ગુજરાતી)</Option>
-                                        <Option value="ha">Hausa</Option>
-                                        <Option value="haw">Hawaiian (ʻŌlelo Hawaiʻi)</Option>
-                                        <Option value="he">Hebrew (עברית)</Option>
-                                        <Option value="hi">Hindi (हिन्दी)</Option>
-                                        <Option value="hu">Hungarian (Magyar)</Option>
-                                        <Option value="is">Icelandic (Íslenska)</Option>
-                                        <Option value="ig">Igbo</Option>
-                                        <Option value="id">Indonesian (Bahasa Indonesia)</Option>
-                                        <Option value="ga">Irish (Gaeilge)</Option>
-                                        <Option value="it">Italian (Italiano)</Option>
-                                        <Option value="it-CH">Italian (Switzerland)</Option>
-                                        <Option value="ja">Japanese (日本語)</Option>
-                                        <Option value="jv">Javanese (Basa Jawa)</Option>
-                                        <Option value="kn">Kannada (ಕನ್ನಡ)</Option>
-                                        <Option value="kk">Kazakh (Қазақ)</Option>
-                                        <Option value="km">Khmer (ខ្មែរ)</Option>
-                                        <Option value="rw">Kinyarwanda</Option>
-                                        <Option value="ko">Korean (한국어)</Option>
-                                        <Option value="ku">Kurdish (Kurdî)</Option>
-                                        <Option value="ckb">Kurdish (Sorani)</Option>
-                                        <Option value="ky">Kyrgyz (Кыргызча)</Option>
-                                        <Option value="lo">Lao (ລາວ)</Option>
-                                        <Option value="la">Latin (Latina)</Option>
-                                        <Option value="lv">Latvian (Latviešu)</Option>
-                                        <Option value="lt">Lithuanian (Lietuvių)</Option>
-                                        <Option value="lb">Luxembourgish (Lëtzebuergesch)</Option>
-                                        <Option value="mk">Macedonian (Македонски)</Option>
-                                        <Option value="mg">Malagasy</Option>
-                                        <Option value="ms">Malay (Bahasa Melayu)</Option>
-                                        <Option value="ml">Malayalam (മലയാളം)</Option>
-                                        <Option value="mt">Maltese (Malti)</Option>
-                                        <Option value="mi">Māori (Te Reo Māori)</Option>
-                                        <Option value="mr">Marathi (मराठी)</Option>
-                                        <Option value="mn">Mongolian (Монгол)</Option>
-                                        <Option value="ne">Nepali (नेपाली)</Option>
-                                        <Option value="no">Norwegian (Norsk)</Option>
-                                        <Option value="nb">Norwegian Bokmål</Option>
-                                        <Option value="nn">Norwegian Nynorsk</Option>
-                                        <Option value="sme">Northern Sami</Option>
-                                        <Option value="oc">Occitan</Option>
-                                        <Option value="or">Odia (ଓଡ଼ିଆ)</Option>
-                                        <Option value="ps">Pashto (پښتو)</Option>
-                                        <Option value="fa">Persian/Farsi (فارسی)</Option>
-                                        <Option value="pl">Polish (Polski)</Option>
-                                        <Option value="pt">Portuguese (Português)</Option>
-                                        <Option value="pt-BR">Portuguese (Brazil)</Option>
-                                        <Option value="pa">Punjabi (ਪੰਜਾਬੀ)</Option>
-                                        <Option value="ro">Romanian (Română)</Option>
-                                        <Option value="rm">Romansh (Rumantsch)</Option>
-                                        <Option value="ru">Russian (Русский)</Option>
-                                        <Option value="sm">Samoan (Gagana Samoa)</Option>
-                                        <Option value="gd">Scottish Gaelic (Gàidhlig)</Option>
-                                        <Option value="sr">Serbian (Српски)</Option>
-                                        <Option value="sr-Latn">Serbian (Latin)</Option>
-                                        <Option value="si">Sinhala (සිංහල)</Option>
-                                        <Option value="sk">Slovak (Slovenčina)</Option>
-                                        <Option value="sl">Slovenian (Slovenščina)</Option>
-                                        <Option value="so">Somali (Soomaali)</Option>
-                                        <Option value="es">Spanish (Español)</Option>
-                                        <Option value="es-AR">Spanish (Argentina)</Option>
-                                        <Option value="es-MX">Spanish (Mexico)</Option>
-                                        <Option value="sw">Swahili (Kiswahili)</Option>
-                                        <Option value="sv">Swedish (Svenska)</Option>
-                                        <Option value="ta">Tamil (தமிழ்)</Option>
-                                        <Option value="tt">Tatar (Татар)</Option>
-                                        <Option value="te">Telugu (తెలుగు)</Option>
-                                        <Option value="th">Thai (ไทย)</Option>
-                                        <Option value="to">Tongan (Lea Faka-Tonga)</Option>
-                                        <Option value="tr">Turkish (Türkçe)</Option>
-                                        <Option value="tk">Turkmen (Türkmen)</Option>
-                                        <Option value="uk">Ukrainian (Українська)</Option>
-                                        <Option value="ur">Urdu (اردو)</Option>
-                                        <Option value="uz">Uzbek (Oʻzbekcha)</Option>
-                                        <Option value="vi">Vietnamese (Tiếng Việt)</Option>
-                                        <Option value="cy">Welsh (Cymraeg)</Option>
-                                        <Option value="xh">Xhosa (isiXhosa)</Option>
-                                        <Option value="yi">Yiddish (ייִדיש)</Option>
-                                        <Option value="yo">Yoruba (Yorùbá)</Option>
-                                        <Option value="zu">Zulu (isiZulu)</Option>
+                                        <Option value="af">{t('afrikaans')}</Option>
+                                        <Option value="sq">{t('albanianShqip')}</Option>
+                                        <Option value="am">{t('amharic')}</Option>
+                                        <Option value="ar">{t('arabic')}</Option>
+                                        <Option value="ar-EG">{t('arabicEgypt')}</Option>
+                                        <Option value="ar-SA">{t('arabicSaudiArabia')}</Option>
+                                        <Option value="hy">{t('armenianHayeren')}</Option>
+                                        <Option value="ast">{t('asturianAsturianu')}</Option>
+                                        <Option value="az">{t('azerbaijaniAzRbaycan')}</Option>
+                                        <Option value="eu">{t('basqueEuskara')}</Option>
+                                        <Option value="be">{t('belarusian')}</Option>
+                                        <Option value="bn">{t('bengali')}</Option>
+                                        <Option value="bs">{t('bosnianBosanski')}</Option>
+                                        <Option value="br">{t('bretonBrezhoneg')}</Option>
+                                        <Option value="bg">{t('bulgarian')}</Option>
+                                        <Option value="my">{t('burmese')}</Option>
+                                        <Option value="ca">{t('catalanCatal')}</Option>
+                                        <Option value="zh">{t('chinese')}</Option>
+                                        <Option value="zh-HK">{t('chineseHongKong')}</Option>
+                                        <Option value="zh-CN">{t('chineseSimplified')}</Option>
+                                        <Option value="zh-TW">{t('chineseTraditional')}</Option>
+                                        <Option value="co">{t('corsicanCorsu')}</Option>
+                                        <Option value="hr">{t('croatianHrvatski')}</Option>
+                                        <Option value="cs">{t('czechETina')}</Option>
+                                        <Option value="da">{t('danishDansk')}</Option>
+                                        <Option value="nl">{t('dutchNederlands')}</Option>
+                                        <Option value="nl-BE">{t('dutchBelgiumFlemish')}</Option>
+                                        <Option value="en-AU">{t('englishAustralia')}</Option>
+                                        <Option value="en-CA">{t('englishCanada')}</Option>
+                                        <Option value="en-IE">{t('englishIreland')}</Option>
+                                        <Option value="en-NZ">{t('englishNewZealand')}</Option>
+                                        <Option value="en-ZA">{t('englishSouthAfrica')}</Option>
+                                        <Option value="en-GB">{t('englishUk')}</Option>
+                                        <Option value="en-US">{t('englishUs')}</Option>
+                                        <Option value="eo">{t('esperanto')}</Option>
+                                        <Option value="et">{t('estonianEesti')}</Option>
+                                        <Option value="fo">{t('faroeseFRoyskt')}</Option>
+                                        <Option value="tl">{t('filipinoTagalog')}</Option>
+                                        <Option value="fi">{t('finnishSuomi')}</Option>
+                                        <Option value="fr">{t('frenchFranAis')}</Option>
+                                        <Option value="fr-BE">{t('frenchBelgium')}</Option>
+                                        <Option value="fr-CA">{t('frenchCanada')}</Option>
+                                        <Option value="fr-CH">{t('frenchSwitzerland')}</Option>
+                                        <Option value="fy">{t('frisianFrysk')}</Option>
+                                        <Option value="gl">{t('galicianGalego')}</Option>
+                                        <Option value="ka">{t('georgian')}</Option>
+                                        <Option value="de">{t('germanDeutsch')}</Option>
+                                        <Option value="de-AT">{t('germanAustria')}</Option>
+                                        <Option value="de-CH">{t('germanSwitzerland')}</Option>
+                                        <Option value="el">{t('greek')}</Option>
+                                        <Option value="gu">{t('gujarati')}</Option>
+                                        <Option value="ha">{t('hausa')}</Option>
+                                        <Option value="haw">{t('hawaiianLeloHawaiI')}</Option>
+                                        <Option value="he">{t('hebrew')}</Option>
+                                        <Option value="hi">{t('hindi')}</Option>
+                                        <Option value="hu">{t('hungarianMagyar')}</Option>
+                                        <Option value="is">{t('icelandicSlenska')}</Option>
+                                        <Option value="ig">{t('igbo')}</Option>
+                                        <Option value="id">{t('indonesianBahasaIndonesia')}</Option>
+                                        <Option value="ga">{t('irishGaeilge')}</Option>
+                                        <Option value="it">{t('italianItaliano')}</Option>
+                                        <Option value="it-CH">{t('italianSwitzerland')}</Option>
+                                        <Option value="ja">{t('japanese')}</Option>
+                                        <Option value="jv">{t('javaneseBasaJawa')}</Option>
+                                        <Option value="kn">{t('kannada')}</Option>
+                                        <Option value="kk">{t('kazakh')}</Option>
+                                        <Option value="km">{t('khmer')}</Option>
+                                        <Option value="rw">{t('kinyarwanda')}</Option>
+                                        <Option value="ko">{t('korean')}</Option>
+                                        <Option value="ku">{t('kurdishKurd')}</Option>
+                                        <Option value="ckb">{t('kurdishSorani')}</Option>
+                                        <Option value="ky">{t('kyrgyz')}</Option>
+                                        <Option value="lo">{t('lao')}</Option>
+                                        <Option value="la">{t('latinLatina')}</Option>
+                                        <Option value="lv">{t('latvianLatvieU')}</Option>
+                                        <Option value="lt">{t('lithuanianLietuvi')}</Option>
+                                        <Option value="lb">{t('luxembourgishLTzebuergesch')}</Option>
+                                        <Option value="mk">{t('macedonian')}</Option>
+                                        <Option value="mg">{t('malagasy')}</Option>
+                                        <Option value="ms">{t('malayBahasaMelayu')}</Option>
+                                        <Option value="ml">{t('malayalam')}</Option>
+                                        <Option value="mt">{t('malteseMalti')}</Option>
+                                        <Option value="mi">{t('mOriTeReoMOri')}</Option>
+                                        <Option value="mr">{t('marathi')}</Option>
+                                        <Option value="mn">{t('mongolian')}</Option>
+                                        <Option value="ne">{t('nepali')}</Option>
+                                        <Option value="no">{t('norwegianNorsk')}</Option>
+                                        <Option value="nb">{t('norwegianBokmL')}</Option>
+                                        <Option value="nn">{t('norwegianNynorsk')}</Option>
+                                        <Option value="sme">{t('northernSami')}</Option>
+                                        <Option value="oc">{t('occitan')}</Option>
+                                        <Option value="or">{t('odia')}</Option>
+                                        <Option value="ps">{t('pashto')}</Option>
+                                        <Option value="fa">{t('persianFarsi')}</Option>
+                                        <Option value="pl">{t('polishPolski')}</Option>
+                                        <Option value="pt">{t('portuguesePortuguS')}</Option>
+                                        <Option value="pt-BR">{t('portugueseBrazil')}</Option>
+                                        <Option value="pa">{t('punjabi')}</Option>
+                                        <Option value="ro">{t('romanianRomN')}</Option>
+                                        <Option value="rm">{t('romanshRumantsch')}</Option>
+                                        <Option value="ru">{t('russian')}</Option>
+                                        <Option value="sm">{t('samoanGaganaSamoa')}</Option>
+                                        <Option value="gd">{t('scottishGaelicGIdhlig')}</Option>
+                                        <Option value="sr">{t('serbian')}</Option>
+                                        <Option value="sr-Latn">{t('serbianLatin')}</Option>
+                                        <Option value="si">{t('sinhala')}</Option>
+                                        <Option value="sk">{t('slovakSlovenIna')}</Option>
+                                        <Option value="sl">{t('slovenianSlovenIna')}</Option>
+                                        <Option value="so">{t('somaliSoomaali')}</Option>
+                                        <Option value="es">{t('spanishEspaOl')}</Option>
+                                        <Option value="es-AR">{t('spanishArgentina')}</Option>
+                                        <Option value="es-MX">{t('spanishMexico')}</Option>
+                                        <Option value="sw">{t('swahiliKiswahili')}</Option>
+                                        <Option value="sv">{t('swedishSvenska')}</Option>
+                                        <Option value="ta">{t('tamil')}</Option>
+                                        <Option value="tt">{t('tatar')}</Option>
+                                        <Option value="te">{t('telugu')}</Option>
+                                        <Option value="th">{t('thai')}</Option>
+                                        <Option value="to">{t('tonganLeaFakaTonga')}</Option>
+                                        <Option value="tr">{t('turkishTRkE')}</Option>
+                                        <Option value="tk">{t('turkmenTRkmen')}</Option>
+                                        <Option value="uk">{t('ukrainian')}</Option>
+                                        <Option value="ur">{t('urdu')}</Option>
+                                        <Option value="uz">{t('uzbekOZbekcha')}</Option>
+                                        <Option value="vi">{t('vietnameseTiNgViT')}</Option>
+                                        <Option value="cy">{t('welshCymraeg')}</Option>
+                                        <Option value="xh">{t('xhosaIsiXhosa')}</Option>
+                                        <Option value="yi">{t('yiddish')}</Option>
+                                        <Option value="yo">{t('yorubaYorB')}</Option>
+                                        <Option value="zu">{t('zuluIsiZulu')}</Option>
                                     </Select>
                                 </SettingRow>
                                 <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                    Language code embedded in PDF for screen readers. Polish and other Latin-extended languages require Unicode fonts (Noto Sans).
+                                    {t('languageCodeEmbeddedInPdfFor')}
                                 </p>
                             </div>
 
                             <div style={{ marginBottom: '12px' }}>
-                                <SettingRow flow="wrap" label="Document Author">
+                                <SettingRow flow="wrap" label={t('documentAuthor')}>
                                     <TextInput
                                         size="sm"
                                         value={pdfAccessibility.documentAuthor || ''}
                                         onChange={(e) => updatePdfAccessibility({ documentAuthor: e.target.value })}
-                                        placeholder="e.g., GIS Division"
+                                        placeholder={t('eGGisDivision')}
                                     />
                                 </SettingRow>
                                 <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                    Author name in PDF metadata
+                                    {t('authorNameInPdfMetadata')}
                                 </p>
                             </div>
 
                             <div style={{ marginBottom: '12px' }}>
-                                <SettingRow flow="wrap" label="Document Creator">
+                                <SettingRow flow="wrap" label={t('documentCreator')}>
                                     <TextInput
                                         size="sm"
                                         value={pdfAccessibility.documentCreator || ''}
                                         onChange={(e) => updatePdfAccessibility({ documentCreator: e.target.value })}
-                                        placeholder="e.g., Property Report Widget"
+                                        placeholder={t('eGPropertyReportWidget')}
                                     />
                                 </SettingRow>
                                 <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                    Application/creator name in PDF metadata
+                                    {t('applicationCreatorNameInPdfMetadata')}
                                 </p>
                             </div>
 
                             {/* Alt Text Templates */}
                             <div style={{ marginBottom: '8px', marginTop: '16px', fontWeight: 500, fontSize: '12px', color: 'var(--sys-color-primary-main)' }}>
-                                Alt Text Templates (WCAG 1.1.1)
+                                {t('altTextTemplatesWcag11')}
                             </div>
 
                             <div style={{ marginBottom: '12px' }}>
-                                <SettingRow flow="wrap" label="Include Map Alt Text">
+                                <SettingRow flow="wrap" label={t('includeMapAltText')}>
                                     <Switch
                                         checked={pdfAccessibility.includeMapAltText !== false}
                                         onChange={(e) => updatePdfAccessibility({ includeMapAltText: (e.target as HTMLInputElement).checked })}
@@ -9685,22 +9687,22 @@ const Setting = (props: SettingProps) => {
 
                             {pdfAccessibility.includeMapAltText !== false && (
                                 <div style={{ marginBottom: '12px', marginLeft: '16px' }}>
-                                    <SettingRow flow="wrap" label="Map Alt Text Template">
+                                    <SettingRow flow="wrap" label={t('mapAltTextTemplate')}>
                                         <TextInput
                                             size="sm"
                                             value={pdfAccessibility.mapAltTextTemplate || 'Map showing the location of {address}'}
                                             onChange={(e) => updatePdfAccessibility({ mapAltTextTemplate: e.target.value })}
-                                            placeholder="Map showing the location of {address}"
+                                            placeholder={t('mapShowingTheLocationOfAddress')}
                                         />
                                     </SettingRow>
                                     <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                        Use {'{address}'} as placeholder for the searched address
+                                        {t('use')} {'{address}'} {t('asPlaceholderForTheSearchedAddress')}
                                     </p>
                                 </div>
                             )}
 
                             <div style={{ marginBottom: '12px' }}>
-                                <SettingRow flow="wrap" label="Include Logo Alt Text">
+                                <SettingRow flow="wrap" label={t('includeLogoAltText')}>
                                     <Switch
                                         checked={pdfAccessibility.includeLogoAltText !== false}
                                         onChange={(e) => updatePdfAccessibility({ includeLogoAltText: (e.target as HTMLInputElement).checked })}
@@ -9710,38 +9712,38 @@ const Setting = (props: SettingProps) => {
 
                             {pdfAccessibility.includeLogoAltText !== false && (
                                 <div style={{ marginBottom: '12px', marginLeft: '16px' }}>
-                                    <SettingRow flow="wrap" label="Logo Alt Text Template">
+                                    <SettingRow flow="wrap" label={t('logoAltTextTemplate')}>
                                         <TextInput
                                             size="sm"
                                             value={pdfAccessibility.logoAltTextTemplate || 'Organization logo'}
                                             onChange={(e) => updatePdfAccessibility({ logoAltTextTemplate: e.target.value })}
-                                            placeholder="Organization logo"
+                                            placeholder={t('organizationLogo')}
                                         />
                                     </SettingRow>
                                 </div>
                             )}
 
                             <div style={{ marginBottom: '12px' }}>
-                                <SettingRow flow="wrap" label="Chart Alt Text Template">
+                                <SettingRow flow="wrap" label={t('chartAltTextTemplate')}>
                                     <TextInput
                                         size="sm"
                                         value={pdfAccessibility.chartAltTextTemplate || 'Chart showing {chartType} visualization of {dataDescription}'}
                                         onChange={(e) => updatePdfAccessibility({ chartAltTextTemplate: e.target.value })}
-                                        placeholder="Chart showing {chartType} visualization of {dataDescription}"
+                                        placeholder={t('chartShowingChartTypeVisualizationOfDataDescription')}
                                     />
                                 </SettingRow>
                                 <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                    Use {'{chartType}'} and {'{dataDescription}'} as placeholders
+                                    {t('use')} {'{chartType}'} and {'{dataDescription}'} {t('asPlaceholders')}
                                 </p>
                             </div>
 
                             {/* Table Summary Templates */}
                             <div style={{ marginBottom: '8px', marginTop: '16px', fontWeight: 500, fontSize: '12px', color: 'var(--sys-color-primary-main)' }}>
-                                Table Summary Templates (WCAG 1.3.1)
+                                {t('tableSummaryTemplatesWcag13')}
                             </div>
 
                             <div style={{ marginBottom: '12px' }}>
-                                <SettingRow flow="wrap" label="Include Table Summaries">
+                                <SettingRow flow="wrap" label={t('includeTableSummaries')}>
                                     <Switch
                                         checked={pdfAccessibility.includeTableSummaries !== false}
                                         onChange={(e) => updatePdfAccessibility({ includeTableSummaries: (e.target as HTMLInputElement).checked })}
@@ -9751,22 +9753,22 @@ const Setting = (props: SettingProps) => {
 
                             {pdfAccessibility.includeTableSummaries !== false && (
                                 <div style={{ marginBottom: '12px', marginLeft: '16px' }}>
-                                    <SettingRow flow="wrap" label="Table Summary Template">
+                                    <SettingRow flow="wrap" label={t('tableSummaryTemplate')}>
                                         <TextInput
                                             size="sm"
                                             value={pdfAccessibility.tableSummaryTemplate || 'Data table: {layerTitle} - {recordCount} records, {columnCount} columns'}
                                             onChange={(e) => updatePdfAccessibility({ tableSummaryTemplate: e.target.value })}
-                                            placeholder="Data table: {layerTitle} - {recordCount} records, {columnCount} columns"
+                                            placeholder={t('dataTableLayerTitleRecordCountRecordsColumnCount')}
                                         />
                                     </SettingRow>
                                     <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                        Use {'{layerTitle}'}, {'{recordCount}'}, {'{columnCount}'} as placeholders
+                                        {t('use')} {'{layerTitle}'}, {'{recordCount}'}, {'{columnCount}'} {t('asPlaceholders')}
                                     </p>
                                 </div>
                             )}
 
                             <div style={{ marginBottom: '12px' }}>
-                                <SettingRow flow="wrap" label="Include Related Table Summaries">
+                                <SettingRow flow="wrap" label={t('includeRelatedTableSummaries')}>
                                     <Switch
                                         checked={pdfAccessibility.includeRelatedTableSummaries !== false}
                                         onChange={(e) => updatePdfAccessibility({ includeRelatedTableSummaries: (e.target as HTMLInputElement).checked })}
@@ -9776,27 +9778,27 @@ const Setting = (props: SettingProps) => {
 
                             {pdfAccessibility.includeRelatedTableSummaries !== false && (
                                 <div style={{ marginBottom: '12px', marginLeft: '16px' }}>
-                                    <SettingRow flow="wrap" label="Related Table Summary Template">
+                                    <SettingRow flow="wrap" label={t('relatedTableSummaryTemplate')}>
                                         <TextInput
                                             size="sm"
                                             value={pdfAccessibility.relatedTableSummaryTemplate || 'Related data: {tableName} - {recordCount} records, {columnCount} columns'}
                                             onChange={(e) => updatePdfAccessibility({ relatedTableSummaryTemplate: e.target.value })}
-                                            placeholder="Related data: {tableName} - {recordCount} records, {columnCount} columns"
+                                            placeholder={t('relatedDataTableNameRecordCountRecordsColumnCount')}
                                         />
                                     </SettingRow>
                                     <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                        Use {'{tableName}'}, {'{recordCount}'}, {'{columnCount}'} as placeholders
+                                        {t('use')} {'{tableName}'}, {'{recordCount}'}, {'{columnCount}'} {t('asPlaceholders')}
                                     </p>
                                 </div>
                             )}
 
                             {/* Font & Reading Settings */}
                             <div style={{ marginBottom: '8px', marginTop: '16px', fontWeight: 500, fontSize: '12px', color: 'var(--sys-color-primary-main)' }}>
-                                Font &amp; Reading Order
+                                {t('fontReadingOrder')}
                             </div>
 
                             <div style={{ marginBottom: '12px' }}>
-                                <SettingRow flow="wrap" label="Minimum Font Size (pt)">
+                                <SettingRow flow="wrap" label={t('minimumFontSizePt')}>
                                     <NumericInput
                                         size="sm"
                                         value={pdfAccessibility.minimumFontSize || 9}
@@ -9807,144 +9809,144 @@ const Setting = (props: SettingProps) => {
                                     />
                                 </SettingRow>
                                 <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                    WCAG 1.4.4: Minimum font size for readability (recommended: 9pt)
+                                    {t('wcag144MinimumFont')}
                                 </p>
                             </div>
 
                             <div style={{ marginBottom: '12px' }}>
-                                <SettingRow flow="wrap" label="Reading Order Markers">
+                                <SettingRow flow="wrap" label={t('readingOrderMarkers')}>
                                     <Switch
                                         checked={pdfAccessibility.includeReadingOrderMarkers !== false}
                                         onChange={(e) => updatePdfAccessibility({ includeReadingOrderMarkers: (e.target as HTMLInputElement).checked })}
                                     />
                                 </SettingRow>
                                 <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                    WCAG 1.3.2: Include markers to aid screen reader navigation order
+                                    {t('wcag132IncludeMarkers')}
                                 </p>
                             </div>
 
                             {/* Visible Text Options */}
                             <div style={{ marginBottom: '8px', marginTop: '16px', fontWeight: 500, fontSize: '12px', color: 'var(--sys-color-primary-main)' }}>
-                                Visible Accessibility Text
+                                {t('visibleAccessibilityText')}
                             </div>
 
                             <div style={{ marginBottom: '12px' }}>
-                                <SettingRow flow="wrap" label="Show Map Alt Text">
+                                <SettingRow flow="wrap" label={t('showMapAltText')}>
                                     <Switch
                                         checked={pdfStyle.showAccessibilityText !== false}
                                         onChange={(e) => updatePdfStyle({ showAccessibilityText: (e.target as HTMLInputElement).checked })}
                                     />
                                 </SettingRow>
                                 <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                    WCAG 1.1.1: Shows "[Map Image: ...]" description above the map
+                                    {t('wcag111ShowsMap')}
                                 </p>
                             </div>
 
                             <div style={{ marginBottom: '12px' }}>
-                                <SettingRow flow="wrap" label="Show Table Summaries">
+                                <SettingRow flow="wrap" label={t('showTableSummaries')}>
                                     <Switch
                                         checked={pdfStyle.showTableSummaries !== false}
                                         onChange={(e) => updatePdfStyle({ showTableSummaries: (e.target as HTMLInputElement).checked })}
                                     />
                                 </SettingRow>
                                 <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                    WCAG 1.3.1: Shows "Data table: [Name] - X records" before tables
+                                    {t('wcag131ShowsData')}
                                 </p>
                             </div>
 
                             <div style={{ marginBottom: '12px' }}>
-                                <SettingRow flow="wrap" label="Show Related Table Summaries">
+                                <SettingRow flow="wrap" label={t('showRelatedTableSummaries')}>
                                     <Switch
                                         checked={pdfStyle.showRelatedTableSummaries !== false}
                                         onChange={(e) => updatePdfStyle({ showRelatedTableSummaries: (e.target as HTMLInputElement).checked })}
                                     />
                                 </SettingRow>
                                 <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                    WCAG 1.3.1: Shows "Related data: [Name] - X records" before related tables
+                                    {t('wcag131ShowsRelated')}
                                 </p>
                             </div>
 
                             <div style={{ marginBottom: '12px' }}>
-                                <SettingRow flow="wrap" label="Show Full URLs">
+                                <SettingRow flow="wrap" label={t('showFullURLs')}>
                                     <Switch
                                         checked={pdfStyle.showFullUrlsInPdf || false}
                                         onChange={(e) => updatePdfStyle({ showFullUrlsInPdf: (e.target as HTMLInputElement).checked })}
                                     />
                                 </SettingRow>
                                 <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                    WCAG 2.4.4: Shows full URL after link text for printed documents
+                                    {t('wcag244ShowsFull')}
                                 </p>
                             </div>
 
                             <div style={{ marginBottom: '12px' }}>
-                                <SettingRow flow="wrap" label="Show Section Numbers">
+                                <SettingRow flow="wrap" label={t('showSectionNumbers')}>
                                     <Switch
                                         checked={pdfStyle.showSectionNumbers || false}
                                         onChange={(e) => updatePdfStyle({ showSectionNumbers: (e.target as HTMLInputElement).checked })}
                                     />
                                 </SettingRow>
                                 <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                    WCAG 1.3.1: Numbers sections (e.g., "1. Zoning", "2. Permits")
+                                    {t('wcag131NumbersSections')}
                                 </p>
                             </div>
 
                             {/* Navigation Options */}
                             <div style={{ marginBottom: '8px', marginTop: '16px', fontWeight: 500, fontSize: '12px', color: 'var(--sys-color-primary-main)' }}>
-                                Navigation &amp; Structure
+                                {t('navigationStructure')}
                             </div>
 
                             <div style={{ marginBottom: '12px' }}>
-                                <SettingRow flow="wrap" label="PDF Bookmarks">
+                                <SettingRow flow="wrap" label={t('pdfBookmarks')}>
                                     <Switch
                                         checked={pdfStyle.enablePdfBookmarks !== false}
                                         onChange={(e) => updatePdfStyle({ enablePdfBookmarks: (e.target as HTMLInputElement).checked })}
                                     />
                                 </SettingRow>
                                 <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                    WCAG 2.4.5: Adds clickable bookmarks in PDF viewer sidebar
+                                    {t('wcag245AddsClickable')}
                                 </p>
                             </div>
 
                             {pdfStyle.enablePdfBookmarks !== false && (
                                 <div style={{ marginBottom: '12px', marginLeft: '16px' }}>
-                                    <SettingRow flow="wrap" label="Hierarchical Bookmarks">
+                                    <SettingRow flow="wrap" label={t('hierarchicalBookmarks')}>
                                         <Switch
                                             checked={pdfStyle.enableHierarchicalBookmarks !== false}
                                             onChange={(e) => updatePdfStyle({ enableHierarchicalBookmarks: (e.target as HTMLInputElement).checked })}
                                         />
                                     </SettingRow>
                                     <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                        Creates nested bookmarks: Section → Layer → Related Table
+                                        {t('createsNestedBookmarksSectionLayerRelated')}
                                     </p>
                                 </div>
                             )}
 
                             <div style={{ marginBottom: '12px' }}>
-                                <SettingRow flow="wrap" label="Table of Contents">
+                                <SettingRow flow="wrap" label={t('tableOfContents')}>
                                     <Switch
                                         checked={pdfStyle.enableTableOfContents || false}
                                         onChange={(e) => updatePdfStyle({ enableTableOfContents: (e.target as HTMLInputElement).checked })}
                                     />
                                 </SettingRow>
                                 <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                    WCAG 2.4.5: Adds a Table of Contents page after the header
+                                    {t('wcag245AddsA')}
                                 </p>
                             </div>
 
                             {pdfStyle.enableTableOfContents && (
                                 <>
                                     <div style={{ marginBottom: '12px', marginLeft: '16px' }}>
-                                        <SettingRow flow="wrap" label="TOC Title">
+                                        <SettingRow flow="wrap" label={t('tocTitle')}>
                                             <TextInput
                                                 size="sm"
                                                 value={pdfStyle.tocTitle || 'Table of Contents'}
                                                 onChange={(e) => updatePdfStyle({ tocTitle: e.target.value })}
-                                                placeholder="Table of Contents"
+                                                placeholder={t('tableOfContents')}
                                             />
                                         </SettingRow>
                                     </div>
                                     <div style={{ marginBottom: '12px', marginLeft: '16px' }}>
-                                        <SettingRow flow="wrap" label="Include Layers in TOC">
+                                        <SettingRow flow="wrap" label={t('includeLayersInToc')}>
                                             <Switch
                                                 checked={pdfStyle.tocIncludeLayers !== false}
                                                 onChange={(e) => updatePdfStyle({ tocIncludeLayers: (e.target as HTMLInputElement).checked })}
@@ -9952,7 +9954,7 @@ const Setting = (props: SettingProps) => {
                                         </SettingRow>
                                     </div>
                                     <div style={{ marginBottom: '12px', marginLeft: '16px' }}>
-                                        <SettingRow flow="wrap" label="Include Related Tables in TOC">
+                                        <SettingRow flow="wrap" label={t('includeRelatedTablesInToc')}>
                                             <Switch
                                                 checked={pdfStyle.tocIncludeRelatedTables || false}
                                                 onChange={(e) => updatePdfStyle({ tocIncludeRelatedTables: (e.target as HTMLInputElement).checked })}
@@ -9960,7 +9962,7 @@ const Setting = (props: SettingProps) => {
                                         </SettingRow>
                                     </div>
                                     <div style={{ marginBottom: '12px', marginLeft: '16px' }}>
-                                        <SettingRow flow="wrap" label="Page Break After TOC">
+                                        <SettingRow flow="wrap" label={t('pageBreakAfterToc')}>
                                             <Switch
                                                 checked={pdfStyle.tocPageBreakAfter !== false}
                                                 onChange={(e) => updatePdfStyle({ tocPageBreakAfter: (e.target as HTMLInputElement).checked })}
@@ -9971,62 +9973,62 @@ const Setting = (props: SettingProps) => {
                             )}
 
                             <div style={{ marginBottom: '12px' }}>
-                                <SettingRow flow="wrap" label="Full Timestamp">
+                                <SettingRow flow="wrap" label={t('fullTimestamp')}>
                                     <Switch
                                         checked={pdfStyle.showGeneratedTimestamp || false}
                                         onChange={(e) => updatePdfStyle({ showGeneratedTimestamp: (e.target as HTMLInputElement).checked })}
                                     />
                                 </SettingRow>
                                 <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                    WCAG 3.2.1: Shows date + time instead of just date
+                                    {t('wcag321ShowsDate')}
                                 </p>
                             </div>
 
                             {/* Visual Accessibility */}
                             <div style={{ marginBottom: '8px', marginTop: '16px', fontWeight: 500, fontSize: '12px', color: 'var(--sys-color-primary-main)' }}>
-                                Visual Accessibility
+                                {t('visualAccessibility')}
                             </div>
 
                             <div style={{ marginBottom: '12px' }}>
-                                <SettingRow flow="wrap" label="High Contrast Mode">
+                                <SettingRow flow="wrap" label={t('highContrastMode')}>
                                     <Switch
                                         checked={pdfStyle.highContrastMode || false}
                                         onChange={(e) => updatePdfStyle({ highContrastMode: (e.target as HTMLInputElement).checked })}
                                     />
                                 </SettingRow>
                                 <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                    WCAG 1.4.3: Uses black text and high contrast colors
+                                    {t('wcag143UsesBlack')}
                                 </p>
                             </div>
 
                             <div style={{ marginBottom: '12px' }}>
-                                <SettingRow flow="wrap" label="Large Text Mode">
+                                <SettingRow flow="wrap" label={t('largeTextMode')}>
                                     <Switch
                                         checked={pdfStyle.largeTextMode || false}
                                         onChange={(e) => updatePdfStyle({ largeTextMode: (e.target as HTMLInputElement).checked })}
                                     />
                                 </SettingRow>
                                 <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                    WCAG 1.4.4: Increases all font sizes by ~25%
+                                    {t('wcag144IncreasesAll')}
                                 </p>
                             </div>
 
                             {/* Contact Info */}
                             <div style={{ marginBottom: '8px', marginTop: '16px', fontWeight: 500, fontSize: '12px', color: 'var(--sys-color-primary-main)' }}>
-                                Accessibility Support
+                                {t('accessibilitySupport')}
                             </div>
 
                             <div style={{ marginBottom: '0' }}>
-                                <SettingRow flow="wrap" label="Accessibility Contact">
+                                <SettingRow flow="wrap" label={t('accessibilityContact')}>
                                     <TextInput
                                         size="sm"
                                         value={pdfStyle.accessibilityContact || ''}
                                         onChange={(e) => updatePdfStyle({ accessibilityContact: e.target.value })}
-                                        placeholder="e.g., For accessibility help: 970-555-1234"
+                                        placeholder={t('eGForAccessibilityHelp970')}
                                     />
                                 </SettingRow>
                                 <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                    WCAG 3.3.5: Contact info shown in footer for accessibility questions
+                                    {t('wcag335ContactInfo')}
                                 </p>
                             </div>
                         </div>
@@ -10035,15 +10037,15 @@ const Setting = (props: SettingProps) => {
                         <div className="pdf-section-card">
                             <div className="pdf-section-title">
                                 <DataIcon />
-                                Related Tables (PDF)
+                                {t('relatedTablesPdf')}
                             </div>
                             <p className="hint-text" style={{ marginTop: 0, marginBottom: '12px' }}>
-                                Additional settings for how related tables appear in PDF exports.
+                                {t('additionalSettingsForHowRelatedTables')}
                             </p>
 
                             {config.pdfIncludeRelatedTables && (
                                 <>
-                                    <SettingRow flow="wrap" label="Include Related Table Charts">
+                                    <SettingRow flow="wrap" label={t('includeRelatedTableCharts')}>
                                         <Switch
                                             checked={config.pdfIncludeRelatedTableCharts !== false}
                                             onChange={(evt, checked) => {
@@ -10052,10 +10054,10 @@ const Setting = (props: SettingProps) => {
                                         />
                                     </SettingRow>
                                     <p className="hint-text" style={{ marginTop: '2px', marginBottom: '8px' }}>
-                                        Capture and include charts from related tables in PDF
+                                        {t('captureAndIncludeChartsFromRelated')}
                                     </p>
 
-                                    <SettingRow flow="wrap" label="Related Table Header Color">
+                                    <SettingRow flow="wrap" label={t('relatedTableHeaderColor')}>
                                         <TextInput
                                             size="sm"
                                             type="text"
@@ -10065,7 +10067,7 @@ const Setting = (props: SettingProps) => {
                                         />
                                     </SettingRow>
 
-                                    <SettingRow flow="wrap" label="Related Table Indent (mm)">
+                                    <SettingRow flow="wrap" label={t('relatedTableIndentMm')}>
                                         <NumericInput
                                             size="sm"
                                             value={pdfStyle.relatedTableIndent || 5}
@@ -10076,7 +10078,7 @@ const Setting = (props: SettingProps) => {
                                         />
                                     </SettingRow>
 
-                                    <SettingRow flow="wrap" label="Related Table Max Rows">
+                                    <SettingRow flow="wrap" label={t('relatedTableMaxRows')}>
                                         <NumericInput
                                             size="sm"
                                             value={pdfStyle.relatedTableMaxRows || 10}
@@ -10087,7 +10089,7 @@ const Setting = (props: SettingProps) => {
                                         />
                                     </SettingRow>
                                     <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                        Maximum rows per related table in PDF export
+                                        {t('maximumRowsPerRelatedTableIn')}
                                     </p>
                                 </>
                             )}
@@ -10097,77 +10099,77 @@ const Setting = (props: SettingProps) => {
                         <div className="pdf-section-card">
                             <div className="pdf-section-title">
                                 <ChartIcon />
-                                Default Chart Settings
+                                {t('defaultChartSettings')}
                             </div>
                             <p className="hint-text" style={{ marginTop: 0, marginBottom: '12px' }}>
-                                Default settings applied to all charts. Individual layer/section charts can override these.
+                                {t('defaultSettingsAppliedToAllCharts')}
                             </p>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Chart Type" tooltip="Default visualization type for charts. Bar charts work well for comparisons, pie/donut for proportions, line/area for trends." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('chartType')} tooltip={t('defaultVisualizationTypeForChartsBar')} />)}>
                                 <Select
                                     size="sm"
                                     value={config.defaultChartConfig?.chartType || 'bar'}
                                     onChange={(e) => updateDefaultChartConfig({ chartType: e.target.value as any })}
                                 >
-                                    <Option value="bar">Bar Chart</Option>
-                                    <Option value="pie">Pie Chart</Option>
-                                    <Option value="donut">Donut Chart</Option>
-                                    <Option value="area">Area Chart</Option>
-                                    <Option value="line">Line Chart</Option>
-                                    <Option value="radialBar">Radial Bar</Option>
-                                    <Option value="composite">Composite</Option>
+                                    <Option value="bar">{t('barChart')}</Option>
+                                    <Option value="pie">{t('pieChart')}</Option>
+                                    <Option value="donut">{t('donutChart')}</Option>
+                                    <Option value="area">{t('areaChart')}</Option>
+                                    <Option value="line">{t('lineChart')}</Option>
+                                    <Option value="radialBar">{t('radialBar')}</Option>
+                                    <Option value="composite">{t('composite')}</Option>
                                 </Select>
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Show Legend" tooltip="Display a legend explaining chart colors and categories. Recommended for charts with multiple data series." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('showLegend')} tooltip={t('displayALegendExplainingChartColors')} />)}>
                                 <Switch
                                     checked={config.defaultChartConfig?.showLegend !== false}
                                     onChange={(e) => updateDefaultChartConfig({ showLegend: (e.target as HTMLInputElement).checked })}
                                 />
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Legend Position" tooltip="Where to place the chart legend relative to the chart area." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('legendPosition')} tooltip={t('whereToPlaceTheChartLegend')} />)}>
                                 <Select
                                     size="sm"
                                     value={config.defaultChartConfig?.legendPosition || 'bottom'}
                                     onChange={(e) => updateDefaultChartConfig({ legendPosition: e.target.value as any })}
                                 >
-                                    <Option value="top">Top</Option>
-                                    <Option value="bottom">Bottom</Option>
-                                    <Option value="left">Left</Option>
-                                    <Option value="right">Right</Option>
+                                    <Option value="top">{t('top')}</Option>
+                                    <Option value="bottom">{t('bottom')}</Option>
+                                    <Option value="left">{t('left')}</Option>
+                                    <Option value="right">{t('right')}</Option>
                                 </Select>
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Show Values" tooltip="Display numeric values directly on chart elements (bars, slices, etc.). Useful for precise readings." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('showValues')} tooltip={t('displayNumericValuesDirectlyOnChart')} />)}>
                                 <Switch
                                     checked={config.defaultChartConfig?.showValues || false}
                                     onChange={(e) => updateDefaultChartConfig({ showValues: (e.target as HTMLInputElement).checked })}
                                 />
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Show Grid" tooltip="Display background grid lines for easier value estimation. Applies to bar, line, and area charts." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('showGrid')} tooltip={t('displayBackgroundGridLinesForEasier')} />)}>
                                 <Switch
                                     checked={config.defaultChartConfig?.showGrid !== false}
                                     onChange={(e) => updateDefaultChartConfig({ showGrid: (e.target as HTMLInputElement).checked })}
                                 />
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Animations" tooltip="Enable smooth animations when charts load or update. Disable for faster rendering or reduced motion preferences." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('animations')} tooltip={t('enableSmoothAnimationsWhenChartsLoad')} />)}>
                                 <Switch
                                     checked={config.defaultChartConfig?.animate !== false}
                                     onChange={(e) => updateDefaultChartConfig({ animate: (e.target as HTMLInputElement).checked })}
                                 />
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Stacked" tooltip="Stack bar/area chart series on top of each other instead of side-by-side. Shows part-to-whole relationships." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('stacked')} tooltip={t('stackBarAreaChartSeriesOn')} />)}>
                                 <Switch
                                     checked={config.defaultChartConfig?.stacked || false}
                                     onChange={(e) => updateDefaultChartConfig({ stacked: (e.target as HTMLInputElement).checked })}
                                 />
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Chart Height (px)" tooltip="Default height of charts in pixels. Taller charts show more detail but take more screen space." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('chartHeightPx')} tooltip={t('defaultHeightOfChartsInPixels')} />)}>
                                 <NumericInput
                                     size="sm"
                                     value={config.defaultChartConfig?.height || 200}
@@ -10183,27 +10185,27 @@ const Setting = (props: SettingProps) => {
                         <div className="pdf-section-card">
                             <div className="pdf-section-title">
                                 <TableIcon />
-                                On-Screen Table Settings
+                                {t('onScreenTableSettings')}
                             </div>
                             <p className="hint-text" style={{ marginTop: 0, marginBottom: '12px' }}>
-                                These settings control the interactive table display in the widget, not the PDF export.
+                                {t('theseSettingsControlTheInteractiveTable')}
                             </p>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Enable Sorting" tooltip="Allow users to click column headers to sort table data. Ascending/descending toggle on each click." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('enableSorting')} tooltip={t('allowUsersToClickColumnHeaders3')} />)}>
                                 <Switch
                                     checked={config.defaultTableConfig?.enableSorting !== false}
                                     onChange={(e) => updateDefaultTableConfig({ enableSorting: (e.target as HTMLInputElement).checked })}
                                 />
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Enable Filtering" tooltip="Show filter inputs above columns to search/filter table data. Useful for tables with many rows." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('enableFiltering')} tooltip={t('showFilterInputsAboveColumnsTo')} />)}>
                                 <Switch
                                     checked={config.defaultTableConfig?.enableFiltering || false}
                                     onChange={(e) => updateDefaultTableConfig({ enableFiltering: (e.target as HTMLInputElement).checked })}
                                 />
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Enable Pagination" tooltip="Split large tables into pages instead of showing all rows. Improves performance for large datasets." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('enablePagination2')} tooltip={t('splitLargeTablesIntoPagesInstead')} />)}>
                                 <Switch
                                     checked={config.defaultTableConfig?.enablePagination !== false}
                                     onChange={(e) => updateDefaultTableConfig({ enablePagination: (e.target as HTMLInputElement).checked })}
@@ -10211,57 +10213,57 @@ const Setting = (props: SettingProps) => {
                             </SettingRow>
 
                             {config.defaultTableConfig?.enablePagination !== false && (
-                                <SettingRow flow="wrap" label={(<TooltipLabel label="Page Size" tooltip="Number of rows to display per page when pagination is enabled." />)}>
+                                <SettingRow flow="wrap" label={(<TooltipLabel label={t('pageSize')} tooltip={t('numberOfRowsToDisplayPer2')} />)}>
                                     <Select
                                         size="sm"
                                         value={String(config.defaultTableConfig?.pageSize || 10)}
                                         onChange={(e) => updateDefaultTableConfig({ pageSize: Number(e.target.value) })}
                                     >
-                                        <Option value="5">5 rows</Option>
-                                        <Option value="10">10 rows</Option>
-                                        <Option value="25">25 rows</Option>
-                                        <Option value="50">50 rows</Option>
-                                        <Option value="100">100 rows</Option>
+                                        <Option value="5">{t('_5Rows')}</Option>
+                                        <Option value="10">{t('_10Rows')}</Option>
+                                        <Option value="25">{t('_25Rows')}</Option>
+                                        <Option value="50">{t('_50Rows')}</Option>
+                                        <Option value="100">{t('_100Rows')}</Option>
                                     </Select>
                                 </SettingRow>
                             )}
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Sticky Header" tooltip="Keep column headers visible when scrolling through long tables. Recommended for better usability." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('stickyHeader')} tooltip={t('keepColumnHeadersVisibleWhenScrolling')} />)}>
                                 <Switch
                                     checked={config.defaultTableConfig?.stickyHeader !== false}
                                     onChange={(e) => updateDefaultTableConfig({ stickyHeader: (e.target as HTMLInputElement).checked })}
                                 />
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Striped Rows" tooltip="Alternate row background colors for easier reading across wide tables." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('stripedRows')} tooltip={t('alternateRowBackgroundColorsForEasier2')} />)}>
                                 <Switch
                                     checked={config.defaultTableConfig?.stripedRows !== false}
                                     onChange={(e) => updateDefaultTableConfig({ stripedRows: (e.target as HTMLInputElement).checked })}
                                 />
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Highlight on Hover" tooltip="Highlight table rows when the mouse hovers over them. Helps track which row you're viewing." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('highlightOnHover')} tooltip={t('highlightTableRowsWhenTheMouse')} />)}>
                                 <Switch
                                     checked={config.defaultTableConfig?.highlightOnHover !== false}
                                     onChange={(e) => updateDefaultTableConfig({ highlightOnHover: (e.target as HTMLInputElement).checked })}
                                 />
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Compact Mode" tooltip="Reduce row height and padding for denser data display. Shows more rows in limited space." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('compactMode')} tooltip={t('reduceRowHeightAndPaddingFor')} />)}>
                                 <Switch
                                     checked={config.defaultTableConfig?.compactMode || false}
                                     onChange={(e) => updateDefaultTableConfig({ compactMode: (e.target as HTMLInputElement).checked })}
                                 />
                             </SettingRow>
 
-                            <SettingRow flow="wrap" label={(<TooltipLabel label="Show Row Numbers" tooltip="Display row numbers in the first column. Helps reference specific records." />)}>
+                            <SettingRow flow="wrap" label={(<TooltipLabel label={t('showRowNumbers')} tooltip={t('displayRowNumbersInTheFirst')} />)}>
                                 <Switch
                                     checked={config.defaultTableConfig?.showRowNumbers || false}
                                     onChange={(e) => updateDefaultTableConfig({ showRowNumbers: (e.target as HTMLInputElement).checked })}
                                 />
                             </SettingRow>
-                            <SettingRow tag='label' label='Show help guide'>
-                              <Switch checked={props.config?.showHelp !== false} onChange={(evt) => { props.onSettingChange({ id: (props as any).id, config: (props.config as any).set('showHelp', evt.target.checked) }) }} aria-label='Show the question-mark button that opens the widget help guide' />
+                            <SettingRow tag='label' label={t('showHelpGuide')}>
+                              <Switch checked={props.config?.showHelp !== false} onChange={(evt) => { props.onSettingChange({ id: (props as any).id, config: (props.config as any).set('showHelp', evt.target.checked) }) }} aria-label={t('showTheQuestionMarkButtonThat')} />
                             </SettingRow>
                         </div>
                     </div>

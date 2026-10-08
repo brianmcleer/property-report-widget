@@ -3,6 +3,9 @@ import { React, jsx, css } from 'jimu-core'
 import type { ActionSettingProps } from 'jimu-core'
 import { Switch, TextInput } from 'jimu-ui'
 import { SettingRow } from 'jimu-ui/advanced/setting-components'
+import { hooks as __exbI18nHooks } from 'jimu-core';
+import __exbI18nMessages from '../runtime/translations/default';
+
 
 interface ActionConfig {
     autoOpenSection?: string
@@ -22,6 +25,7 @@ const styles = css`
 `
 
 const GenerateReportActionSetting = (props: ActionSettingProps<ActionConfig>) => {
+  const t = __exbI18nHooks.useTranslation(__exbI18nMessages);
     const config: ActionConfig = (props.config as any) ?? { autoScrollToResults: true }
 
     const update = (patch: Partial<ActionConfig>) => {
@@ -35,29 +39,28 @@ const GenerateReportActionSetting = (props: ActionSettingProps<ActionConfig>) =>
         <div css={styles}>
             <div className="action-setting-container">
                 <div className="setting-description">
-                    When triggered, the Property Report widget will automatically run a
-                    report at the selected location.
+                    {t('whenTriggeredThePropertyReportWidget')}
                 </div>
 
-                <SettingRow label="Auto-scroll to results" flow="no-wrap">
+                <SettingRow label={t('autoScrollToResults')} flow="no-wrap">
                     <Switch
                         checked={config.autoScrollToResults !== false}
                         onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
                             update({ autoScrollToResults: evt.target.checked })
                         }}
-                        aria-label="Auto-scroll to results"
+                        aria-label={t('autoScrollToResults')}
                     />
                 </SettingRow>
 
-                <SettingRow label="Auto-open section (optional)" flow="wrap">
+                <SettingRow label={t('autoOpenSectionOptional')} flow="wrap">
                     <TextInput
                         size="sm"
                         value={config.autoOpenSection ?? ''}
                         onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
                             update({ autoOpenSection: evt.target.value || undefined })
                         }}
-                        placeholder="Leave blank for default behavior"
-                        aria-label="Section ID to auto-open"
+                        placeholder={t('leaveBlankForDefaultBehavior')}
+                        aria-label={t('sectionIdToAutoOpen')}
                     />
                 </SettingRow>
             </div>

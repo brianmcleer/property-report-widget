@@ -4803,11 +4803,11 @@ const Widget = (props: WidgetProps) => {
             linkSidebars.forEach(sid => url.searchParams.set(`sb_${sid}`, 'open'))
             await navigator.clipboard.writeText(url.toString())
             setLinkCopied(true)
-            setStatusMessage('Report link copied to clipboard.')
+            setStatusMessage(t('reportLinkCopiedToClipboard'))
             setTimeout(() => setLinkCopied(false), 2500)
         } catch (e) {
             console.warn('Copy link failed:', e)
-            setStatusMessage('Could not copy the report link.')
+            setStatusMessage(t('couldNotCopyTheReportLink'))
         }
     }
 
@@ -4817,7 +4817,7 @@ const Widget = (props: WidgetProps) => {
         if (results.length === 0) return
         setComparisonSnapshot({ label: displayedSearchText || 'Property A', headerData: headerInfoData, results })
         clearResults()
-        setStatusMessage('Comparison started. Search a second property.')
+        setStatusMessage(t('comparisonStartedSearchASecondProperty'))
     }
     const buildComparison = (): Array<{ title: string; rows: Array<{ label: string; a: string; b: string; diff: boolean }> }> => {
         if (!comparisonSnapshot) return []
@@ -4886,11 +4886,11 @@ const Widget = (props: WidgetProps) => {
                 document.body.appendChild(a); a.click(); document.body.removeChild(a)
                 setTimeout(() => URL.revokeObjectURL(a.href), 4000)
             })
-            setStatusMessage('CSV download started.')
+            setStatusMessage(t('csvDownloadStarted'))
         } catch (e) {
             beaconRef.current?.error(e, 'export-csv')
             console.error('CSV export failed:', e)
-            setStatusMessage('CSV export failed.')
+            setStatusMessage(t('csvExportFailed'))
         }
     }
 
@@ -6087,9 +6087,9 @@ const Widget = (props: WidgetProps) => {
 
         // ACCESSIBILITY: Announce results to screen readers
         if (allSuggestions.length > 0) {
-            setStatusMessage(`${allSuggestions.length} suggestion${allSuggestions.length !== 1 ? 's' : ''} available. Use arrow keys to navigate.`)
+            setStatusMessage((allSuggestions.length !== 1 ? t('allSuggestionsCountSuggestionsAvailableUseArrowKeys', { allSuggestionsCount: String(allSuggestions.length) }) : t('allSuggestionsCountSuggestionAvailableUseArrowKeys', { allSuggestionsCount: String(allSuggestions.length) })))
         } else {
-            setStatusMessage('No suggestions found.')
+            setStatusMessage(t('noSuggestionsFound'))
         }
     }
 
@@ -6265,7 +6265,7 @@ const Widget = (props: WidgetProps) => {
                     runQueryWithPoint(location)
                 } else {
                     setError('Address not found. Try a different search or use the map to select a location.')
-                    setStatusMessage('Address not found')
+                    setStatusMessage(t('addressNotFound'))
                     setLoading(false)
                 }
             } catch (e: any) {
@@ -6279,7 +6279,7 @@ const Widget = (props: WidgetProps) => {
                 } else {
                     setError('Search failed. Try using the map to select a location instead.')
                 }
-                setStatusMessage('Geocoding failed')
+                setStatusMessage(t('geocodingFailed'))
                 setLoading(false)
             }
         } else {
@@ -6347,7 +6347,7 @@ const Widget = (props: WidgetProps) => {
         setResults([])
         setHeaderInfoData(null)
         setHighlightedGeometry(null)
-        setStatusMessage('Querying layers...')
+        setStatusMessage(t('queryingLayers'))
         // Reset animated charts tracker for new query
         animatedChartsRef.current.clear()
 
@@ -7173,7 +7173,7 @@ const Widget = (props: WidgetProps) => {
 
         // ACCESSIBILITY: Announce results
         const totalResults = sectionResults.reduce((sum, s) => sum + s.totalFeatures, 0)
-        setStatusMessage(`Query complete. Found ${totalResults} total feature${totalResults !== 1 ? 's' : ''} across ${sectionResults.length} section${sectionResults.length !== 1 ? 's' : ''}.`)
+        setStatusMessage((totalResults !== 1 ? (sectionResults.length !== 1 ? t('queryCompleteFoundTotalResultsTotalFeatures', { totalResults: String(totalResults), sectionResultsCount: String(sectionResults.length) }) : t('queryCompleteFoundTotalResultsTotalFeatures2', { totalResults: String(totalResults), sectionResultsCount: String(sectionResults.length) })) : (sectionResults.length !== 1 ? t('queryCompleteFoundTotalResultsTotalFeature', { totalResults: String(totalResults), sectionResultsCount: String(sectionResults.length) }) : t('queryCompleteFoundTotalResultsTotalFeature2', { totalResults: String(totalResults), sectionResultsCount: String(sectionResults.length) }))))
     }
 
     useEffect(() => {
@@ -7276,12 +7276,12 @@ const Widget = (props: WidgetProps) => {
     const useCurrentLocation = useCallback(async () => {
         if (!navigator.geolocation) {
             setError('Geolocation is not supported by your browser.')
-            setStatusMessage('Geolocation not supported.')
+            setStatusMessage(t('geolocationNotSupported'))
             return
         }
 
         setGettingLocation(true)
-        setStatusMessage('Getting your location...')
+        setStatusMessage(t('gettingYourLocation'))
         setError(null)
 
         navigator.geolocation.getCurrentPosition(
@@ -7372,11 +7372,11 @@ const Widget = (props: WidgetProps) => {
                     // Run the query
                     runQueryWithPoint(queryPointLocation)
                     // WCAG 4.1.3: Announce success with location details
-                    setStatusMessage(`Location found${accuracyText}. Querying nearby features...`)
+                    setStatusMessage(t('locationFoundAccuracyTextQueryingNearbyFeatures', { accuracyText: String(accuracyText) }))
                 } catch (err) {
                     console.error('Error processing location:', err)
                     setError('Failed to process your location. Please try again.')
-                    setStatusMessage('Failed to process location.')
+                    setStatusMessage(t('failedToProcessLocation'))
                 } finally {
                     setGettingLocation(false)
                 }
@@ -7413,7 +7413,7 @@ const Widget = (props: WidgetProps) => {
         // try/catch. This await previously ran outside every handler, so a library
         // that could not be loaded produced no dialog, no error and no file.
         setGeneratingPdf(true)
-        setStatusMessage('Preparing PDF export...')
+        setStatusMessage(t('preparingPdfExport'))
         try {
             await loadPdfLibs()
         } catch (libErr: any) {
@@ -7421,7 +7421,7 @@ const Widget = (props: WidgetProps) => {
             console.error('PDF export could not start:', libErr)
             setGeneratingPdf(false)
             setError(`PDF export is unavailable: ${libErr?.message || 'the PDF libraries could not be loaded'}. Reload the page and try again. If it keeps happening, tell the site administrator.`)
-            setStatusMessage('PDF export failed to start.')
+            setStatusMessage(t('pdfExportFailedToStart'))
             return
         }
         // =====================================================
@@ -7448,7 +7448,7 @@ const Widget = (props: WidgetProps) => {
         // =====================================================
 
         setGeneratingPdf(true)
-        setStatusMessage('Generating PDF...')
+        setStatusMessage(t('generatingPdf'))
 
         // Scroll results container to top so overlay is fully visible
         if (mainContentRef.current) {
@@ -7675,7 +7675,7 @@ const Widget = (props: WidgetProps) => {
             // Helper to load Google Font as TTF from GitHub repositories
             const loadGoogleFont = async (fontName: string): Promise<boolean> => {
                 try {
-                    setStatusMessage(`Loading ${fontName} font...`)
+                    setStatusMessage(t('loadingFontNameFont', { fontName: String(fontName) }))
 
                     // Font configuration with multiple source options for reliability
                     // Primary source: google/fonts repo static files
@@ -7926,7 +7926,7 @@ const Widget = (props: WidgetProps) => {
             // Set the active font
             doc.setFont(activeFontFamily, 'normal')
 
-            setStatusMessage('Generating PDF...')
+            setStatusMessage(t('generatingPdf'))
 
             const pw = doc.internal.pageSize.getWidth()
             const ph = doc.internal.pageSize.getHeight()
@@ -8003,7 +8003,7 @@ const Widget = (props: WidgetProps) => {
                         checkReady()
                     })
 
-                    setStatusMessage('Preparing map for PDF...')
+                    setStatusMessage(t('preparingMapForPdf'))
 
                     // Temporarily override map constraints to allow configured scale
                     viewConstraints.minScale = 0
@@ -8042,13 +8042,13 @@ const Widget = (props: WidgetProps) => {
                     }
 
                     // Wait for ALL layers to finish rendering (thematic layers, basemap tiles, etc.)
-                    setStatusMessage('Waiting for map layers to load...')
+                    setStatusMessage(t('waitingForMapLayersToLoad'))
                     await waitForAllLayersReady(8000)
 
                     // Additional buffer to ensure feature symbology is fully rendered
                     await new Promise(resolve => setTimeout(resolve, 500))
 
-                    setStatusMessage('Capturing map image...')
+                    setStatusMessage(t('capturingMapImage'))
 
                     // Calculate target aspect ratio for PDF (contentWidth / mapHeight in mm)
                     const pdfAspectRatio = contentWidth / mapHeight
@@ -9985,13 +9985,13 @@ const Widget = (props: WidgetProps) => {
             const filename = `${addressTitle.replace(/[^a-z0-9]/gi, '_')}_${new Date().toISOString().split('T')[0]}.pdf`
             doc.save(filename)
 
-            setStatusMessage('PDF generated successfully.')
+            setStatusMessage(t('pdfGeneratedSuccessfully'))
 
         } catch (e: any) {
             console.error('PDF generation failed:', e)
             const reason = e?.message ? ` (${String(e.message).slice(0, 160)})` : ''
             setError(`Failed to generate PDF${reason}. Please try again.`)
-            setStatusMessage('PDF generation failed.')
+            setStatusMessage(t('pdfGenerationFailed'))
         } finally {
             setGeneratingPdf(false)
         }
@@ -10009,7 +10009,7 @@ const Widget = (props: WidgetProps) => {
         <div ref={widgetRootRef} css={widgetStyles} className="jimu-widget">
             {/* ACCESSIBILITY: Skip Link */}
             <a href="#main-content" className="skip-link">
-                Skip to main content
+                {t('skipToMainContent')}
             </a>
 
             {/* ACCESSIBILITY: Live Region for Status Announcements */}
@@ -10027,18 +10027,18 @@ const Widget = (props: WidgetProps) => {
 
             {/* Search Header - hidden when separate pane is open */}
             {!separatePaneData && (
-                <div className="search-header" role="search" aria-label="Location search">
+                <div className="search-header" role="search" aria-label={t('locationSearch')}>
                     <div className="search-row">
                         <div className="search-input-container">
                             <label htmlFor="search-input" className="sr-only">
-                                Search for a property or location
+                                {t('searchForAPropertyOrLocation')}
                             </label>
                             <input
                                 ref={searchInputRef}
                                 id="search-input"
                                 className="search-input"
-                                placeholder="Search address or location..."
-                                title="Enter an address, parcel number, or location to search"
+                                placeholder={t('searchAddressOrLocation')}
+                                title={t('enterAnAddressParcelNumberOr')}
                                 value={searchText}
                                 onChange={e => onInputChange(e.target.value)}
                                 onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
@@ -10064,8 +10064,8 @@ const Widget = (props: WidgetProps) => {
                                         setHighlightedIndex(-1)
                                         searchInputRef.current?.focus()
                                     }}
-                                    title="Clear search"
-                                    aria-label="Clear search text"
+                                    title={t('clearSearch')}
+                                    aria-label={t('clearSearchText')}
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
                                         <path d="M12.7 4.7l-1.4-1.4L8 6.6 4.7 3.3 3.3 4.7 6.6 8l-3.3 3.3 1.4 1.4L8 9.4l3.3 3.3 1.4-1.4L9.4 8l3.3-3.3z" />
@@ -10078,11 +10078,11 @@ const Widget = (props: WidgetProps) => {
                                     id={suggestionsId}
                                     className="suggestions-dropdown"
                                     role="listbox"
-                                    aria-label="Search suggestions"
+                                    aria-label={t('searchSuggestions')}
                                 >
                                     {searching && (
                                         <div className="suggestion-item" role="option" aria-disabled="true" style={{ color: theme.textMuted }}>
-                                            Searching...
+                                            {t('searching')}
                                         </div>
                                     )}
                                     {!searching && showLabels && grouped.map((g, groupIndex) => (
@@ -10129,8 +10129,8 @@ const Widget = (props: WidgetProps) => {
                             type="button"
                             className={`select-location-btn ${selectByLocationActive ? 'active' : ''}`}
                             onClick={() => setSelectByLocationActive(!selectByLocationActive)}
-                            title={selectByLocationActive ? 'Cancel map selection' : 'Select location from map'}
-                            aria-label={selectByLocationActive ? 'Cancel map location selection' : 'Select location from map'}
+                            title={selectByLocationActive ? t('cancelMapSelection') : t('selectLocationFromMap')}
+                            aria-label={selectByLocationActive ? t('cancelMapLocationSelection') : t('selectLocationFromMap')}
                             aria-pressed={selectByLocationActive}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -10145,8 +10145,8 @@ const Widget = (props: WidgetProps) => {
                                 className={`select-location-btn current-location-btn ${gettingLocation ? 'active' : ''}`}
                                 onClick={useCurrentLocation}
                                 disabled={gettingLocation || loading}
-                                title={gettingLocation ? 'Getting your location...' : 'Use your current location'}
-                                aria-label={gettingLocation ? 'Getting your location, please wait' : 'Use your current GPS location to search'}
+                                title={gettingLocation ? t('gettingYourLocation') : t('useYourCurrentLocation')}
+                                aria-label={gettingLocation ? t('gettingYourLocationPleaseWait') : t('useYourCurrentGpsLocationTo')}
                                 aria-busy={gettingLocation}
                             >
                                 {gettingLocation ? (
@@ -10163,12 +10163,12 @@ const Widget = (props: WidgetProps) => {
                             className="search-btn"
                             onClick={() => runQuery()}
                             disabled={loading}
-                            title={loading ? 'Searching for location...' : 'Search for location'}
-                            aria-label={loading ? 'Searching, please wait' : 'Search for property at this location'}
+                            title={loading ? t('searchingForLocation') : t('searchForLocation')}
+                            aria-label={loading ? t('searchingPleaseWait') : t('searchForPropertyAtThisLocation')}
                             aria-busy={loading}
                             aria-disabled={loading}
                         >
-                            {loading ? 'Searching...' : 'Search'}
+                            {loading ? 'Searching...' : t('search')}
                         </button>
                         {props.config?.showHelp !== false && (
                             <Button size="sm" type="tertiary" icon onClick={openHelp} title={t('helpTitle')} aria-label={t('helpTitle')} style={{ flexShrink: 0 }}>
@@ -10187,7 +10187,7 @@ const Widget = (props: WidgetProps) => {
                     className={`results-container${generatingPdf ? ' generating-pdf' : ''}`}
                     tabIndex={-1}
                     role="main"
-                    aria-label="Search results"
+                    aria-label={t('searchResults')}
                 >
                     {/* ACCESSIBILITY: Error Banner with Alert Role */}
                     {props.config?.showHelp !== false && showFirstRunHint && results.length === 0 && !loading && (
@@ -10211,8 +10211,8 @@ const Widget = (props: WidgetProps) => {
                                 type="button"
                                 className="error-close"
                                 onClick={() => setError(null)}
-                                title="Dismiss error"
-                                aria-label="Dismiss error message"
+                                title={t('dismissError')}
+                                aria-label={t('dismissErrorMessage')}
                             >
                                 ×
                             </button>
@@ -10223,8 +10223,8 @@ const Widget = (props: WidgetProps) => {
                     {/* Comparison pending banner */}
                     {comparisonSnapshot && results.length === 0 && !loading && (
                         <div className="comparison-pending" role="status">
-                            <span>Comparing with <strong>{comparisonSnapshot.label}</strong>. Search a second property to see the comparison.</span>
-                            <button type="button" className="recent-clear" onClick={() => setComparisonSnapshot(null)}>Cancel</button>
+                            <span>{t('comparingWith')} <strong>{comparisonSnapshot.label}</strong>{t('searchASecondPropertyToSee')}</span>
+                            <button type="button" className="recent-clear" onClick={() => setComparisonSnapshot(null)}>{t('cancel')}</button>
                         </div>
                     )}
 
@@ -10232,8 +10232,8 @@ const Widget = (props: WidgetProps) => {
                     {(config as any).enableRecentSearches !== false && recentSearches.length > 0 && results.length === 0 && !loading && (
                         <div className="recent-searches">
                             <div className="recent-header">
-                                <span className="recent-label">Recent</span>
-                                <button type="button" className="recent-clear" onClick={clearRecentSearches}>Clear</button>
+                                <span className="recent-label">{t('recent')}</span>
+                                <button type="button" className="recent-clear" onClick={clearRecentSearches}>{t('clear')}</button>
                             </div>
                             <div className="recent-chips">
                                 {recentSearches.slice(0, 5).map(t => (
@@ -10247,13 +10247,13 @@ const Widget = (props: WidgetProps) => {
                         <div className="loading-state" aria-hidden="true">
                             <Loading type={LoadingType.Donut} />
                             <div className="loading-primary">
-                                {statusMessage || 'Querying layers...'}
+                                {statusMessage || t('queryingLayers')}
                             </div>
                             <div className="loading-secondary">
-                                Gathering information from multiple layers. This can take a few seconds.
+                                {t('gatheringInformationFromMultipleLayersThis')}
                             </div>
                             <div className="loading-slow-hint">
-                                Still working on it. Thanks for your patience.
+                                {t('stillWorkingOnItThanksFor')}
                             </div>
                         </div>
                     )}
@@ -10274,8 +10274,8 @@ const Widget = (props: WidgetProps) => {
                         <div className="pdf-generating-overlay" role="status" aria-live="polite" aria-busy="true">
                             <div className="pdf-generating-content">
                                 <Loading type={LoadingType.Donut} width={32} height={32} />
-                                <div style={{ marginTop: 12, fontWeight: 500 }}>Generating PDF...</div>
-                                <div style={{ marginTop: 4, fontSize: '12px', color: '#666' }}>This may take a moment</div>
+                                <div style={{ marginTop: 12, fontWeight: 500 }}>{t('generatingPdf')}</div>
+                                <div style={{ marginTop: 4, fontSize: '12px', color: '#666' }}>{t('thisMayTakeAMoment')}</div>
                             </div>
                         </div>
                     )}
@@ -10285,16 +10285,16 @@ const Widget = (props: WidgetProps) => {
                             {/* ACCESSIBILITY: Announce search results once loading completes */}
                             {!loading && (
                                 <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
-                                    Found {results.reduce((sum, sr) => sum + sr.totalFeatures, 0)} features across {results.length} sections for {displayedSearchText || 'selected location'}
+                                    {t('found')} {results.reduce((sum, sr) => sum + sr.totalFeatures, 0)} {t('featuresAcrossResultsCountSectionsFor', { resultsCount: String(results.length) })} {displayedSearchText || t('selectedLocation')}
                                 </div>
                             )}
 
                             {/* Address Header */}
                             <header className="address-header">
                                 <div className="address-info">
-                                    <h1 className="address-title">{displayedSearchText.toUpperCase() || 'PROPERTY REPORT'}</h1>
+                                    <h1 className="address-title">{displayedSearchText.toUpperCase() || t('propertyReport')}</h1>
                                     {headerInfoData && config.headerInfo?.displayFields && (
-                                        <div className="header-info-fields" role="list" aria-label="Property information">
+                                        <div className="header-info-fields" role="list" aria-label={t('propertyInformation')}>
                                             {normalizeFields(toMutable<any>(config.headerInfo.displayFields)).map((field: any, i: number) => {
                                                 const value = headerInfoData[field.name]
                                                 const isNullOrEmpty = value == null || value === ''
@@ -10328,8 +10328,8 @@ const Widget = (props: WidgetProps) => {
                                             type="button"
                                             className="action-icon"
                                             onClick={startComparison}
-                                            title={comparisonSnapshot ? 'Restart comparison from this property' : 'Compare with another property'}
-                                            aria-label={comparisonSnapshot ? 'Restart comparison from this property' : 'Compare this property with another'}
+                                            title={comparisonSnapshot ? t('restartComparisonFromThisProperty') : t('compareWithAnotherProperty')}
+                                            aria-label={comparisonSnapshot ? t('restartComparisonFromThisProperty') : t('compareThisPropertyWithAnother')}
                                         >
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="1" /><rect x="14" y="4" width="7" height="16" rx="1" /></svg>
                                         </button>
@@ -10339,8 +10339,8 @@ const Widget = (props: WidgetProps) => {
                                             type="button"
                                             className="action-icon"
                                             onClick={copyReportLink}
-                                            title={linkCopied ? 'Link copied!' : 'Copy a link to this report'}
-                                            aria-label={linkCopied ? 'Report link copied to clipboard' : 'Copy a link to this report'}
+                                            title={linkCopied ? t('linkCopied') : t('copyALinkToThisReport')}
+                                            aria-label={linkCopied ? t('reportLinkCopiedToClipboard2') : t('copyALinkToThisReport')}
                                         >
                                             {linkCopied ? (
                                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M20 6L9 17l-5-5" /></svg>
@@ -10353,8 +10353,8 @@ const Widget = (props: WidgetProps) => {
                                         type="button"
                                         className="action-icon"
                                         onClick={clearResults}
-                                        title="Clear results and start new search"
-                                        aria-label="Clear results and start new search"
+                                        title={t('clearResultsAndStartNewSearch')}
+                                        aria-label={t('clearResultsAndStartNewSearch')}
                                     >
                                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                                             <path d="M18 6L6 18M6 6l12 12" />
@@ -10365,8 +10365,8 @@ const Widget = (props: WidgetProps) => {
                                         className="action-icon"
                                         onClick={generatePDF}
                                         disabled={generatingPdf || loading}
-                                        title={generatingPdf ? 'Generating PDF...' : 'Export to PDF'}
-                                        aria-label={generatingPdf ? 'Generating PDF, please wait' : 'Export results to PDF'}
+                                        title={generatingPdf ? t('generatingPdf') : t('exportToPdf')}
+                                        aria-label={generatingPdf ? t('generatingPdfPleaseWait') : t('exportResultsToPdf')}
                                         aria-busy={generatingPdf}
                                     >
                                         {generatingPdf ? (
@@ -10389,16 +10389,16 @@ const Widget = (props: WidgetProps) => {
                             {/* Streaming indicator while remaining sections load */}
                             {loading && (
                                 <div className="streaming-note" aria-hidden="true">
-                                    <Loading type={LoadingType.Donut} width={14} height={14} /> Loading remaining sections...
+                                    <Loading type={LoadingType.Donut} width={14} height={14} /> {t('loadingRemainingSections')}
                                 </div>
                             )}
 
                             {/* Property comparison panel */}
                             {comparisonSnapshot && !loading && (
-                                <div className="comparison-panel" role="region" aria-label="Property comparison">
+                                <div className="comparison-panel" role="region" aria-label={t('propertyComparison')}>
                                     <div className="comparison-header">
-                                        <span className="comparison-title">Comparing: {comparisonSnapshot.label} vs {displayedSearchText}</span>
-                                        <button type="button" className="comparison-close" onClick={() => setComparisonSnapshot(null)} aria-label="Close comparison">
+                                        <span className="comparison-title">{t('comparingLabelVsDisplayedSearchText', { label: String(comparisonSnapshot.label), displayedSearchText: String(displayedSearchText) })}</span>
+                                        <button type="button" className="comparison-close" onClick={() => setComparisonSnapshot(null)} aria-label={t('closeComparison')}>
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12" /></svg>
                                         </button>
                                     </div>
@@ -10407,7 +10407,7 @@ const Widget = (props: WidgetProps) => {
                                             <div className="comparison-group-title">{g.title}</div>
                                             <table className="comparison-table">
                                                 <thead>
-                                                    <tr><th scope="col">Field</th><th scope="col">{comparisonSnapshot.label}</th><th scope="col">{displayedSearchText}</th></tr>
+                                                    <tr><th scope="col">{t('field')}</th><th scope="col">{comparisonSnapshot.label}</th><th scope="col">{displayedSearchText}</th></tr>
                                                 </thead>
                                                 <tbody>
                                                     {g.rows.map((r, ri) => (
@@ -10419,7 +10419,7 @@ const Widget = (props: WidgetProps) => {
                                             </table>
                                         </div>
                                     ))}
-                                    <p className="comparison-note">Differences are highlighted. The full report below is for {displayedSearchText}.</p>
+                                    <p className="comparison-note">{t('differencesAreHighlightedTheFullReport', { displayedSearchText: String(displayedSearchText) })}</p>
                                 </div>
                             )}
 
@@ -10443,7 +10443,7 @@ const Widget = (props: WidgetProps) => {
                             {/* Sections */}
                             {results.map(sr => {
                                 const isOpen = openSections.has(sr.sectionConfig.sectionId)
-                                const sectionBodyId = `section-body-${sr.sectionConfig.sectionId}`
+                                const sectionBodyId = t('sectionBodySectionId', { sectionId: String(sr.sectionConfig.sectionId) })
                                 const hasRichTextConfig = sr.sectionConfig.richTextContent || (sr.sectionConfig.richTextButtons && sr.sectionConfig.richTextButtons.length > 0)
                                 const richTextPosition = sr.sectionConfig.richTextPosition || 'after'
 
@@ -10470,7 +10470,7 @@ const Widget = (props: WidgetProps) => {
                                         return null
                                     }
 
-                                    return 'No intersecting features found.'
+                                    return t('noIntersectingFeaturesFound')
                                 }
 
                                 const noResultsMessage = getNoResultsMessage()
@@ -10544,8 +10544,8 @@ const Widget = (props: WidgetProps) => {
                                             target={opensNewTab ? '_blank' : '_self'}
                                             rel={opensNewTab ? 'noopener noreferrer' : undefined}
                                             className={`rich-text-btn ${styleClass}`}
-                                            title={opensNewTab ? `${button.label} (opens in new tab)` : button.label}
-                                            aria-label={opensNewTab ? `${button.label} (opens in new tab)` : button.label}
+                                            title={opensNewTab ? t('labelOpensInNewTab', { label: String(button.label) }) : button.label}
+                                            aria-label={opensNewTab ? t('labelOpensInNewTab', { label: String(button.label) }) : button.label}
                                         >
                                             {button.label}
                                             {opensNewTab && (
@@ -10772,13 +10772,13 @@ const Widget = (props: WidgetProps) => {
                                                 onKeyDown={(e) => handleSectionKeyDown(e, sr.sectionConfig.sectionId)}
                                                 role="button"
                                                 tabIndex={0}
-                                                title={`${isOpen ? 'Collapse' : 'Expand'} ${sr.sectionConfig.sectionTitle} (${combinedFeatureCount} feature${combinedFeatureCount !== 1 ? 's' : ''})`}
+                                                title={(isOpen ? (combinedFeatureCount !== 1 ? t('collapseSectionTitleCombinedFeatureCountFeatures', { sectionTitle: String(sr.sectionConfig.sectionTitle), combinedFeatureCount: String(combinedFeatureCount) }) : t('collapseSectionTitleCombinedFeatureCountFeature', { sectionTitle: String(sr.sectionConfig.sectionTitle), combinedFeatureCount: String(combinedFeatureCount) })) : (combinedFeatureCount !== 1 ? t('expandSectionTitleCombinedFeatureCountFeatures', { sectionTitle: String(sr.sectionConfig.sectionTitle), combinedFeatureCount: String(combinedFeatureCount) }) : t('expandSectionTitleCombinedFeatureCountFeature', { sectionTitle: String(sr.sectionConfig.sectionTitle), combinedFeatureCount: String(combinedFeatureCount) })))}
                                                 aria-expanded={isOpen}
                                                 aria-controls={sectionBodyId}
                                             >
                                                 <h2 id={`section-title-${sr.sectionConfig.sectionId}`} className="pm-section-title">
                                                     {sr.sectionConfig.sectionTitle}
-                                                    <span className="sr-only"> - {combinedFeatureCount} feature{combinedFeatureCount !== 1 ? 's' : ''}</span>
+                                                    <span className="sr-only"> {(combinedFeatureCount !== 1 ? t('combinedFeatureCountFeatures', { combinedFeatureCount: String(combinedFeatureCount) }) : t('combinedFeatureCountFeature', { combinedFeatureCount: String(combinedFeatureCount) }))}</span>
                                                 </h2>
                                                 <span className={`pm-section-toggle ${isOpen ? 'open' : ''}`} aria-hidden="true">
                                                     ▼
@@ -10825,13 +10825,13 @@ const Widget = (props: WidgetProps) => {
                                                 onKeyDown={(e) => handleSectionKeyDown(e, sr.sectionConfig.sectionId)}
                                                 role="button"
                                                 tabIndex={0}
-                                                title={`${isOpen ? 'Collapse' : 'Expand'} ${sr.sectionConfig.sectionTitle} (${combinedFeatureCount} feature${combinedFeatureCount !== 1 ? 's' : ''})`}
+                                                title={(isOpen ? (combinedFeatureCount !== 1 ? t('collapseSectionTitleCombinedFeatureCountFeatures', { sectionTitle: String(sr.sectionConfig.sectionTitle), combinedFeatureCount: String(combinedFeatureCount) }) : t('collapseSectionTitleCombinedFeatureCountFeature', { sectionTitle: String(sr.sectionConfig.sectionTitle), combinedFeatureCount: String(combinedFeatureCount) })) : (combinedFeatureCount !== 1 ? t('expandSectionTitleCombinedFeatureCountFeatures', { sectionTitle: String(sr.sectionConfig.sectionTitle), combinedFeatureCount: String(combinedFeatureCount) }) : t('expandSectionTitleCombinedFeatureCountFeature', { sectionTitle: String(sr.sectionConfig.sectionTitle), combinedFeatureCount: String(combinedFeatureCount) })))}
                                                 aria-expanded={isOpen}
                                                 aria-controls={sectionBodyId}
                                             >
                                                 <h2 id={`section-title-${sr.sectionConfig.sectionId}`} className="pm-section-title">
                                                     {sr.sectionConfig.sectionTitle}
-                                                    <span className="sr-only"> - {combinedFeatureCount} feature{combinedFeatureCount !== 1 ? 's' : ''}</span>
+                                                    <span className="sr-only"> {(combinedFeatureCount !== 1 ? t('combinedFeatureCountFeatures', { combinedFeatureCount: String(combinedFeatureCount) }) : t('combinedFeatureCountFeature', { combinedFeatureCount: String(combinedFeatureCount) }))}</span>
                                                 </h2>
                                                 <span className={`pm-section-toggle ${isOpen ? 'open' : ''}`} aria-hidden="true">
                                                     ▼
@@ -10845,7 +10845,7 @@ const Widget = (props: WidgetProps) => {
                                             >
                                                 <div className="section-separate-pane-trigger">
                                                     <p style={{ margin: '0 0 8px', fontSize: '12px', color: theme.textSecondary }}>
-                                                        {combinedFeatureCount} {nearbyFeatureCount > 0 && sr.totalFeatures === 0 ? 'nearby ' : ''}record{combinedFeatureCount !== 1 ? 's' : ''} available
+                                                        {(nearbyFeatureCount > 0 && sr.totalFeatures === 0 ? (combinedFeatureCount !== 1 ? t('combinedFeatureCountNearbyRecordsAvailable', { combinedFeatureCount: String(combinedFeatureCount) }) : t('combinedFeatureCountNearbyRecordAvailable', { combinedFeatureCount: String(combinedFeatureCount) })) : (combinedFeatureCount !== 1 ? t('combinedFeatureCountRecordsAvailable', { combinedFeatureCount: String(combinedFeatureCount) }) : t('combinedFeatureCountRecordAvailable', { combinedFeatureCount: String(combinedFeatureCount) })))}
                                                     </p>
                                                     <button
                                                         type="button"
@@ -10856,13 +10856,13 @@ const Widget = (props: WidgetProps) => {
                                                             parentTitle: displayedSearchText || 'Property',
                                                             paneTitle: sr.sectionConfig.separatePaneTitle || sr.sectionConfig.sectionTitle
                                                         })}
-                                                        title={`View all ${combinedFeatureCount} ${sr.sectionConfig.sectionTitle} records in detail view`}
-                                                        aria-label={`View ${combinedFeatureCount} ${sr.sectionConfig.sectionTitle} records in detail pane`}
+                                                        title={t('viewAllCombinedFeatureCountSectionTitleRecordsIn', { combinedFeatureCount: String(combinedFeatureCount), sectionTitle: String(sr.sectionConfig.sectionTitle) })}
+                                                        aria-label={t('viewCombinedFeatureCountSectionTitleRecordsInDetail', { combinedFeatureCount: String(combinedFeatureCount), sectionTitle: String(sr.sectionConfig.sectionTitle) })}
                                                     >
                                                         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                                                             <path d="M2 12h12M2 8h12M2 4h12" />
                                                         </svg>
-                                                        View Details
+                                                        {t('viewDetails')}
                                                         <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
                                                             <path d="M6.5 3.5L11 8l-4.5 4.5" stroke="currentColor" strokeWidth="2" fill="none" />
                                                         </svg>
@@ -10884,13 +10884,13 @@ const Widget = (props: WidgetProps) => {
                                             onKeyDown={(e) => handleSectionKeyDown(e, sr.sectionConfig.sectionId)}
                                             role="button"
                                             tabIndex={0}
-                                            title={`${isOpen ? 'Collapse' : 'Expand'} ${sr.sectionConfig.sectionTitle} (${sr.totalFeatures} feature${sr.totalFeatures !== 1 ? 's' : ''})`}
+                                            title={(isOpen ? (sr.totalFeatures !== 1 ? t('collapseSectionTitleTotalFeaturesFeatures', { sectionTitle: String(sr.sectionConfig.sectionTitle), totalFeatures: String(sr.totalFeatures) }) : t('collapseSectionTitleTotalFeaturesFeature', { sectionTitle: String(sr.sectionConfig.sectionTitle), totalFeatures: String(sr.totalFeatures) })) : (sr.totalFeatures !== 1 ? t('expandSectionTitleTotalFeaturesFeatures', { sectionTitle: String(sr.sectionConfig.sectionTitle), totalFeatures: String(sr.totalFeatures) }) : t('expandSectionTitleTotalFeaturesFeature', { sectionTitle: String(sr.sectionConfig.sectionTitle), totalFeatures: String(sr.totalFeatures) })))}
                                             aria-expanded={isOpen}
                                             aria-controls={sectionBodyId}
                                         >
                                             <h2 id={`section-title-${sr.sectionConfig.sectionId}`} className="pm-section-title">
                                                 {sr.sectionConfig.sectionTitle}
-                                                <span className="sr-only"> - {sr.totalFeatures} feature{sr.totalFeatures !== 1 ? 's' : ''}</span>
+                                                <span className="sr-only"> {(sr.totalFeatures !== 1 ? t('totalFeaturesFeatures', { totalFeatures: String(sr.totalFeatures) }) : t('totalFeaturesFeature', { totalFeatures: String(sr.totalFeatures) }))}</span>
                                             </h2>
                                             <span className={`pm-section-toggle ${isOpen ? 'open' : ''}`} aria-hidden="true">
                                                 ▼
@@ -10920,9 +10920,9 @@ const Widget = (props: WidgetProps) => {
                                             {/* Section tools */}
                                             {(config as any).enableCsvExport !== false && sr.layerResults.some(lr => lr.features && lr.features.length > 0) && (
                                                 <div className="section-tools">
-                                                    <button type="button" className="csv-export-btn" onClick={() => exportSectionCsv(sr)} aria-label={`Download ${sr.sectionConfig.sectionTitle} data as CSV`}>
+                                                    <button type="button" className="csv-export-btn" onClick={() => exportSectionCsv(sr)} aria-label={t('downloadSectionTitleDataAsCsv', { sectionTitle: String(sr.sectionConfig.sectionTitle) })}>
                                                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
-                                                        CSV
+                                                        {t('csv')}
                                                     </button>
                                                 </div>
                                             )}
@@ -10941,8 +10941,8 @@ const Widget = (props: WidgetProps) => {
 
                     {!loading && results.length === 0 && !error && (
                         <div className="empty-state" role="status">
-                            <p><strong>Property Information</strong></p>
-                            <p>Search for an address or use <em>Select location from map</em> to choose a point.</p>
+                            <p><strong>{t('propertyInformation2')}</strong></p>
+                            <p>{t('searchForAnAddressOrUse')} <em>{t('selectLocationFromMap')}</em> {t('toChooseAPoint')}</p>
                         </div>
                     )}
                 </div>
@@ -10958,21 +10958,21 @@ const Widget = (props: WidgetProps) => {
                     aria-modal="true"
                 >
                     <span id="separate-pane-description" className="sr-only">
-                        Viewing detailed records. Press Escape or click Back to return to main view.
+                        {t('viewingDetailedRecordsPressEscapeOr')}
                     </span>
                     <div className="separate-pane-header">
                         <button
                             type="button"
                             className="back-btn"
                             onClick={() => setSeparatePaneData(null)}
-                            title="Return to main results view (Escape)"
-                            aria-label="Go back to main results view"
+                            title={t('returnToMainResultsViewEscape')}
+                            aria-label={t('goBackToMainResultsView')}
                             autoFocus
                         >
                             <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
                                 <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="2" fill="none" />
                             </svg>
-                            Back
+                            {t('back')}
                         </button>
                         <div className="separate-pane-title">
                             <h2 id="separate-pane-title">
@@ -10981,16 +10981,16 @@ const Widget = (props: WidgetProps) => {
                             <div className="separate-pane-subtitle">
                                 {separatePaneData.parentTitle} • {
                                     separatePaneData.type === 'relatedTable'
-                                        ? `${separatePaneData.records?.length || 0} record${(separatePaneData.records?.length || 0) !== 1 ? 's' : ''}`
+                                        ? ((separatePaneData.records?.length || 0) !== 1 ? t('recordsCountRecords', { recordsCount: String(separatePaneData.records?.length || 0) }) : t('recordsCountRecord', { recordsCount: String(separatePaneData.records?.length || 0) }))
                                         : separatePaneData.type === 'nearbyResult'
-                                            ? `${separatePaneData.nearbyResult?.features?.length || 0} nearby record${(separatePaneData.nearbyResult?.features?.length || 0) !== 1 ? 's' : ''}`
+                                            ? ((separatePaneData.nearbyResult?.features?.length || 0) !== 1 ? t('featuresCountNearbyRecords', { featuresCount: String(separatePaneData.nearbyResult?.features?.length || 0) }) : t('featuresCountNearbyRecord', { featuresCount: String(separatePaneData.nearbyResult?.features?.length || 0) }))
                                             : (() => {
                                                 const sr = separatePaneData.sectionResult
                                                 const nearbyCount = sr?.nearbyResults
                                                     ? sr.nearbyResults.reduce((sum, nr) => sum + (nr.features?.length || 0), 0)
                                                     : 0
                                                 const totalCount = (sr?.totalFeatures || 0) + nearbyCount
-                                                return `${totalCount} record${totalCount !== 1 ? 's' : ''}`
+                                                return (totalCount !== 1 ? t('totalCountRecords', { totalCount: String(totalCount) }) : t('totalCountRecord', { totalCount: String(totalCount) }))
                                             })()
                                 }
                             </div>
