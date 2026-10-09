@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "Fila {value}: {join}",
         unknownError: "error desconegut",
         unserializableError: "Error no llegible",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "No s' ha pogut obtenir la vostra ubicació."
       })
     }
   }

@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "Rivi {value}: {join}",
         unknownError: "tuntematon virhe",
         unserializableError: "epätavallinen virhe",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "- En tiedä sijaintiasi."
       })
     }
   }

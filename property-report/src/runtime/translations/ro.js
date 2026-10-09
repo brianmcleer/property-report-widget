@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "Rând {value}: {join}",
         unknownError: "Eroare necunoscută",
         unserializableError: "eroare inoperabilă",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "Imposibil de a obține locația."
       })
     }
   }

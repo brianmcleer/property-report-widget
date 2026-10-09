@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "Rinda {value}: {join}",
         unknownError: "nezināma kļūda",
         unserializableError: "nepārspējama kļūda",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "Neizdevās atrast savu atrašanās vietu."
       })
     }
   }

@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "Linha {value}: {join}",
         unknownError: "erro desconhecido",
         unserializableError: "erro inserializável",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "Incapaz de obter a sua localização."
       })
     }
   }

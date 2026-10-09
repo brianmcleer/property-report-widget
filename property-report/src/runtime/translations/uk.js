@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "Роу {value}: {join}",
         unknownError: "Невідома помилка",
         unserializableError: "несеріалізована помилка",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "Якщо ви хочете отримати своє місце."
       })
     }
   }

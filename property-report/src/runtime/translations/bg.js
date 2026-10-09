@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "Ред {value}: {join}",
         unknownError: "неизвестна грешка",
         unserializableError: "несериозна грешка",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "Не мога да намеря местоположението ви."
       })
     }
   }

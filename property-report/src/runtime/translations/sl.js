@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "Vrstica {value}: {join}",
         unknownError: "neznana napaka",
         unserializableError: "Neizvedljiva napaka",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "Ni moč dobiti vaše lokacije."
       })
     }
   }

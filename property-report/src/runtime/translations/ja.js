@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "ログイン {value}: : : {join}",
         unknownError: "未知のエラー",
         unserializableError: "unserializable エラー",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "あなたの場所を取得することができません。"
       })
     }
   }

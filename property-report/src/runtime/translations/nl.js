@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "Rij {value}: {join}",
         unknownError: "onbekende fout",
         unserializableError: "onuitwisbare fout",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "Kan je locatie niet vinden."
       })
     }
   }

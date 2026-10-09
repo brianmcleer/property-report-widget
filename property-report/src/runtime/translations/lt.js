@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "Eilutė {value}: {join}",
         unknownError: "nežinoma klaida",
         unserializableError: "nenustatoma klaida",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "Nepavyksta gauti jūsų buvimo vietos."
       })
     }
   }

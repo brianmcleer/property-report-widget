@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "Wiersz {value}: {join}",
         unknownError: "nieznany błąd",
         unserializableError: "błąd niezserializowalny",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "Nie mogę znaleźć twojej lokalizacji."
       })
     }
   }

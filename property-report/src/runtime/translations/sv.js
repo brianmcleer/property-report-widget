@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "Row {value}Från: {join}",
         unknownError: "Okänd fel",
         unserializableError: "oserialiserbart fel",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "Kan inte få din plats."
       })
     }
   }

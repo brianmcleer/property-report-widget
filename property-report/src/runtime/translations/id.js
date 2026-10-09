@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "Baris {value}: {join}",
         unknownError: "galat tak dikenal",
         unserializableError: "kesalahan tidak serialisasi",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "Tidak dapat mendapatkan lokasi Anda."
       })
     }
   }

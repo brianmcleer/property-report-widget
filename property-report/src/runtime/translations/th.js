@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "แถว {value}. {join}",
         unknownError: "ข้อผิดพลาดไม่ทราบสาเหตุ",
         unserializableError: "ข้อผิดพลาดที่ไม่สามารถตรวจสอบได้",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "ไม่สามารถอ่านตําแหน่งของคุณได้"
       })
     }
   }

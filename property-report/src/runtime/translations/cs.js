@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "Řádek {value}: {join}",
         unknownError: "neznámá chyba",
         unserializableError: "neserializovatelná chyba",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "Nelze zjistit vaši polohu."
       })
     }
   }

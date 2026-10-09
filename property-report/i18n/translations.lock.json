@@ -286,16 +286,16 @@
       },
       "locales": {
         "ar": {
-          "file": "0090d7388b46",
+          "file": "29fec099a627",
           "counts": {
             "esri": 32,
             "esri-check": 2,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 242,
+            "machine": 243,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -1507,20 +1507,25 @@
               "t": "Row {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "غير قادر على الحصول على موقعك",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "bg": {
-          "file": "fc664374d29f",
+          "file": "47aa2a8338ea",
           "counts": {
             "esri": 35,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 241,
+            "machine": 242,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -2727,6 +2732,11 @@
               "t": "Ред {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Не мога да намеря местоположението ви.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
@@ -2745,16 +2755,16 @@
           "entries": {}
         },
         "ca": {
-          "file": "c0e828befccc",
+          "file": "dc1d78dfa8e5",
           "counts": {
             "esri": 34,
             "esri-check": 1,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 241,
+            "machine": 242,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -3961,20 +3971,25 @@
               "t": "Fila {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "No s' ha pogut obtenir la vostra ubicació.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "cs": {
-          "file": "29d170daed9e",
+          "file": "ee9402bd7237",
           "counts": {
             "esri": 33,
             "esri-check": 1,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 242,
+            "machine": 243,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -5186,20 +5201,25 @@
               "t": "Řádek {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Nelze zjistit vaši polohu.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "da": {
-          "file": "e02a6a5d2e1b",
+          "file": "43ec6655b3ab",
           "counts": {
             "esri": 33,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 243,
+            "machine": 244,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -6416,20 +6436,25 @@
               "t": "Række {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Kan ikke få din placering.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "de": {
-          "file": "efe53d7ab547",
+          "file": "776a322c6b14",
           "counts": {
             "esri": 35,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 241,
+            "machine": 242,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -7636,20 +7661,25 @@
               "t": "Reihe {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Sie können Ihren Standort nicht finden.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "el": {
-          "file": "7c55f6f4b4b0",
+          "file": "3908e11fc3f3",
           "counts": {
             "esri": 34,
             "esri-check": 1,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 241,
+            "machine": 242,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -8856,20 +8886,25 @@
               "t": "Γραμμή {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Δεν μπορώ να βρω τη θέση σου.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "es": {
-          "file": "ee2b902a04ff",
+          "file": "d71635cf1693",
           "counts": {
             "esri": 33,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 243,
+            "machine": 244,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -10086,20 +10121,25 @@
               "t": "Fila {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Incapaz de conseguir su ubicación.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "et": {
-          "file": "1e3869581c22",
+          "file": "9b728c71ba0a",
           "counts": {
             "esri": 33,
             "esri-check": 2,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 241,
+            "machine": 242,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -11306,20 +11346,25 @@
               "t": "Row {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Sa ei saanud oma asukohta teada.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "fi": {
-          "file": "a518036c117e",
+          "file": "77238d014ecc",
           "counts": {
             "esri": 35,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 241,
+            "machine": 242,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -12526,20 +12571,25 @@
               "t": "Rivi {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "- En tiedä sijaintiasi.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "fr": {
-          "file": "d01ae38f812d",
+          "file": "887d7556fef8",
           "counts": {
             "esri": 33,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 243,
+            "machine": 244,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -13756,20 +13806,25 @@
               "t": "Ligne {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Impossible d'obtenir votre emplacement.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "he": {
-          "file": "376a7f430e95",
+          "file": "bbbc732f3b3a",
           "counts": {
             "esri": 32,
             "esri-check": 2,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 242,
+            "machine": 243,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -14981,6 +15036,11 @@
               "t": "Row Row {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "לא ניתן להשיג את המיקום שלך.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
@@ -14999,16 +15059,16 @@
           "entries": {}
         },
         "hu": {
-          "file": "78d05d7c8fba",
+          "file": "b159b33a10b1",
           "counts": {
             "esri": 34,
             "esri-check": 1,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 241,
+            "machine": 242,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -16215,20 +16275,25 @@
               "t": "sor {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Nem tudom, hol vagy.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "id": {
-          "file": "c6a9fd3b4fb8",
+          "file": "3565f2ae507e",
           "counts": {
             "esri": 33,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 243,
+            "machine": 244,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -17445,20 +17510,25 @@
               "t": "Baris {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Tidak dapat mendapatkan lokasi Anda.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "it": {
-          "file": "3d502c8d6f86",
+          "file": "805e3f8de7b5",
           "counts": {
             "esri": 34,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 242,
+            "machine": 243,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -18670,20 +18740,25 @@
               "t": "Voce {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Non riesco a trovare la tua posizione.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "ja": {
-          "file": "e6a83a783362",
+          "file": "6e4163089d2e",
           "counts": {
             "esri": 33,
             "esri-check": 1,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 242,
+            "machine": 243,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -19895,20 +19970,25 @@
               "t": "ログイン {value}: : : {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "あなたの場所を取得することができません。",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "ko": {
-          "file": "ae0a4dd1e43d",
+          "file": "4c12099b695b",
           "counts": {
             "esri": 34,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 242,
+            "machine": 243,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -21120,20 +21200,25 @@
               "t": "주요 특징 {value}:: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "자주 묻는 질문",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "lt": {
-          "file": "db0fceac7573",
+          "file": "d31c7191e759",
           "counts": {
             "esri": 32,
             "esri-check": 3,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 241,
+            "machine": 242,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -22340,20 +22425,25 @@
               "t": "Eilutė {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Nepavyksta gauti jūsų buvimo vietos.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "lv": {
-          "file": "96fe4baef5ea",
+          "file": "e3dafd61d38f",
           "counts": {
             "esri": 35,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 241,
+            "machine": 242,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -23560,20 +23650,25 @@
               "t": "Rinda {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Neizdevās atrast savu atrašanās vietu.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "no": {
-          "file": "f596ce6414f4",
+          "file": "ea8e9a6bb560",
           "counts": {
             "esri": 32,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 244,
+            "machine": 245,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -24795,20 +24890,25 @@
               "t": "Rad {value}:) {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Kan ikke få din plassering.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "nl": {
-          "file": "60417bdb404d",
+          "file": "76eb0ff432ff",
           "counts": {
             "esri": 35,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 241,
+            "machine": 242,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -26015,20 +26115,25 @@
               "t": "Rij {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Kan je locatie niet vinden.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "pl": {
-          "file": "2e96627cd35f",
+          "file": "665c7b122e5b",
           "counts": {
             "esri": 32,
             "esri-check": 3,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 241,
+            "machine": 242,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -27235,20 +27340,25 @@
               "t": "Wiersz {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Nie mogę znaleźć twojej lokalizacji.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "pt-br": {
-          "file": "92e34e18a94e",
+          "file": "fe0880af131a",
           "counts": {
             "esri": 34,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 242,
+            "machine": 243,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -28460,20 +28570,25 @@
               "t": "Reme. {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Incapaz de obter sua localização.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "pt-pt": {
-          "file": "e76533bc57a4",
+          "file": "71ebcea050d4",
           "counts": {
             "esri": 35,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 241,
+            "machine": 242,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -29680,20 +29795,25 @@
               "t": "Linha {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Incapaz de obter a sua localização.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "ro": {
-          "file": "3506ef9e9f81",
+          "file": "4e83bb4fce62",
           "counts": {
             "esri": 33,
             "esri-check": 2,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 241,
+            "machine": 242,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -30900,20 +31020,25 @@
               "t": "Rând {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Imposibil de a obține locația.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "ru": {
-          "file": "6a3cbe656b61",
+          "file": "fdefd80df265",
           "counts": {
             "esri": 35,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 241,
+            "machine": 242,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -32120,20 +32245,25 @@
               "t": "ряд {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Невозможность получить свое местоположение.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "sk": {
-          "file": "51f75ddb9daf",
+          "file": "941047201abd",
           "counts": {
             "esri": 32,
             "esri-check": 2,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 242,
+            "machine": 243,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -33345,20 +33475,25 @@
               "t": "Riadok {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Nepodarilo sa získať vašu polohu.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "sl": {
-          "file": "6472a47923f3",
+          "file": "6710b2aa7e34",
           "counts": {
             "esri": 34,
             "esri-check": 1,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 241,
+            "machine": 242,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -34565,6 +34700,11 @@
               "t": "Vrstica {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Ni moč dobiti vaše lokacije.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
@@ -34583,16 +34723,16 @@
           "entries": {}
         },
         "sv": {
-          "file": "c1a56dea252f",
+          "file": "f0fba0f89046",
           "counts": {
             "esri": 33,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 243,
+            "machine": 244,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -35809,20 +35949,25 @@
               "t": "Row {value}Från: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Kan inte få din plats.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "th": {
-          "file": "42e0228b21f6",
+          "file": "9b2e3cc87752",
           "counts": {
             "esri": 34,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 242,
+            "machine": 243,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -37034,20 +37179,25 @@
               "t": "แถว {value}. {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "ไม่สามารถอ่านตําแหน่งของคุณได้",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "tr": {
-          "file": "061786f150e6",
+          "file": "ec8600ede01d",
           "counts": {
             "esri": 33,
             "esri-check": 1,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 242,
+            "machine": 243,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -38259,20 +38409,25 @@
               "t": "Row Row {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Konumunuzu almak için güvenilmez.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "zh-cn": {
-          "file": "236ea62984bd",
+          "file": "a70bc2d0fe04",
           "counts": {
             "esri": 34,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 242,
+            "machine": 243,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -39484,20 +39639,25 @@
               "t": "行 {value}编号 : {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "无法找到位置 。",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "uk": {
-          "file": "5476379f031d",
+          "file": "9f3af854efae",
           "counts": {
             "esri": 35,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 241,
+            "machine": 242,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -40704,20 +40864,25 @@
               "t": "Роу {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Якщо ви хочете отримати своє місце.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "vi": {
-          "file": "680e8ceff6e6",
+          "file": "974067da9d95",
           "counts": {
             "esri": 35,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 241,
+            "machine": 242,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -41924,20 +42089,25 @@
               "t": "Hàng {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "Không thể tìm được vị trí.",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "zh-hk": {
-          "file": "dc3a7dc37575",
+          "file": "8e97c0e54b97",
           "counts": {
             "esri": 33,
             "esri-check": 1,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 242,
+            "machine": 243,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -43149,20 +43319,25 @@
               "t": "行 {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "無法找到位置 。",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         },
         "zh-tw": {
-          "file": "dc3a7dc37575",
+          "file": "8e97c0e54b97",
           "counts": {
             "esri": 33,
             "esri-check": 1,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 242,
+            "machine": 243,
             "stale": 0,
-            "missing": 1
+            "missing": 0
           },
           "entries": {
             "_widgetLabel": {
@@ -44374,6 +44549,11 @@
               "t": "行 {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
+            },
+            "unableToGetYourLocation": {
+              "t": "無法找到位置 。",
+              "src": "machine",
+              "h": "af2b5a5f6f48"
             }
           }
         }

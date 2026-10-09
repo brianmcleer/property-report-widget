@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "Voce {value}: {join}",
         unknownError: "errore sconosciuto",
         unserializableError: "errore non serializzabile",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "Non riesco a trovare la tua posizione."
       })
     }
   }

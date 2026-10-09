@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "Row {value}: {join}",
         unknownError: "tundmatu viga",
         unserializableError: "seeriaviisiline viga",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "Sa ei saanud oma asukohta teada."
       })
     }
   }

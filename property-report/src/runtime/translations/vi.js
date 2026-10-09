@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "Hàng {value}: {join}",
         unknownError: "lỗi không rõ",
         unserializableError: "Lỗi không thể gửi đi được",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "Không thể tìm được vị trí."
       })
     }
   }

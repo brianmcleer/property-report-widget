@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "行 {value}编号 : {join}",
         unknownError: "未知错误",
         unserializableError: "无序错误",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "无法找到位置 。"
       })
     }
   }

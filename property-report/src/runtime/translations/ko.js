@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "주요 특징 {value}:: {join}",
         unknownError: "알 수없는 오류",
         unserializableError: "unserializable 오류",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "자주 묻는 질문"
       })
     }
   }

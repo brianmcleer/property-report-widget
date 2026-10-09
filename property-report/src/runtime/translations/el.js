@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "Γραμμή {value}: {join}",
         unknownError: "άγνωστο σφάλμα",
         unserializableError: "σφάλμα μη ανιχνεύσιμο",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "Δεν μπορώ να βρω τη θέση σου."
       })
     }
   }

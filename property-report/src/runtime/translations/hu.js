@@ -279,7 +279,7 @@ System.register([], function (e) {
         rowValueJoin: "sor {value}: {join}",
         unknownError: "ismeretlen hiba",
         unserializableError: "nem sorozható hiba",
-        unableToGetYourLocation: "Unable to get your location."
+        unableToGetYourLocation: "Nem tudom, hol vagy."
       })
     }
   }
