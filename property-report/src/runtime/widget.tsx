@@ -52,6 +52,18 @@ import Polygon from 'esri/geometry/Polygon'
 import Polyline from 'esri/geometry/Polyline'
 import { beacon } from '../shared/beacon'
 import type { BeaconHandle } from '../shared/beacon'
+import __i18nDefaults from './translations/default'
+import { __setIntl, __tc } from './i18n-t'
+let __i18nIntl: any = null
+/** Module translator: app language via the widget intl, English from default.ts, {name} values filled. */
+const __t = (id: string, values?: { [key: string]: any }): string => {
+  const msg: string = (__i18nDefaults as any)[id] ?? id
+  if (__i18nIntl && typeof __i18nIntl.formatMessage === 'function') {
+    try { return __i18nIntl.formatMessage({ id, defaultMessage: msg }, values) } catch (e) { }
+  }
+  return msg.replace(/\{(\w+)\}/g, (m: string, k: string) => (values && values[k] != null ? String(values[k]) : m))
+}
+
 // PDF export: jspdf and html2canvas are declared in package.json and installed by Experience Builder with the rest of the widget dependencies
 
 // Convert rich-text HTML to plain text for PDF output using an inert DOMParser
@@ -3081,14 +3093,14 @@ const PropertyPreview = ({ config, headerData, headerFields, address, onZoom, ma
     const highlightColor = config.highlightColor || '#FF0000'
 
     return (
-        <div className="property-preview" role="region" aria-label="Property Preview">
+        <div className="property-preview" role="region" aria-label={__t("uiPropertyPreview")}>
             {config.showMapPreview !== false && (
                 <div ref={mapContainerRef} className="property-preview-map"
                     style={{ height: config.mapPreviewHeight || 150, position: 'relative', overflow: 'hidden' }}
-                    aria-label="Property location map">
+                    aria-label={__t("uiPropertyLocationMap")}>
                     {mapImageUrl && !mapError ? (
                         <>
-                            <img src={mapImageUrl} alt={`Map showing location of ${address || 'selected property'}`}
+                            <img src={mapImageUrl} alt={__t("uiMapShowingLocationOf", { value: address || 'selected property' })}
                                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                 onError={() => setMapError(true)} />
                             <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -100%)', zIndex: 10 }} aria-hidden="true">
@@ -3100,7 +3112,7 @@ const PropertyPreview = ({ config, headerData, headerFields, address, onZoom, ma
                         </>
                     ) : (
                         <div style={{ width: '100%', height: '100%', background: `linear-gradient(135deg, ${theme.bgAlt} 0%, ${theme.borderLight} 100%)`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: theme.textMuted, fontSize: '12px' }}>
-                            <span>Property Location</span>
+                            <span>{__t("uiPropertyLocation")}</span>
                         </div>
                     )}
                 </div>
@@ -3108,17 +3120,17 @@ const PropertyPreview = ({ config, headerData, headerFields, address, onZoom, ma
             <div className="property-preview-content">
                 <div className="property-preview-header">
                     <div>
-                        <div className="property-preview-title">{primaryValue || 'Property Details'}</div>
+                        <div className="property-preview-title">{primaryValue || __t("propertyDetails")}</div>
                         {secondaryValue && <div className="property-preview-subtitle">{secondaryValue}</div>}
                     </div>
                     <div className="property-preview-actions">
                         {config.showZoomButton !== false && onZoom && (
-                            <button className="property-preview-btn" onClick={onZoom} title="Zoom to property" aria-label="Zoom to property on map">Zoom</button>
+                            <button className="property-preview-btn" onClick={onZoom} title={__t("uiZoomToProperty")} aria-label={__t("uiZoomToPropertyOnMap")}>{__t("uiZoom")}</button>
                         )}
                         {config.showCopyButton !== false && address && (
                             <button className="property-preview-btn" onClick={handleCopy}
-                                title={copied ? 'Copied!' : 'Copy address'} aria-label={copied ? 'Address copied' : 'Copy address to clipboard'}>
-                                {copied ? 'Copied' : 'Copy'}
+                                title={copied ? __t("copied") : __t("copyAddress")} aria-label={copied ? __t("addressCopied") : __t("copyAddressToClipboard")}>
+                                {copied ? __t("copied2") : __t("copy")}
                             </button>
                         )}
                     </div>
@@ -3158,7 +3170,7 @@ interface NearbyDisplayProps {
 
 const NearbyDisplay = ({ nearbyResult, sourceGeometry, onHighlight, onZoom, onZoomToBoth }: NearbyDisplayProps) => {
     const { layerConfig, nearbyConfig, features, error } = nearbyResult
-    const layerTitle = layerConfig.layerTitle || 'Nearby'
+    const layerTitle = __tc(layerConfig.layerTitle, "uiNearby")
 
     // Collapsible state - default to expanded (use layerConfig.expanded if available)
     const [isOpen, setIsOpen] = useState(layerConfig.expanded !== false)
@@ -3174,7 +3186,7 @@ const NearbyDisplay = ({ nearbyResult, sourceGeometry, onHighlight, onZoom, onZo
     // Handle empty or error states
     if (error) {
         return (
-            <div className="nearby-section" role="region" aria-label={`${layerTitle} nearby features`}>
+            <div className="nearby-section" role="region" aria-label={__t("uiNearbyFeatures", { layerTitle: layerTitle })}>
                 <div
                     className="nearby-header"
                     onClick={handleProtectedClick(() => setIsOpen(!isOpen))}
@@ -3185,13 +3197,13 @@ const NearbyDisplay = ({ nearbyResult, sourceGeometry, onHighlight, onZoom, onZo
                     role="button"
                     tabIndex={0}
                     aria-expanded={isOpen}
-                    title={isOpen ? `Collapse ${layerTitle}` : `Expand ${layerTitle}`}
+                    title={isOpen ? __t("collapseLayerTitle", { layerTitle: layerTitle }) : __t("expandLayerTitle", { layerTitle: layerTitle })}
                 >
                     <div className="nearby-header-left">
                         <span className="nearby-title">{layerTitle}</span>
                     </div>
                     <div className="nearby-header-right">
-                        <span className="nearby-subtitle">Nearby</span>
+                        <span className="nearby-subtitle">{__t("uiNearby")}</span>
                         <span className={`nearby-toggle ${isOpen ? 'open' : ''}`} aria-hidden="true">▼</span>
                     </div>
                 </div>
@@ -3204,7 +3216,7 @@ const NearbyDisplay = ({ nearbyResult, sourceGeometry, onHighlight, onZoom, onZo
 
     if (!features || features.length === 0) {
         return (
-            <div className="nearby-section" role="region" aria-label={`${layerTitle} nearby features`}>
+            <div className="nearby-section" role="region" aria-label={__t("uiNearbyFeatures", { layerTitle: layerTitle })}>
                 <div
                     className="nearby-header"
                     onClick={handleProtectedClick(() => setIsOpen(!isOpen))}
@@ -3215,19 +3227,19 @@ const NearbyDisplay = ({ nearbyResult, sourceGeometry, onHighlight, onZoom, onZo
                     role="button"
                     tabIndex={0}
                     aria-expanded={isOpen}
-                    title={isOpen ? `Collapse ${layerTitle}` : `Expand ${layerTitle}`}
+                    title={isOpen ? __t("collapseLayerTitle", { layerTitle: layerTitle }) : __t("expandLayerTitle", { layerTitle: layerTitle })}
                 >
                     <div className="nearby-header-left">
                         <span className="nearby-title">{layerTitle}</span>
                     </div>
                     <div className="nearby-header-right">
-                        <span className="nearby-subtitle">Nearby</span>
+                        <span className="nearby-subtitle">{__t("uiNearby")}</span>
                         <span className={`nearby-toggle ${isOpen ? 'open' : ''}`} aria-hidden="true">▼</span>
                     </div>
                 </div>
                 <div className={`nearby-body ${isOpen ? 'open' : ''}`}>
                     <div className="nearby-no-results">
-                        No nearby {layerTitle?.toLowerCase() || 'features'} found within {nearbyConfig.searchRadius || 5} {nearbyConfig.searchRadiusUnit || 'miles'}
+                        {__t("uiNoNearby")} {layerTitle?.toLowerCase() || 'features'} {__t("uiFoundWithin")} {nearbyConfig.searchRadius || 5} {nearbyConfig.searchRadiusUnit || 'miles'}
                     </div>
                 </div>
             </div>
@@ -3264,7 +3276,7 @@ const NearbyDisplay = ({ nearbyResult, sourceGeometry, onHighlight, onZoom, onZo
     }
 
     return (
-        <div className="nearby-section" role="region" aria-label={`${layerTitle} nearby features`}>
+        <div className="nearby-section" role="region" aria-label={__t("uiNearbyFeatures", { layerTitle: layerTitle })}>
             <div
                 className="nearby-header"
                 onClick={handleProtectedClick(() => setIsOpen(!isOpen))}
@@ -3275,13 +3287,13 @@ const NearbyDisplay = ({ nearbyResult, sourceGeometry, onHighlight, onZoom, onZo
                 role="button"
                 tabIndex={0}
                 aria-expanded={isOpen}
-                title={isOpen ? `Collapse ${layerTitle}` : `Expand ${layerTitle}`}
+                title={isOpen ? __t("collapseLayerTitle", { layerTitle: layerTitle }) : __t("expandLayerTitle", { layerTitle: layerTitle })}
             >
                 <div className="nearby-header-left">
                     <span className="nearby-title">{layerTitle}</span>
                 </div>
                 <div className="nearby-header-right">
-                    <span className="nearby-subtitle">Nearby</span>
+                    <span className="nearby-subtitle">{__t("uiNearby")}</span>
                     <span className={`nearby-toggle ${isOpen ? 'open' : ''}`} aria-hidden="true">▼</span>
                 </div>
             </div>
@@ -3309,7 +3321,7 @@ const NearbyDisplay = ({ nearbyResult, sourceGeometry, onHighlight, onZoom, onZo
                                 onMouseLeave={enableHighlight && onHighlight ? () => onHighlight(null) : undefined}
                                 onFocus={enableHighlight && onHighlight && feature.geometry ? () => onHighlight(feature.geometry!, highlightColor) : undefined}
                                 onBlur={enableHighlight && onHighlight ? () => onHighlight(null) : undefined}
-                                aria-label={canZoom && !hasLink ? `${feature.title}${feature.subtitle ? `, ${feature.subtitle}` : ''}, ${feature.distanceFormatted} away, click to zoom` : undefined}
+                                aria-label={canZoom && !hasLink ? __t("titleValueDistanceFormattedAwayClickTo", { title: feature.title, value: feature.subtitle ? `, ${feature.subtitle}` : '', distanceFormatted: feature.distanceFormatted }) : undefined}
                             >
                                 <div className="nearby-item-content">
                                     {hasLink ? (
@@ -3318,7 +3330,7 @@ const NearbyDisplay = ({ nearbyResult, sourceGeometry, onHighlight, onZoom, onZo
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="nearby-item-name-link"
-                                            aria-label={`${feature.title} (opens in new tab)`}
+                                            aria-label={__t("uiOpensInNewTab", { title: feature.title })}
                                             onClick={(e) => e.stopPropagation()}
                                         >
                                             {feature.title}
@@ -3363,7 +3375,7 @@ interface NearbySeparateTriggerProps {
 
 const NearbySeparateTrigger = ({ nearbyResult, sourceGeometry, parentTitle, onViewDetails, defaultOpen }: NearbySeparateTriggerProps) => {
     const [isOpen, setIsOpen] = useState(defaultOpen !== false)
-    const layerTitle = nearbyResult.layerConfig.layerTitle || 'Nearby'
+    const layerTitle = __tc(nearbyResult.layerConfig.layerTitle, "uiNearby")
     const featureCount = nearbyResult.features?.length || 0
     const bodyId = `nearby-trigger-body-${nearbyResult.layerConfig.layerId || Math.random().toString(36).substr(2, 9)}`
 
@@ -3393,7 +3405,7 @@ const NearbySeparateTrigger = ({ nearbyResult, sourceGeometry, parentTitle, onVi
                     <span className="nearby-separate-title">{layerTitle}</span>
                 </div>
                 <div className="nearby-separate-header-right">
-                    <span className="nearby-separate-badge">Nearby</span>
+                    <span className="nearby-separate-badge">{__t("uiNearby")}</span>
                     <span className={`nearby-separate-toggle ${isOpen ? 'open' : ''}`} aria-hidden="true">▼</span>
                 </div>
             </div>
@@ -3403,19 +3415,19 @@ const NearbySeparateTrigger = ({ nearbyResult, sourceGeometry, parentTitle, onVi
             >
                 <div className="nearby-separate-content">
                     <p className="nearby-separate-count">
-                        {featureCount} nearby record{featureCount !== 1 ? 's' : ''} available
+                        {featureCount} {__t("uiNearbyRecord")}{featureCount !== 1 ? 's' : ''} {__t("uiAvailable")}
                     </p>
                     <button
                         type="button"
                         className="view-details-btn"
                         onClick={onViewDetails}
-                        title={`View all ${featureCount} ${layerTitle} records in detail view`}
-                        aria-label={`View ${featureCount} ${layerTitle} records in detail pane`}
+                        title={__t("uiViewAllRecordsInDetailView", { featureCount: featureCount, layerTitle: layerTitle })}
+                        aria-label={__t("uiViewRecordsInDetailPane", { featureCount: featureCount, layerTitle: layerTitle })}
                     >
                         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                             <path d="M2 12h12M2 8h12M2 4h12" />
                         </svg>
-                        View Details
+                        {__t("viewDetails")}
                         <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
                             <path d="M6.5 3.5L11 8l-4.5 4.5" stroke="currentColor" strokeWidth="2" fill="none" />
                         </svg>
@@ -3591,8 +3603,8 @@ const RelatedTableDisplay = ({ relatedTable, records, chartConfig, onViewSeparat
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ color: theme.sectionHeader }}
-                    title={`${linkText} (opens in new tab)`}
-                    aria-label={`${linkText} (opens in new tab)`}
+                    title={__t("uiOpensInNewTab2", { linkText: linkText })}
+                    aria-label={__t("uiOpensInNewTab2", { linkText: linkText })}
                 >
                     {linkText}
                 </a>
@@ -3601,15 +3613,15 @@ const RelatedTableDisplay = ({ relatedTable, records, chartConfig, onViewSeparat
 
         // Auto-detect URLs for auto format type
         if (isAutoLink && isUrl) {
-            const linkText = format?.linkText || 'Click here for more info'
+            const linkText = __tc(format?.linkText, "clickHereForMoreInfo")
             return (
                 <a
                     href={value}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ color: theme.sectionHeader }}
-                    title={`${linkText} (opens in new tab)`}
-                    aria-label={`${linkText} (opens in new tab)`}
+                    title={__t("uiOpensInNewTab2", { linkText: linkText })}
+                    aria-label={__t("uiOpensInNewTab2", { linkText: linkText })}
                 >
                     {linkText}
                 </a>
@@ -3680,21 +3692,21 @@ const RelatedTableDisplay = ({ relatedTable, records, chartConfig, onViewSeparat
         const fieldType = detectFieldType(fieldName, sampleValue)
 
         if (!sortConfig || sortConfig.field !== fieldName) {
-            return `Sort by ${alias}`
+            return __t("sortByAlias", { alias: alias })
         }
 
         if (fieldType === 'date') {
             return sortConfig.direction === 'asc'
-                ? `${alias}: oldest to newest. Click to sort newest to oldest`
-                : `${alias}: newest to oldest. Click to clear sort`
+                ? __t("aliasOldestToNewestClickTo", { alias: alias })
+                : __t("aliasNewestToOldestClickTo", { alias: alias })
         } else if (fieldType === 'number') {
             return sortConfig.direction === 'asc'
-                ? `${alias}: lowest to highest. Click to sort highest to lowest`
-                : `${alias}: highest to lowest. Click to clear sort`
+                ? __t("aliasLowestToHighestClickTo", { alias: alias })
+                : __t("aliasHighestToLowestClickTo", { alias: alias })
         } else {
             return sortConfig.direction === 'asc'
-                ? `${alias}: A to Z. Click to sort Z to A`
-                : `${alias}: Z to A. Click to clear sort`
+                ? __t("aliasAToZClickTo", { alias: alias })
+                : __t("aliasZToAClickTo", { alias: alias })
         }
     }
 
@@ -3719,13 +3731,13 @@ const RelatedTableDisplay = ({ relatedTable, records, chartConfig, onViewSeparat
                 onKeyDown={handleHeaderKeyDown}
                 role="button"
                 tabIndex={0}
-                title={isOpen ? `Collapse ${relatedTable.tableName}` : `Expand ${relatedTable.tableName}`}
+                title={isOpen ? __t("collapseTableName", { tableName: relatedTable.tableName }) : __t("expandTableName", { tableName: relatedTable.tableName })}
                 aria-expanded={isOpen}
                 aria-controls={bodyId}
             >
                 <div className="related-table-header-left">
                     <span className="related-table-title">{relatedTable.tableName}</span>
-                    <span className="related-table-count">{records.length} record{records.length !== 1 ? 's' : ''}</span>
+                    <span className="related-table-count">{records.length} {__t("uiRecord")}{records.length !== 1 ? 's' : ''}</span>
                 </div>
                 <span className={`related-table-toggle ${isOpen ? 'open' : ''}`} aria-hidden="true">▼</span>
             </div>
@@ -3742,19 +3754,19 @@ const RelatedTableDisplay = ({ relatedTable, records, chartConfig, onViewSeparat
                 {relatedTable.displayPane === 'separate' && onViewSeparatePane ? (
                     <div className="related-table-separate-pane-trigger">
                         <p style={{ margin: '0 0 8px', fontSize: '12px', color: theme.textSecondary }}>
-                            {records.length} related record{records.length !== 1 ? 's' : ''} available
+                            {records.length} {__t("uiRelatedRecord")}{records.length !== 1 ? 's' : ''} {__t("uiAvailable")}
                         </p>
                         <button
                             type="button"
                             className="view-details-btn"
                             onClick={() => onViewSeparatePane(relatedTable, records, domainLookup)}
-                            title={`View all ${records.length} ${relatedTable.tableName} records in detail view`}
-                            aria-label={`View ${records.length} ${relatedTable.tableName} records in detail pane`}
+                            title={__t("uiViewAllRecordsInDetailView2", { length: records.length, tableName: relatedTable.tableName })}
+                            aria-label={__t("uiViewRecordsInDetailPane2", { length: records.length, tableName: relatedTable.tableName })}
                         >
                             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                                 <path d="M2 12h12M2 8h12M2 4h12" />
                             </svg>
-                            View Details
+                            {__t("viewDetails")}
                             <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
                                 <path d="M6.5 3.5L11 8l-4.5 4.5" stroke="currentColor" strokeWidth="2" fill="none" />
                             </svg>
@@ -3794,10 +3806,10 @@ const RelatedTableDisplay = ({ relatedTable, records, chartConfig, onViewSeparat
                             ref={tableRef}
                             className="enhanced-table compact striped"
                             style={{ fontSize: '11px', tableLayout: 'fixed', minWidth: '100%' }}
-                            aria-label={`${relatedTable.tableName} - ${records.length} records`}
+                            aria-label={__t("uiRecords", { tableName: relatedTable.tableName, length: records.length })}
                         >
                             <caption className="sr-only">
-                                {relatedTable.tableName} - {records.length} record{records.length !== 1 ? 's' : ''}
+                                {relatedTable.tableName} - {records.length} {__t("uiRecord")}{records.length !== 1 ? 's' : ''}
                             </caption>
                             <thead>
                                 <tr>
@@ -3839,10 +3851,10 @@ const RelatedTableDisplay = ({ relatedTable, records, chartConfig, onViewSeparat
                                                 className={`resize-handle ${resizingColumn === field.name ? 'resizing' : ''}`}
                                                 onMouseDown={(e) => handleResizeStart(e, field.name)}
                                                 onClick={(e) => e.stopPropagation()}
-                                                title="Drag to resize column, or use arrow keys when focused"
+                                                title={__t("uiDragToResizeColumnOrUse")}
                                                 role="separator"
                                                 aria-orientation="vertical"
-                                                aria-label={`Resize ${field.alias || field.name} column`}
+                                                aria-label={__t("uiResizeColumn", { value: field.alias || field.name })}
                                                 tabIndex={0}
                                                 onKeyDown={(e) => {
                                                     // Allow keyboard resizing with arrow keys
@@ -3890,7 +3902,7 @@ const RelatedTableDisplay = ({ relatedTable, records, chartConfig, onViewSeparat
                         <EnhancedChart
                             data={records}
                             chartConfig={chartConfig}
-                            title={`${relatedTable.tableName} Chart`}
+                            title={__t("uiChart", { tableName: relatedTable.tableName })}
                         />
                     </div>
                 )}
@@ -3989,11 +4001,11 @@ const EnhancedChart = ({ data, chartConfig, title, skipAnimation }: EnhancedChar
                 const total = data.reduce((sum, item) => sum + (item[key] || 0), 0)
                 return `${key}: ${total.toLocaleString()}`
             }).join('; ')
-            return `${config.chartType} chart comparing ${seriesKeys.length} series across ${data.length} categories. ${seriesInfo}`
+            return __t("chartTypeChartComparingLengthSeriesAcross", { chartType: config.chartType, length: seriesKeys.length, length2: data.length, seriesInfo: seriesInfo })
         }
         const total = data.reduce((sum, item) => sum + (item.value || 0), 0)
         const items = data.map(item => `${item.name}: ${item.value?.toLocaleString() || 0}`).join(', ')
-        return `${config.chartType} chart showing ${data.length} data points. Total: ${total.toLocaleString()}. Values: ${items}`
+        return __t("chartTypeChartShowingLengthDataPoints", { chartType: config.chartType, length: data.length, toLocaleString: total.toLocaleString(), items: items })
     }
 
     const renderChart = () => {
@@ -4244,7 +4256,7 @@ const EnhancedChart = ({ data, chartConfig, title, skipAnimation }: EnhancedChar
             className="chart-box"
             role="img"
             aria-label={generateChartDescription()}
-            title={title ? `${title} - ${config.chartType} chart` : `${config.chartType} chart with ${data.length} data points`}
+            title={title ? __t("titleChartTypeChart", { title: title, chartType: config.chartType }) : __t("chartTypeChartWithLengthDataPoints", { chartType: config.chartType, length: data.length })}
         >
             {title && <div className="chart-title" id={`chart-title-${title.replace(/\s+/g, '-').toLowerCase()}`}>{title}</div>}
             <div className="chart-container" style={{ height: config.height, minHeight: config.height }}>
@@ -4254,11 +4266,11 @@ const EnhancedChart = ({ data, chartConfig, title, skipAnimation }: EnhancedChar
             </div>
             {/* ACCESSIBILITY: Hidden table for screen readers */}
             <table className="sr-only">
-                <caption>{title || 'Chart data'}</caption>
+                <caption>{__tc(title, "chartData")}</caption>
                 <thead>
                     <tr>
-                        <th scope="col">Category</th>
-                        <th scope="col">Value</th>
+                        <th scope="col">{__t("uiCategory")}</th>
+                        <th scope="col">{__t("uiValue")}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -4399,7 +4411,7 @@ const SectionPaneContent = ({ sectionResult: sr, config, onRowHighlight, onRowZo
         }
 
         // Default message
-        return 'No intersecting features found.'
+        return __t("noIntersectingFeaturesFound")
     }
 
     const noResultsMessage = getNoResultsMessage()
@@ -4513,6 +4525,8 @@ const SectionPaneContent = ({ sectionResult: sr, config, onRowHighlight, onRowZo
 type WidgetProps = AllWidgetProps<IMConfig> & { id: string }
 
 const Widget = (props: WidgetProps) => {
+  __setIntl((props as any).intl)
+  __i18nIntl = (props as any).intl
     const { config, state: widgetState, theme: appTheme } = props
 
     const beaconRef = useRef<BeaconHandle | null>(null)
@@ -4815,7 +4829,7 @@ const Widget = (props: WidgetProps) => {
     const [comparisonSnapshot, setComparisonSnapshot] = useState<{ label: string; headerData: any; results: SectionResult[] } | null>(null)
     const startComparison = () => {
         if (results.length === 0) return
-        setComparisonSnapshot({ label: displayedSearchText || 'Property A', headerData: headerInfoData, results })
+        setComparisonSnapshot({ label: __tc(displayedSearchText, "propertyA"), headerData: headerInfoData, results })
         clearResults()
         setStatusMessage(t('comparisonStartedSearchASecondProperty'))
     }
@@ -4831,7 +4845,7 @@ const Widget = (props: WidgetProps) => {
                     const b = fmt(headerInfoData ? (headerInfoData as any)[f.name] : undefined)
                     return { label: String(f.alias || f.name).replace(/:+$/, ''), a, b, diff: a !== b }
                 })
-                groups.push({ title: 'Property Information', rows })
+                groups.push({ title: __t("propertyInformation2"), rows })
             }
         } catch (e) { /* ignore */ }
         results.forEach(sr => {
@@ -4853,7 +4867,7 @@ const Widget = (props: WidgetProps) => {
                 } else {
                     const a = `${aCount} feature${aCount === 1 ? '' : 's'}`
                     const b = `${bCount} feature${bCount === 1 ? '' : 's'}`
-                    rows.push({ label: lr.layerConfig.layerTitle || 'Features', a, b, diff: aCount !== bCount })
+                    rows.push({ label: __tc(lr.layerConfig.layerTitle, "features"), a, b, diff: aCount !== bCount })
                 }
             })
             if (rows.length > 0) groups.push({ title: sr.sectionConfig.sectionTitle, rows })
@@ -6031,7 +6045,7 @@ const Widget = (props: WidgetProps) => {
                         const displayVal = f.attributes[displayField]
                         const point = f.geometry?.type === 'point' ? f.geometry as Point : f.geometry?.extent?.center
                         allSuggestions.push({
-                            text: displayVal || 'Unknown',
+                            text: displayVal || __t("unknown"),
                             point,
                             geometry: f.geometry,
                             sourceName: source.sourceName,
@@ -6066,7 +6080,7 @@ const Widget = (props: WidgetProps) => {
                         const displayVal = f.attributes[displayField]
                         const point = f.geometry?.type === 'point' ? f.geometry as Point : f.geometry?.extent?.center
                         allSuggestions.push({
-                            text: displayVal || 'Unknown',
+                            text: displayVal || __t("unknown"),
                             point,
                             geometry: f.geometry,
                             sourceName: source.sourceName,
@@ -6179,7 +6193,7 @@ const Widget = (props: WidgetProps) => {
                         runQueryWithPoint(location)
                     }
                 } catch (e) {
-                    setError('Failed to geocode address')
+                    setError(__t("failedToGeocodeAddress"))
                 }
             }
         }
@@ -6237,7 +6251,7 @@ const Widget = (props: WidgetProps) => {
         beaconRef.current?.action('search')
         const effectiveText = overrideText !== undefined ? overrideText : searchText
         if (!effectiveText.trim() && !queryPoint) {
-            setError('Please search for a property or select a location from the map')
+            setError(__t("pleaseSearchForAPropertyOr"))
             return
         }
 
@@ -6264,7 +6278,7 @@ const Widget = (props: WidgetProps) => {
                     setQueryPoint(location)
                     runQueryWithPoint(location)
                 } else {
-                    setError('Address not found. Try a different search or use the map to select a location.')
+                    setError(__t("addressNotFoundTryADifferent"))
                     setStatusMessage(t('addressNotFound'))
                     setLoading(false)
                 }
@@ -6273,17 +6287,17 @@ const Widget = (props: WidgetProps) => {
                 console.error('Geocoding error:', e)
                 const errorMessage = e?.message?.toLowerCase() || ''
                 if (errorMessage.includes('network') || errorMessage.includes('fetch') || errorMessage.includes('cors')) {
-                    setError('Network error. Please check your connection and try again.')
+                    setError(__t("networkErrorPleaseCheckYourConnection"))
                 } else if (errorMessage.includes('timeout')) {
-                    setError('Search timed out. Please try again.')
+                    setError(__t("searchTimedOutPleaseTryAgain"))
                 } else {
-                    setError('Search failed. Try using the map to select a location instead.')
+                    setError(__t("searchFailedTryUsingTheMap"))
                 }
                 setStatusMessage(t('geocodingFailed'))
                 setLoading(false)
             }
         } else {
-            setError('No geocoder configured. Use the map to select a location.')
+            setError(__t("noGeocoderConfiguredUseTheMap"))
         }
     }
 
@@ -7112,7 +7126,7 @@ const Widget = (props: WidgetProps) => {
                             }
 
                             return {
-                                title: String(f.attributes[nearbyConfig.titleField] || 'Unknown'),
+                                title: String(f.attributes[nearbyConfig.titleField] || __t("unknown")),
                                 subtitle,
                                 distance: displayDistance,
                                 distanceFormatted,
@@ -7275,7 +7289,7 @@ const Widget = (props: WidgetProps) => {
     // =====================================================
     const useCurrentLocation = useCallback(async () => {
         if (!navigator.geolocation) {
-            setError('Geolocation is not supported by your browser.')
+            setError(__t("geolocationIsNotSupportedByYour"))
             setStatusMessage(t('geolocationNotSupported'))
             return
         }
@@ -7375,7 +7389,7 @@ const Widget = (props: WidgetProps) => {
                     setStatusMessage(t('locationFoundAccuracyTextQueryingNearbyFeatures', { accuracyText: String(accuracyText) }))
                 } catch (err) {
                     console.error('Error processing location:', err)
-                    setError('Failed to process your location. Please try again.')
+                    setError(__t("failedToProcessYourLocationPlease"))
                     setStatusMessage(t('failedToProcessLocation'))
                 } finally {
                     setGettingLocation(false)
@@ -7420,7 +7434,7 @@ const Widget = (props: WidgetProps) => {
             beaconRef.current?.error(libErr, 'export-pdf')
             console.error('PDF export could not start:', libErr)
             setGeneratingPdf(false)
-            setError(`PDF export is unavailable: ${libErr?.message || 'the PDF libraries could not be loaded'}. Reload the page and try again. If it keeps happening, tell the site administrator.`)
+            setError(__t("pdfExportIsUnavailableValueReload", { value: libErr?.message || 'the PDF libraries could not be loaded' }))
             setStatusMessage(t('pdfExportFailedToStart'))
             return
         }
@@ -7542,7 +7556,7 @@ const Widget = (props: WidgetProps) => {
 
             // Set document properties/metadata (WCAG 2.4.2 Page Titled)
             // Screen readers use this to announce the document title
-            const documentTitle = `${displayedSearchText || 'Property Report'} - ${new Date().toLocaleDateString()}`
+            const documentTitle = `${__tc(displayedSearchText, "_widgetLabel")} - ${new Date().toLocaleDateString()}`
             try {
                 doc.setDocumentProperties({
                     title: documentTitle,
@@ -8223,7 +8237,7 @@ const Widget = (props: WidgetProps) => {
                         // Add invisible alt text near logo (very small, same color as background)
                         doc.setFontSize(1)
                         doc.setTextColor(255, 255, 255) // White on white = invisible but parseable
-                        doc.text(transliterate(pdfAccessibility.logoAltTextTemplate || 'Organization logo'), logoX, logoY + finalHeight + 0.5)
+                        doc.text(transliterate(__tc(pdfAccessibility.logoAltTextTemplate, "organizationLogo")), logoX, logoY + finalHeight + 0.5)
                         // Reset
                         doc.setTextColor(0, 0, 0)
                     }
@@ -8238,7 +8252,7 @@ const Widget = (props: WidgetProps) => {
             }
 
             // Title - apply transliteration if Unicode font failed to load
-            const addressTitle = transliterate(displayedSearchText || 'Property Report')
+            const addressTitle = transliterate(__tc(displayedSearchText, "_widgetLabel"))
             doc.setTextColor(headerTextRgb[0], headerTextRgb[1], headerTextRgb[2])
 
             // Get title position setting (default: center)
@@ -8466,7 +8480,7 @@ const Widget = (props: WidgetProps) => {
                         // Apply transliterate() to handle non-ASCII characters (Polish, Czech, Turkish, etc.)
                         // when Unicode fonts fail to load - ensures alt text renders correctly
                         const mapAltText = transliterate(pdfAccessibility.mapAltTextTemplate
-                            .replace('{address}', displayedSearchText || 'the selected property')
+                            .replace('{address}', __tc(displayedSearchText, "theSelectedProperty"))
                             .replace('{coordinates}', queryPoint
                                 ? `${queryPoint.latitude?.toFixed(5) || queryPoint.y?.toFixed(5)}, ${queryPoint.longitude?.toFixed(5) || queryPoint.x?.toFixed(5)}`
                                 : 'selected location'))
@@ -8544,7 +8558,7 @@ const Widget = (props: WidgetProps) => {
                 }
 
                 // Render TOC
-                const tocTitle = pdfStyle.tocTitle || pdfAccessibility.tocTitle || 'Table of Contents'
+                const tocTitle = __tc(pdfStyle.tocTitle || pdfAccessibility.tocTitle, "tableOfContents")
 
                 // TOC Header
                 doc.setFillColor(sectionHeaderRgb[0], sectionHeaderRgb[1], sectionHeaderRgb[2])
@@ -8613,7 +8627,7 @@ const Widget = (props: WidgetProps) => {
                         return null
                     }
 
-                    return 'No intersecting features found.'
+                    return __t("noIntersectingFeaturesFound")
                 }
 
                 const pdfNoResultsMessage = getPdfNoResultsMessage()
@@ -9160,7 +9174,7 @@ const Widget = (props: WidgetProps) => {
                             // =====================================================
                             if (pdfAccessibility.includeTableSummaries && pdfStyle.showTableSummaries !== false && visibleFields.length > 0) {
                                 const tableSummary = transliterate(pdfAccessibility.tableSummaryTemplate
-                                    .replace('{layerTitle}', lr.layerConfig.layerTitle || 'Data')
+                                    .replace('{layerTitle}', __tc(lr.layerConfig.layerTitle, "data"))
                                     .replace('{recordCount}', String(lr.features.length))
                                     .replace('{columnCount}', String(visibleFields.length)))
 
@@ -9648,7 +9662,7 @@ const Widget = (props: WidgetProps) => {
 
                     for (const nearbyResult of sr.nearbyResults) {
                         const { layerConfig: nearbyLayerConfig, nearbyConfig } = nearbyResult
-                        const layerTitle = nearbyLayerConfig.layerTitle || 'Nearby'
+                        const layerTitle = __tc(nearbyLayerConfig.layerTitle, "uiNearby")
 
                         // Skip if not included in PDF
                         if (nearbyConfig.includeInPdf === false) continue
@@ -9990,7 +10004,7 @@ const Widget = (props: WidgetProps) => {
         } catch (e: any) {
             console.error('PDF generation failed:', e)
             const reason = e?.message ? ` (${String(e.message).slice(0, 160)})` : ''
-            setError(`Failed to generate PDF${reason}. Please try again.`)
+            setError(__t("failedToGeneratePdfReasonPlease", { reason: reason }))
             setStatusMessage(t('pdfGenerationFailed'))
         } finally {
             setGeneratingPdf(false)
@@ -10237,7 +10251,7 @@ const Widget = (props: WidgetProps) => {
                             </div>
                             <div className="recent-chips">
                                 {recentSearches.slice(0, 5).map(t => (
-                                    <button key={t} type="button" className="recent-chip" title={`Search ${t}`} onClick={() => { setSearchText(t); runQuery(t) }}>{t}</button>
+                                    <button key={t} type="button" className="recent-chip" title={__t("uiSearch", { t: t })} onClick={() => { setSearchText(t); runQuery(t) }}>{t}</button>
                                 ))}
                             </div>
                         </div>
@@ -10654,7 +10668,7 @@ const Widget = (props: WidgetProps) => {
                                                                                         tableConfig,
                                                                                         records,
                                                                                         domainLookup: domLookup,
-                                                                                        parentTitle: displayedSearchText || 'Property',
+                                                                                        parentTitle: __tc(displayedSearchText, "property"),
                                                                                         paneTitle: tableConfig.separatePaneTitle || tableConfig.tableName
                                                                                     })
                                                                                 }}
@@ -10719,7 +10733,7 @@ const Widget = (props: WidgetProps) => {
                                                                         paneTitle: tableConfig.separatePaneTitle || tableConfig.tableName
                                                                     })
                                                                 }}
-                                                                parentTitle={displayedSearchText || 'Property'}
+                                                                parentTitle={__tc(displayedSearchText, "property")}
                                                                 onRowHighlight={highlightRowGeometry}
                                                                 onRowZoom={zoomToGeometry}
                                                             />
@@ -10796,14 +10810,14 @@ const Widget = (props: WidgetProps) => {
                                                         key={nearbyResult.layerConfig.layerId || nrIdx}
                                                         nearbyResult={nearbyResult}
                                                         sourceGeometry={queryPoint || undefined}
-                                                        parentTitle={displayedSearchText || 'Property'}
+                                                        parentTitle={__tc(displayedSearchText, "property")}
                                                         defaultOpen={nearbyResult.layerConfig.expanded !== false}
                                                         onViewDetails={() => setSeparatePaneData({
                                                             type: 'nearbyResult',
                                                             nearbyResult: nearbyResult,
                                                             sourceGeometry: queryPoint,
-                                                            parentTitle: displayedSearchText || 'Property',
-                                                            paneTitle: nearbyResult.layerConfig.layerTitle || 'Nearby'
+                                                            parentTitle: __tc(displayedSearchText, "property"),
+                                                            paneTitle: __tc(nearbyResult.layerConfig.layerTitle, "uiNearby")
                                                         })}
                                                     />
                                                 ))}
@@ -10853,7 +10867,7 @@ const Widget = (props: WidgetProps) => {
                                                         onClick={() => setSeparatePaneData({
                                                             type: 'section',
                                                             sectionResult: sr,
-                                                            parentTitle: displayedSearchText || 'Property',
+                                                            parentTitle: __tc(displayedSearchText, "property"),
                                                             paneTitle: sr.sectionConfig.separatePaneTitle || sr.sectionConfig.sectionTitle
                                                         })}
                                                         title={t('viewAllCombinedFeatureCountSectionTitleRecordsIn', { combinedFeatureCount: String(combinedFeatureCount), sectionTitle: String(sr.sectionConfig.sectionTitle) })}
@@ -11069,7 +11083,7 @@ const LayerNoResultsSection = ({ layerConfig, defaultOpen }: LayerNoResultsSecti
                 onKeyDown={handleKeyDown}
                 role="button"
                 tabIndex={0}
-                title={isOpen ? `Collapse ${layerConfig.layerTitle}` : `Expand ${layerConfig.layerTitle}`}
+                title={isOpen ? __t("collapseLayerTitle", { layerTitle: layerConfig.layerTitle }) : __t("expandLayerTitle", { layerTitle: layerConfig.layerTitle })}
                 aria-expanded={isOpen}
                 aria-controls={bodyId}
             >
@@ -11281,7 +11295,7 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                 target={button.openInNewTab !== false ? '_blank' : '_self'}
                 rel={button.openInNewTab !== false ? 'noopener noreferrer' : undefined}
                 className={`rich-text-btn ${styleClass}`}
-                aria-label={button.openInNewTab !== false ? `${button.label} (opens in new tab)` : button.label}
+                aria-label={button.openInNewTab !== false ? __t("labelOpensInNewTab", { label: button.label }) : button.label}
             >
                 {button.label}
             </a>
@@ -11355,8 +11369,8 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                                 href={fullUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                title={`${linkText} (opens in new tab)`}
-                                aria-label={`${field.alias || field.name}: ${linkText} (opens in new tab)`}
+                                title={__t("uiOpensInNewTab2", { linkText: linkText })}
+                                aria-label={__t("uiOpensInNewTab3", { value: field.alias || field.name, linkText: linkText })}
                             >
                                 {linkText}
                             </a>
@@ -11371,8 +11385,8 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                                 href={value as string}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                title={`${linkText} (opens in new tab)`}
-                                aria-label={`${field.alias || field.name}: ${linkText} (opens in new tab)`}
+                                title={__t("uiOpensInNewTab2", { linkText: linkText })}
+                                aria-label={__t("uiOpensInNewTab3", { value: field.alias || field.name, linkText: linkText })}
                             >
                                 {linkText}
                             </a>
@@ -11446,13 +11460,13 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                     onKeyDown={handleLayerHeaderKeyDown}
                     role="button"
                     tabIndex={0}
-                    title={isOpen ? `Collapse ${layerResult.layerConfig.layerTitle}` : `Expand ${layerResult.layerConfig.layerTitle}`}
+                    title={isOpen ? __t("collapseLayerTitle", { layerTitle: layerResult.layerConfig.layerTitle }) : __t("expandLayerTitle", { layerTitle: layerResult.layerConfig.layerTitle })}
                     aria-expanded={isOpen}
                     aria-controls={bodyId}
                 >
                     <span className="layer-title">{layerResult.layerConfig.layerTitle}</span>
                     <div className="layer-header-right">
-                        <span className="layer-count">1 record</span>
+                        <span className="layer-count">{__t("ui1Record")}</span>
                         {enableZoom && (
                             <button
                                 type="button"
@@ -11461,8 +11475,8 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                                     e.stopPropagation()
                                     onRowZoom(geometry, zoomScale)
                                 }}
-                                title="Zoom to feature on map"
-                                aria-label="Zoom to feature on map"
+                                title={__t("uiZoomToFeatureOnMap")}
+                                aria-label={__t("uiZoomToFeatureOnMap")}
                             >
                                 <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
                                     <path d="M6.5 1a5.5 5.5 0 0 1 4.383 8.823l3.896 3.9a.75.75 0 0 1-1.061 1.06l-3.895-3.896A5.5 5.5 0 1 1 6.5 1zm0 1.5a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM7 4v2h2v1.5H7v2H5.5v-2h-2V6h2V4H7z" />
@@ -11505,8 +11519,8 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                                         href={fullUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        title={`${linkText} (opens in new tab)`}
-                                        aria-label={`${linkText} (opens in new tab)`}
+                                        title={__t("uiOpensInNewTab2", { linkText: linkText })}
+                                        aria-label={__t("uiOpensInNewTab2", { linkText: linkText })}
                                     >
                                         {linkText}
                                     </a>
@@ -11519,8 +11533,8 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                                         href={value}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        title={`${linkText} (opens in new tab)`}
-                                        aria-label={`${linkText} (opens in new tab)`}
+                                        title={__t("uiOpensInNewTab2", { linkText: linkText })}
+                                        aria-label={__t("uiOpensInNewTab2", { linkText: linkText })}
                                     >
                                         {linkText}
                                     </a>
@@ -11548,7 +11562,7 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                                     records={relData.records}
                                     chartConfig={relData.tableConfig.chartConfig}
                                     domainLookup={relData.domainLookup}
-                                    onViewSeparatePane={onViewSeparatePane ? (tc, rec, domLookup) => onViewSeparatePane(tc, rec, parentTitle || 'Property', domLookup) : undefined}
+                                    onViewSeparatePane={onViewSeparatePane ? (tc, rec, domLookup) => onViewSeparatePane(tc, rec, __tc(parentTitle, "property"), domLookup) : undefined}
                                     parentTitle={parentTitle}
                                 />
                             ))}
@@ -11590,8 +11604,8 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ color: theme.sectionHeader }}
-                    title={`${linkText} (opens in new tab)`}
-                    aria-label={`${linkText} (opens in new tab)`}
+                    title={__t("uiOpensInNewTab2", { linkText: linkText })}
+                    aria-label={__t("uiOpensInNewTab2", { linkText: linkText })}
                 >
                     {linkText}
                 </a>
@@ -11607,8 +11621,8 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ color: theme.sectionHeader }}
-                    title={`${linkText} (opens in new tab)`}
-                    aria-label={`${linkText} (opens in new tab)`}
+                    title={__t("uiOpensInNewTab2", { linkText: linkText })}
+                    aria-label={__t("uiOpensInNewTab2", { linkText: linkText })}
                 >
                     {linkText}
                 </a>
@@ -11630,13 +11644,13 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                 onKeyDown={handleLayerHeaderKeyDown}
                 role="button"
                 tabIndex={0}
-                title={isOpen ? `Collapse ${layerResult.layerConfig.layerTitle}` : `Expand ${layerResult.layerConfig.layerTitle}`}
+                title={isOpen ? __t("collapseLayerTitle", { layerTitle: layerResult.layerConfig.layerTitle }) : __t("expandLayerTitle", { layerTitle: layerResult.layerConfig.layerTitle })}
                 aria-expanded={isOpen}
                 aria-controls={bodyId}
             >
                 <span className="layer-title">{layerResult.layerConfig.layerTitle}</span>
                 <div className="layer-header-right">
-                    <span className="layer-count">{layerResult.features.length} record{layerResult.features.length !== 1 ? 's' : ''}</span>
+                    <span className="layer-count">{layerResult.features.length} {__t("uiRecord")}{layerResult.features.length !== 1 ? 's' : ''}</span>
                     <span className={`layer-toggle ${isOpen ? 'open' : ''}`} aria-hidden="true">▼</span>
                 </div>
             </div>
@@ -11644,7 +11658,7 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                 id={bodyId}
                 className={`layer-body ${isOpen ? 'open' : ''}`}
                 role="region"
-                aria-label={`${layerResult.layerConfig.layerTitle} data table`}
+                aria-label={__t("uiDataTable", { layerTitle: layerResult.layerConfig.layerTitle })}
             >
                 {/* Layer rich text before data */}
                 {hasLayerRichText && layerRichTextPosition === 'before' && <LayerRichTextContent />}
@@ -11678,7 +11692,7 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                                     }}
                                     tabIndex={enableZoom ? 0 : undefined}
                                     role={enableZoom ? 'button' : undefined}
-                                    aria-label={enableZoom ? `Record ${idx + 1}: Click to zoom on map` : undefined}
+                                    aria-label={enableZoom ? __t("recordValueClickToZoomOn", { value: idx + 1 }) : undefined}
                                 >
                                     {fields.map(field => (
                                         <div key={field.name} style={{ marginBottom: '4px' }}>
@@ -11725,7 +11739,7 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                                     }}
                                     tabIndex={enableZoom ? 0 : undefined}
                                     role={enableZoom ? 'button' : undefined}
-                                    aria-label={enableZoom ? `Record ${idx + 1}: Click to zoom on map` : undefined}
+                                    aria-label={enableZoom ? __t("recordValueClickToZoomOn", { value: idx + 1 }) : undefined}
                                     className={enableHighlight || enableZoom ? 'interactive-row' : undefined}
                                 >
                                     {fields.map((field, i) => (
@@ -11743,20 +11757,20 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                     <>
                         {/* Filter Row */}
                         {config.enableFiltering && (
-                            <div className="table-filter-row" role="group" aria-label="Table filters">
+                            <div className="table-filter-row" role="group" aria-label={__t("uiTableFilters")}>
                                 {table.getAllColumns().filter(col => col.getCanFilter()).slice(0, 3).map(column => (
                                     <div key={column.id}>
                                         <label htmlFor={`filter-${column.id}`} className="sr-only">
-                                            Filter {column.columnDef.header as string}
+                                            {__t("uiFilter")} {column.columnDef.header as string}
                                         </label>
                                         <input
                                             id={`filter-${column.id}`}
                                             type="text"
-                                            placeholder={`Filter ${column.columnDef.header as string}...`}
+                                            placeholder={__t("uiFilter2", { value: column.columnDef.header as string })}
                                             value={(column.getFilterValue() ?? '') as string}
                                             onChange={e => column.setFilterValue(e.target.value)}
                                             className="table-filter-input"
-                                            aria-label={`Filter by ${column.columnDef.header as string}`}
+                                            aria-label={__t("uiFilterBy", { value: column.columnDef.header as string })}
                                         />
                                     </div>
                                 ))}
@@ -11772,7 +11786,7 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                                 style={config.resizableColumns ? { tableLayout: 'fixed', minWidth: '100%' } : undefined}
                             >
                                 <caption className="sr-only">
-                                    {layerResult.layerConfig.layerTitle} - {layerResult.features.length} records
+                                    {layerResult.layerConfig.layerTitle} - {layerResult.features.length} {__t("uiRecords2")}
                                 </caption>
                                 <thead>
                                     {table.getHeaderGroups().map(headerGroup => (
@@ -11799,7 +11813,7 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                                                         }}
                                                         scope="col"
                                                         tabIndex={header.column.getCanSort() ? 0 : undefined}
-                                                        title={header.column.getCanSort() ? `Sort by ${header.column.columnDef.header}` : undefined}
+                                                        title={header.column.getCanSort() ? __t("sortByHeader", { header: header.column.columnDef.header }) : undefined}
                                                         aria-sort={header.column.getCanSort() ? sortDir : undefined}
                                                         role={header.column.getCanSort() ? 'columnheader button' : 'columnheader'}
                                                     >
@@ -11819,10 +11833,10 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                                                                     handleResizeStart(e, columnId, th?.offsetWidth || 100)
                                                                 }}
                                                                 onClick={(e) => e.stopPropagation()}
-                                                                title={`Drag to resize ${header.column.columnDef.header} column`}
+                                                                title={__t("uiDragToResizeColumn", { header: header.column.columnDef.header })}
                                                                 role="separator"
                                                                 aria-orientation="vertical"
-                                                                aria-label={`Resize ${header.column.columnDef.header} column`}
+                                                                aria-label={__t("uiResizeColumn2", { header: header.column.columnDef.header })}
                                                                 tabIndex={0}
                                                                 onKeyDown={(e) => {
                                                                     // Allow keyboard resizing with arrow keys
@@ -11870,7 +11884,7 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                                             const parts: string[] = []
                                             if (enableHighlight) parts.push('hover to highlight on map')
                                             if (enableZoom) parts.push('click or press Enter to zoom')
-                                            return parts.length > 0 ? `Row ${row.index + 1}: ${parts.join(', ')}` : undefined
+                                            return parts.length > 0 ? __t("rowValueJoin", { value: row.index + 1, join: parts.join(', ') }) : undefined
                                         }
 
                                         return (
@@ -11913,9 +11927,9 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
 
                         {/* Pagination */}
                         {config.enablePagination && pageCount > 1 && (
-                            <nav className="table-pagination" aria-label={`${layerResult.layerConfig.layerTitle} table pagination`}>
+                            <nav className="table-pagination" aria-label={__t("uiTablePagination", { layerTitle: layerResult.layerConfig.layerTitle })}>
                                 <div className="pagination-info" aria-live="polite">
-                                    Showing {currentPage * pagination.pageSize + 1} - {Math.min((currentPage + 1) * pagination.pageSize, layerResult.features.length)} of {layerResult.features.length}
+                                    {__t("uiShowing")} {currentPage * pagination.pageSize + 1} - {Math.min((currentPage + 1) * pagination.pageSize, layerResult.features.length)} {__t("uiOf")} {layerResult.features.length}
                                 </div>
                                 <div className="pagination-controls">
                                     <button
@@ -11923,8 +11937,8 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                                         onClick={() => table.firstPage()}
                                         disabled={!table.getCanPreviousPage()}
                                         className="pagination-btn"
-                                        title="First page"
-                                        aria-label="Go to first page"
+                                        title={__t("uiFirstPage")}
+                                        aria-label={__t("uiGoToFirstPage")}
                                     >
                                         <span aria-hidden="true">««</span>
                                     </button>
@@ -11933,21 +11947,21 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                                         onClick={() => table.previousPage()}
                                         disabled={!table.getCanPreviousPage()}
                                         className="pagination-btn"
-                                        title="Previous page"
-                                        aria-label="Go to previous page"
+                                        title={__t("uiPreviousPage")}
+                                        aria-label={__t("uiGoToPreviousPage")}
                                     >
                                         <span aria-hidden="true">«</span>
                                     </button>
                                     <span className="pagination-page" aria-current="page">
-                                        Page {currentPage + 1} of {pageCount}
+                                        {__t("uiPage")} {currentPage + 1} {__t("uiOf")} {pageCount}
                                     </span>
                                     <button
                                         type="button"
                                         onClick={() => table.nextPage()}
                                         disabled={!table.getCanNextPage()}
                                         className="pagination-btn"
-                                        title="Next page"
-                                        aria-label="Go to next page"
+                                        title={__t("uiNextPage")}
+                                        aria-label={__t("uiGoToNextPage")}
                                     >
                                         <span aria-hidden="true">»</span>
                                     </button>
@@ -11956,8 +11970,8 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                                         onClick={() => table.lastPage()}
                                         disabled={!table.getCanNextPage()}
                                         className="pagination-btn"
-                                        title="Last page"
-                                        aria-label="Go to last page"
+                                        title={__t("uiLastPage")}
+                                        aria-label={__t("uiGoToLastPage")}
                                     >
                                         <span aria-hidden="true">»»</span>
                                     </button>
@@ -11977,7 +11991,7 @@ const LayerDataSection = ({ layerResult, fields, defaultOpen, tableConfig, onVie
                                 records={relData.records}
                                 chartConfig={relData.tableConfig.chartConfig}
                                 domainLookup={relData.domainLookup}
-                                onViewSeparatePane={onViewSeparatePane ? (tc, rec, domLookup) => onViewSeparatePane(tc, rec, parentTitle || 'Property', domLookup) : undefined}
+                                onViewSeparatePane={onViewSeparatePane ? (tc, rec, domLookup) => onViewSeparatePane(tc, rec, __tc(parentTitle, "property"), domLookup) : undefined}
                                 parentTitle={parentTitle}
                             />
                         ))}

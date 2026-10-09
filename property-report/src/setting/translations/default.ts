@@ -1093,5 +1093,15 @@ export default {
   showRowNumbers: 'Show Row Numbers',
   displayRowNumbersInTheFirst: 'Display row numbers in the first column. Helps reference specific records.',
   showHelpGuide: 'Show help guide',
-  showTheQuestionMarkButtonThat: 'Show the question-mark button that opens the widget help guide'
+  showTheQuestionMarkButtonThat: 'Show the question-mark button that opens the widget help guide',
+  uiFieldname: 'FieldName',
+  uiAnd: 'and',
+  newButton: 'New Button',
+  address: '{address}',
+  chartType3: '{chartType}',
+  dataDescription: '{dataDescription}',
+  layerTitle3: '{layerTitle}',
+  recordCount: '{recordCount}',
+  columnCount: '{columnCount}',
+  tableName2: '{tableName}'
 }

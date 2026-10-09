@@ -18,6 +18,18 @@ import {
 import type { IMConfig, SectionConfig, LayerConfig, FieldConfig, SearchSourceConfig, HeaderInfoConfig, PdfHeaderConfig, PdfFooterConfig, PdfStyleConfig, PdfLogoConfig, ImageSizeMode, ChartConfig, ChartType, ChartMode, ChartFieldConfig, AggregationType, TableDisplayConfig, FieldFormatConfig, NumberFormatType, DateFormatType, TextFormatType, RichTextButton, RelatedTableConfig, PropertyPreviewConfig, PropertyActionConfig, AggregateFieldConfig, NearbyDisplayConfig, PdfAccessibilityConfig } from '../config'
 import { hooks as __exbI18nHooks } from 'jimu-core';
 import __exbI18nMessages from './translations/default';
+import __i18nDefaults from './translations/default'
+import { __setIntl, __tc } from './i18n-t'
+let __i18nIntl: any = null
+/** Module translator: app language via the widget intl, English from default.ts, {name} values filled. */
+const __t = (id: string, values?: { [key: string]: any }): string => {
+  const msg: string = (__i18nDefaults as any)[id] ?? id
+  if (__i18nIntl && typeof __i18nIntl.formatMessage === 'function') {
+    try { return __i18nIntl.formatMessage({ id, defaultMessage: msg }, values) } catch (e) { }
+  }
+  return msg.replace(/\{(\w+)\}/g, (m: string, k: string) => (values && values[k] != null ? String(values[k]) : m))
+}
+
 
 // Tip aliased to Tooltip — component was renamed in ExB 1.20
 const Tip = Tooltip
@@ -1158,6 +1170,8 @@ type SettingProps = {
 }
 
 const Setting = (props: SettingProps) => {
+  __setIntl((props as any).intl)
+  __i18nIntl = (props as any).intl
   const t = __exbI18nHooks.useTranslation(__exbI18nMessages);
     const { config, onSettingChange } = props
     // Builder injects these at runtime, but EB 1.21's published setting props
@@ -2622,7 +2636,7 @@ const Setting = (props: SettingProps) => {
             const buttons = toMutableRichTextButtons(sections[index].richTextButtons || [])
             buttons.push({
                 buttonId: `btn-${Date.now()}`,
-                label: 'New Button',
+                label: __t("newButton"),
                 url: 'https://',
                 style: 'default',
                 openInNewTab: true
@@ -2667,7 +2681,7 @@ const Setting = (props: SettingProps) => {
                 const buttons = toMutableRichTextButtons(layers[layerIndex].layerRichTextButtons || [])
                 buttons.push({
                     buttonId: `lbtn-${Date.now()}`,
-                    label: 'New Button',
+                    label: __t("newButton"),
                     url: 'https://',
                     style: 'default',
                     openInNewTab: true
@@ -7510,7 +7524,7 @@ const Setting = (props: SettingProps) => {
                                                                                         {t('email')} <code>&lt;a href="mailto:email"&gt;text&lt;/a&gt;</code><br />
                                                                                         {t('phone')} <code>&lt;a href="tel:number"&gt;text&lt;/a&gt;</code><br />
                                                                                         {t('bold')} <code>&lt;strong&gt;text&lt;/strong&gt;</code><br />
-                                                                                        <strong>{t('fieldPlaceholders')}</strong> <code>{'{'}FieldName{'}'}</code><br />
+                                                                                        <strong>{t('fieldPlaceholders')}</strong> <code>{'{'}{__t("uiFieldname")}{'}'}</code><br />
                                                                                         <em>{t('usesFieldsFromThisLayerS')}</em>
                                                                                     </div>
                                                                                 </SettingRow>
@@ -8266,7 +8280,7 @@ const Setting = (props: SettingProps) => {
                                                         {t('email')} <code>&lt;a href="mailto:email"&gt;text&lt;/a&gt;</code><br />
                                                         {t('phone')} <code>&lt;a href="tel:number"&gt;text&lt;/a&gt;</code><br />
                                                         {t('bold')} <code>&lt;strong&gt;text&lt;/strong&gt;</code><br />
-                                                        <strong>{t('fieldPlaceholders')}</strong> <code>{'{'}FieldName{'}'}</code><br />
+                                                        <strong>{t('fieldPlaceholders')}</strong> <code>{'{'}{__t("uiFieldname")}{'}'}</code><br />
                                                         <em>{t('usesFieldsFromThisSectionS')}</em>
                                                     </div>
                                                 </SettingRow>
@@ -9690,13 +9704,13 @@ const Setting = (props: SettingProps) => {
                                     <SettingRow flow="wrap" label={t('mapAltTextTemplate')}>
                                         <TextInput
                                             size="sm"
-                                            value={pdfAccessibility.mapAltTextTemplate || 'Map showing the location of {address}'}
+                                            value={__tc(pdfAccessibility.mapAltTextTemplate, "mapShowingTheLocationOfAddress")}
                                             onChange={(e) => updatePdfAccessibility({ mapAltTextTemplate: e.target.value })}
                                             placeholder={t('mapShowingTheLocationOfAddress')}
                                         />
                                     </SettingRow>
                                     <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                        {t('use')} {'{address}'} {t('asPlaceholderForTheSearchedAddress')}
+                                        {t('use')} {__t("address")} {t('asPlaceholderForTheSearchedAddress')}
                                     </p>
                                 </div>
                             )}
@@ -9715,7 +9729,7 @@ const Setting = (props: SettingProps) => {
                                     <SettingRow flow="wrap" label={t('logoAltTextTemplate')}>
                                         <TextInput
                                             size="sm"
-                                            value={pdfAccessibility.logoAltTextTemplate || 'Organization logo'}
+                                            value={__tc(pdfAccessibility.logoAltTextTemplate, "organizationLogo")}
                                             onChange={(e) => updatePdfAccessibility({ logoAltTextTemplate: e.target.value })}
                                             placeholder={t('organizationLogo')}
                                         />
@@ -9727,13 +9741,13 @@ const Setting = (props: SettingProps) => {
                                 <SettingRow flow="wrap" label={t('chartAltTextTemplate')}>
                                     <TextInput
                                         size="sm"
-                                        value={pdfAccessibility.chartAltTextTemplate || 'Chart showing {chartType} visualization of {dataDescription}'}
+                                        value={__tc(pdfAccessibility.chartAltTextTemplate, "chartShowingChartTypeVisualizationOfDataDescription")}
                                         onChange={(e) => updatePdfAccessibility({ chartAltTextTemplate: e.target.value })}
                                         placeholder={t('chartShowingChartTypeVisualizationOfDataDescription')}
                                     />
                                 </SettingRow>
                                 <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                    {t('use')} {'{chartType}'} and {'{dataDescription}'} {t('asPlaceholders')}
+                                    {t('use')} {__t("chartType3")} {__t("uiAnd")} {__t("dataDescription")} {t('asPlaceholders')}
                                 </p>
                             </div>
 
@@ -9762,7 +9776,7 @@ const Setting = (props: SettingProps) => {
                                         />
                                     </SettingRow>
                                     <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                        {t('use')} {'{layerTitle}'}, {'{recordCount}'}, {'{columnCount}'} {t('asPlaceholders')}
+                                        {t('use')} {__t("layerTitle3")}, {__t("recordCount")}, {__t("columnCount")} {t('asPlaceholders')}
                                     </p>
                                 </div>
                             )}
@@ -9787,7 +9801,7 @@ const Setting = (props: SettingProps) => {
                                         />
                                     </SettingRow>
                                     <p className="hint-text" style={{ marginTop: '2px', marginBottom: '0' }}>
-                                        {t('use')} {'{tableName}'}, {'{recordCount}'}, {'{columnCount}'} {t('asPlaceholders')}
+                                        {t('use')} {__t("tableName2")}, {__t("recordCount")}, {__t("columnCount")} {t('asPlaceholders')}
                                     </p>
                                 </div>
                             )}
@@ -9939,7 +9953,7 @@ const Setting = (props: SettingProps) => {
                                         <SettingRow flow="wrap" label={t('tocTitle')}>
                                             <TextInput
                                                 size="sm"
-                                                value={pdfStyle.tocTitle || 'Table of Contents'}
+                                                value={__tc(pdfStyle.tocTitle, "tableOfContents")}
                                                 onChange={(e) => updatePdfStyle({ tocTitle: e.target.value })}
                                                 placeholder={t('tableOfContents')}
                                             />
