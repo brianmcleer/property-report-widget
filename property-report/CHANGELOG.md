@@ -2,6 +2,13 @@
 
 Newest first. Every release bumps `manifest.json` and `package.json` together.
 
+## 1.2.14 (2026-10-09)
+
+### Fixed
+
+- Security: restored DOMPurify 3.4.16 in the pnpm lockfile, fixing GHSA-6688-9rhm-gjv2 and GHSA-p98j-92pf-mc4p. The npm lockfile was already patched, but the pnpm lockfile had reverted to 3.4.13 after a later dependency refresh.
+- Added the pnpm override for older pnpm versions and a .pnpmfile.cjs dependency hook for pnpm 11. The hook enforces the patched DOMPurify range even when Experience Builder installs the widget with --ignore-workspace. A local workspace file isolates widget installs from the client workspace. No widget code changes.
+
 ## 1.2.13 (2026-10-06)
 
 - Dependencies: removed `@mantine/charts`, `@mantine/dates`, `@mantine/notifications` and `dayjs`. No source file imports them, so they only added install size and Dependabot update requests. The widget now depends on recharts, @tanstack/react-table, jspdf and html2canvas only. No code changes.

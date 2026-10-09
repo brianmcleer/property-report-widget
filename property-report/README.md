@@ -27,7 +27,7 @@ This widget ships with a `package.json` and `package-lock.json`, so you no longe
    npm ci       # Experience Builder 1.20 and earlier
    ```
 
-   Experience Builder reads this widget's `package.json` and installs the exact versions captured in the lockfile, which avoids the version-mismatch and dependency-clash issues that come from installing packages manually. On 1.21 and later, Esri's bootstrap regenerates `pnpm-lock.yaml` from `package-lock.json` automatically, so keep both files in the widget folder.
+   Experience Builder reads this widget's `package.json` and installs the exact versions captured in the lockfile, which avoids the version-mismatch and dependency-clash issues that come from installing packages manually. On 1.21 and later, Esri's bootstrap regenerates `pnpm-lock.yaml` from `package-lock.json` automatically, so keep both files in the widget folder. Also keep the supplied `.pnpmfile.cjs`: it ensures jsPDF uses patched DOMPurify even when the bootstrap runs pnpm with `--ignore-workspace`. npm uses the matching override in `package.json`.
 
 3. Start (or restart) the client, then refresh the Builder window. The widget will appear under **Insert Widget > Custom**.
 
