@@ -1100,7 +1100,7 @@ System.register([], function (e) {
         showTheQuestionMarkButtonThat: "Widget'ı açan soru işaret düğmesine göster",
         uiFieldname: "FieldName",
         uiAnd: "ve",
-        newButton: "New Button",
+        newButton: "Yeni Düğme",
         address: "{address}",
         chartType3: "{chartType}",
         dataDescription: "{dataDescription}",

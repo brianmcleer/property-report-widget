@@ -290,5 +290,6 @@ export default {
   sortByHeader: 'Sort by {header}',
   rowValueJoin: 'Row {value}: {join}',
   unknownError: 'unknown error',
-  unserializableError: 'unserializable error'
+  unserializableError: 'unserializable error',
+  unableToGetYourLocation: 'Unable to get your location.'
 }

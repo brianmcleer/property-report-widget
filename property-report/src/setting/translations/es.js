@@ -1100,7 +1100,7 @@ System.register([], function (e) {
         showTheQuestionMarkButtonThat: "Mostrar el botón de la marca de preguntas que abre el widget guía de ayuda",
         uiFieldname: "FieldName",
         uiAnd: "y",
-        newButton: "New Button",
+        newButton: "Nuevo Button",
         address: "{address}",
         chartType3: "{chartType}",
         dataDescription: "{dataDescription}",

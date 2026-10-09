@@ -53,7 +53,7 @@ import Polyline from 'esri/geometry/Polyline'
 import { beacon } from '../shared/beacon'
 import type { BeaconHandle } from '../shared/beacon'
 import __i18nDefaults from './translations/default'
-import { __setIntl, __tc } from './i18n-t'
+import { __locale, __setIntl, __tc } from './i18n-t'
 let __i18nIntl: any = null
 /** Module translator: app language via the widget intl, English from default.ts, {name} values filled. */
 const __t = (id: string, values?: { [key: string]: any }): string => {
@@ -2787,21 +2787,21 @@ const formatFieldValue = (val: any, fieldConfig?: FieldConfig): string => {
                         : String(num)
                     break
                 case 'currency':
-                    result = '$' + num.toLocaleString('en-US', {
+                    result = '$' + num.toLocaleString(__locale(), {
                         minimumFractionDigits: decimalPlaces ?? 2,
                         maximumFractionDigits: decimalPlaces ?? 2,
                         useGrouping
                     })
                     break
                 case 'percent':
-                    result = num.toLocaleString('en-US', {
+                    result = num.toLocaleString(__locale(), {
                         minimumFractionDigits: decimalPlaces ?? 0,
                         maximumFractionDigits: decimalPlaces ?? 2,
                         useGrouping
                     }) + '%'
                     break
                 case 'decimal':
-                    result = num.toLocaleString('en-US', {
+                    result = num.toLocaleString(__locale(), {
                         minimumFractionDigits: decimalPlaces ?? 2,
                         maximumFractionDigits: decimalPlaces ?? 2,
                         useGrouping
@@ -2809,9 +2809,9 @@ const formatFieldValue = (val: any, fieldConfig?: FieldConfig): string => {
                     break
                 default:
                     if (fieldName && /price|value|cost|tax|amount|fee/i.test(fieldName)) {
-                        result = '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping })
+                        result = '$' + num.toLocaleString(__locale(), { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping })
                     } else {
-                        result = useGrouping ? num.toLocaleString() : String(num)
+                        result = useGrouping ? num.toLocaleString(__locale()) : String(num)
                     }
             }
         }
@@ -2823,19 +2823,19 @@ const formatFieldValue = (val: any, fieldConfig?: FieldConfig): string => {
             const dateFormat = format?.dateFormat || 'default'
             switch (dateFormat) {
                 case 'short':
-                    result = date.toLocaleDateString('en-US', { year: '2-digit', month: 'numeric', day: 'numeric' })
+                    result = date.toLocaleDateString(__locale(), { year: '2-digit', month: 'numeric', day: 'numeric' })
                     break
                 case 'medium':
-                    result = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+                    result = date.toLocaleDateString(__locale(), { year: 'numeric', month: 'short', day: 'numeric' })
                     break
                 case 'long':
-                    result = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+                    result = date.toLocaleDateString(__locale(), { year: 'numeric', month: 'long', day: 'numeric' })
                     break
                 case 'year-only':
                     result = String(date.getFullYear())
                     break
                 default:
-                    result = date.toLocaleDateString()
+                    result = date.toLocaleDateString(__locale())
             }
         }
     } else if (formatType === 'text' || formatType === 'auto') {
@@ -3938,7 +3938,7 @@ const EnhancedChart = ({ data, chartConfig, title, skipAnimation }: EnhancedChar
                     <div style={{ fontWeight: 'bold', color: theme.textPrimary, marginBottom: '4px' }}>{label}</div>
                     {payload.map((p: any, i: number) => (
                         <div key={i} style={{ color: p.color }}>
-                            {p.name}: {typeof p.value === 'number' ? p.value.toLocaleString() : p.value}
+                            {p.name}: {typeof p.value === 'number' ? p.value.toLocaleString(__locale()) : p.value}
                         </div>
                     ))}
                 </div>
@@ -3999,13 +3999,13 @@ const EnhancedChart = ({ data, chartConfig, title, skipAnimation }: EnhancedChar
         if (isMultiSeries) {
             const seriesInfo = seriesKeys.map(key => {
                 const total = data.reduce((sum, item) => sum + (item[key] || 0), 0)
-                return `${key}: ${total.toLocaleString()}`
+                return `${key}: ${total.toLocaleString(__locale())}`
             }).join('; ')
             return __t("chartTypeChartComparingLengthSeriesAcross", { chartType: config.chartType, length: seriesKeys.length, length2: data.length, seriesInfo: seriesInfo })
         }
         const total = data.reduce((sum, item) => sum + (item.value || 0), 0)
-        const items = data.map(item => `${item.name}: ${item.value?.toLocaleString() || 0}`).join(', ')
-        return __t("chartTypeChartShowingLengthDataPoints", { chartType: config.chartType, length: data.length, toLocaleString: total.toLocaleString(), items: items })
+        const items = data.map(item => `${item.name}: ${item.value?.toLocaleString(__locale()) || 0}`).join(', ')
+        return __t("chartTypeChartShowingLengthDataPoints", { chartType: config.chartType, length: data.length, toLocaleString: total.toLocaleString(__locale()), items: items })
     }
 
     const renderChart = () => {
@@ -4277,7 +4277,7 @@ const EnhancedChart = ({ data, chartConfig, title, skipAnimation }: EnhancedChar
                     {data.map((item, index) => (
                         <tr key={index}>
                             <td>{item.name}</td>
-                            <td>{item.value?.toLocaleString() || 0}</td>
+                            <td>{item.value?.toLocaleString(__locale()) || 0}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -7398,7 +7398,7 @@ const Widget = (props: WidgetProps) => {
             (err) => {
                 setGettingLocation(false)
                 // WCAG 3.3.1: Provide specific error messages
-                let errorMessage = 'Unable to get your location.'
+                let errorMessage = __t("unableToGetYourLocation")
                 switch (err.code) {
                     case err.PERMISSION_DENIED:
                         errorMessage = 'Location access was denied. Please allow location access in your browser settings and try again.'
@@ -7556,7 +7556,7 @@ const Widget = (props: WidgetProps) => {
 
             // Set document properties/metadata (WCAG 2.4.2 Page Titled)
             // Screen readers use this to announce the document title
-            const documentTitle = `${__tc(displayedSearchText, "_widgetLabel")} - ${new Date().toLocaleDateString()}`
+            const documentTitle = `${__tc(displayedSearchText, "_widgetLabel")} - ${new Date().toLocaleDateString(__locale())}`
             try {
                 doc.setDocumentProperties({
                     title: documentTitle,
@@ -8261,8 +8261,8 @@ const Widget = (props: WidgetProps) => {
             // Calculate date text first to determine proper spacing
             // WCAG 3.2.1: Option for full timestamp for document currency
             const now = new Date()
-            const dateOnly = now.toLocaleDateString()
-            const timeOnly = now.toLocaleTimeString()
+            const dateOnly = now.toLocaleDateString(__locale())
+            const timeOnly = now.toLocaleTimeString(__locale())
             doc.setFontSize(pdfStyle.largeTextMode ? 11 : 9)
             doc.setFont(activeFontFamily, 'normal')
             const dateOnlyWidth = doc.getTextWidth(dateOnly)

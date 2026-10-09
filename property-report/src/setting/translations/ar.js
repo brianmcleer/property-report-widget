@@ -1098,7 +1098,7 @@ System.register([], function (e) {
         displayRowNumbersInTheFirst: "عرض أرقام الصف في العمود الأول يساعد على الإشارة إلى سجلات محددة.",
         showHelpGuide: "دليل المساعدة",
         showTheQuestionMarkButtonThat: "اظهر زر التساؤل الذي يفتح المرشد",
-        uiFieldname: "FieldName",
+        uiFieldname: "فيلد نام",
         uiAnd: "و",
         newButton: "New Button",
         address: "{address}",

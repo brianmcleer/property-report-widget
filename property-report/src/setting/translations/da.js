@@ -1100,7 +1100,7 @@ System.register([], function (e) {
         showTheQuestionMarkButtonThat: "Vis spørgsmåls- markerings- knappen der åbner kontrolhjælpevejledningen",
         uiFieldname: "FieldName",
         uiAnd: "og",
-        newButton: "New Button",
+        newButton: "Ny knap",
         address: "{address}",
         chartType3: "{chartType}",
         dataDescription: "{dataDescription}",

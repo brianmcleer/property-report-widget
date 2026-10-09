@@ -1100,7 +1100,7 @@ System.register([], function (e) {
         showTheQuestionMarkButtonThat: "Visa frågemärke knappen som öppnar widget hjälp guide",
         uiFieldname: "FieldName",
         uiAnd: "och",
-        newButton: "New Button",
+        newButton: "Ny knapp",
         address: "{address}",
         chartType3: "{chartType}",
         dataDescription: "{dataDescription}",

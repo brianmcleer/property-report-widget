@@ -1100,7 +1100,7 @@ System.register([], function (e) {
         showTheQuestionMarkButtonThat: "Pokaż przycisk question- mark, który otwiera przewodnik pomocy widget",
         uiFieldname: "FieldName",
         uiAnd: "i aplikacja",
-        newButton: "New Button",
+        newButton: "Nowy przycisk",
         address: "{address}",
         chartType3: "{chartType}",
         dataDescription: "{dataDescription}",

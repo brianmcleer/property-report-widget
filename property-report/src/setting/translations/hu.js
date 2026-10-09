@@ -1100,7 +1100,7 @@ System.register([], function (e) {
         showTheQuestionMarkButtonThat: "Megjeleníti a kérdőjel gombot, amely megnyitja a widget súgó útmutatót",
         uiFieldname: "FieldName",
         uiAnd: "és",
-        newButton: "New Button",
+        newButton: "Új gomb",
         address: "{address}",
         chartType3: "{chartType}",
         dataDescription: "{dataDescription}",
