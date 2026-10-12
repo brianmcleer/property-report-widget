@@ -52,7 +52,7 @@ System.register([], function (e) {
         helpTroublePdf: "Izvezi PDF pokazuje grešku ili se ništa ne događa: PDF alati nisu učitali. Učitaj ponovo stranicu i pokušaj ponovo.",
         helpTroubleLocation: "Koristite vašu lokaciju ne čini ništa: preglednik je blokirao pristup lokaciji. Dopusti u traci s adresom preglednika, a zatim pokušajte ponovo.",
         helpTroubleContact: "- Kontaktirajte odjel GIS-a i spomenite ime Imovinskog izvještaja i ovu aplikaciju.",
-        helpTipsTitle: "Dobro je znati.",
+        helpTipsTitle: "Dobro je znati",
         helpTips1: "Sekcije rade i sa tastature: Tab na naslov i pritisnite Enter da ga otvorite.",
         helpTips2: "Link izvještaja radi za svakoga ko može otvoriti ovu aplikaciju, tako da je to brz način da se preda imovina kolegi.",
         helpTips3: "PDF koristi iste sekcije koje vidite na ekranu; sekcije označene administratorom kao ekran samo su izostavljene.",

@@ -2741,14 +2741,14 @@
           }
         },
         "bs": {
-          "file": "4201384df84b",
+          "file": "997db90a553c",
           "counts": {
-            "esri": 25,
+            "esri": 35,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 238,
+            "machine": 228,
             "stale": 0,
             "missing": 14
           },
@@ -2773,35 +2773,10 @@
               "src": "machine",
               "h": "bba7e1cc1338"
             },
-            "helpNoMatches": {
-              "t": "Ništa u vodiču ne odgovara toj riječi.",
-              "src": "machine",
-              "h": "3fe179f75330"
-            },
-            "firstRunTitle": {
-              "t": "Novi ovdje?",
-              "src": "machine",
-              "h": "b81f2e17e001"
-            },
             "firstRunBody": {
               "t": "Upišite adresu ili broj paketa u kutiju na vrhu, izaberite prijedlog, a izvještaj se popunjava ispod.",
               "src": "machine",
               "h": "f59b03345791"
-            },
-            "firstRunHelpLink": {
-              "t": "Otvori vodič.",
-              "src": "machine",
-              "h": "2447dd6134ea"
-            },
-            "firstRunDismiss": {
-              "t": "Otpust",
-              "src": "machine",
-              "h": "70afe9eff3f2"
-            },
-            "helpStartTitle": {
-              "t": "Počnite ovdje: tri koraka",
-              "src": "machine",
-              "h": "789320b4831d"
             },
             "helpStart1": {
               "t": "Upišite adresu ili broj paketa u kutiju na vrhu i izaberite prijedlog sa liste.",
@@ -2948,11 +2923,6 @@
               "src": "machine",
               "h": "d26fc88662dc"
             },
-            "helpTroubleTitle": {
-              "t": "Ako nešto nije u redu",
-              "src": "machine",
-              "h": "6f7fec3ff1e0"
-            },
             "helpTroubleNoSuggestions": {
               "t": "Ne pojavljuju se sugestije: adresa je možda izvan tog područja ili je drugačije napisana. Pokušajte sa manje riječi, samo ime ulice, ili broj paketa.",
               "src": "machine",
@@ -2982,11 +2952,6 @@
               "t": "- Kontaktirajte odjel GIS-a i spomenite ime Imovinskog izvještaja i ovu aplikaciju.",
               "src": "machine",
               "h": "60ec7b31e57d"
-            },
-            "helpTipsTitle": {
-              "t": "Dobro je znati.",
-              "src": "machine",
-              "h": "79fc372dc790"
             },
             "helpTips1": {
               "t": "Sekcije rade i sa tastature: Tab na naslov i pritisnite Enter da ga otvorite.",
@@ -3748,11 +3713,6 @@
               "src": "machine",
               "h": "ec51d78b31a8"
             },
-            "copied": {
-              "t": "Kopirano!",
-              "src": "machine",
-              "h": "b7c3ca0ee379"
-            },
             "copyAddress": {
               "t": "Kopiraj adresu",
               "src": "machine",
@@ -3927,16 +3887,6 @@
               "t": "Red {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
-            },
-            "unknownError": {
-              "t": "nepoznata greška",
-              "src": "machine",
-              "h": "af6321ca7a8b"
-            },
-            "unserializableError": {
-              "t": "Neserijalizacijska greška",
-              "src": "machine",
-              "h": "76e73551597a"
             },
             "unableToGetYourLocation": {
               "t": "Ne mogu da dobijem vašu lokaciju.",
@@ -16236,14 +16186,14 @@
           }
         },
         "hr": {
-          "file": "925a5fee2f1a",
+          "file": "898138ae5fa1",
           "counts": {
-            "esri": 25,
+            "esri": 35,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 248,
+            "machine": 238,
             "stale": 0,
             "missing": 4
           },
@@ -16268,35 +16218,10 @@
               "src": "machine",
               "h": "bba7e1cc1338"
             },
-            "helpNoMatches": {
-              "t": "Ništa u vodiču ne odgovara toj riječi. Pokušajte drugi, ili otvorite dijelove iznad.",
-              "src": "machine",
-              "h": "3fe179f75330"
-            },
-            "firstRunTitle": {
-              "t": "Novi ovdje?",
-              "src": "machine",
-              "h": "b81f2e17e001"
-            },
             "firstRunBody": {
               "t": "Upišite adresu ili broj paketa u kutiju na vrhu, izaberite prijedlog, a izvješće ispunjava u nastavku.",
               "src": "machine",
               "h": "f59b03345791"
-            },
-            "firstRunHelpLink": {
-              "t": "Otvori vodič.",
-              "src": "machine",
-              "h": "2447dd6134ea"
-            },
-            "firstRunDismiss": {
-              "t": "Otpust",
-              "src": "machine",
-              "h": "70afe9eff3f2"
-            },
-            "helpStartTitle": {
-              "t": "Počnite ovdje: tri koraka",
-              "src": "machine",
-              "h": "789320b4831d"
             },
             "helpStart1": {
               "t": "Upišite adresu ili broj paketa u kutiju na vrhu i izaberite prijedlog s popisa.",
@@ -16443,11 +16368,6 @@
               "src": "machine",
               "h": "d26fc88662dc"
             },
-            "helpTroubleTitle": {
-              "t": "Ako nešto izgleda loše",
-              "src": "machine",
-              "h": "6f7fec3ff1e0"
-            },
             "helpTroubleNoSuggestions": {
               "t": "Ne pojavljuju se prijedlozi: adresa može biti izvan područja ili napisano drugačije. Pokušajte manje riječi, samo ime ulice, ili broj paketa.",
               "src": "machine",
@@ -16477,11 +16397,6 @@
               "t": "Još uvijek zaglavi? Kontaktirajte GIS odjel i spomenite ime izvješća imovine i ovu aplikaciju.",
               "src": "machine",
               "h": "60ec7b31e57d"
-            },
-            "helpTipsTitle": {
-              "t": "Dobro je znati.",
-              "src": "machine",
-              "h": "79fc372dc790"
             },
             "helpTips1": {
               "t": "Naslovi odjeljaka također rade od tipkovnice: Tab do naslova i pritisnite Enter da ga otvorite.",
@@ -17263,11 +17178,6 @@
               "src": "machine",
               "h": "ec51d78b31a8"
             },
-            "copied": {
-              "t": "Kopirano!",
-              "src": "machine",
-              "h": "b7c3ca0ee379"
-            },
             "copyAddress": {
               "t": "Kopiraj adresu",
               "src": "machine",
@@ -17472,16 +17382,6 @@
               "t": "Red {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
-            },
-            "unknownError": {
-              "t": "nepoznata greška",
-              "src": "machine",
-              "h": "af6321ca7a8b"
-            },
-            "unserializableError": {
-              "t": "Neserijalizacijska greška",
-              "src": "machine",
-              "h": "76e73551597a"
             },
             "unableToGetYourLocation": {
               "t": "Ne mogu dobiti vašu lokaciju.",
@@ -37141,14 +37041,14 @@
           }
         },
         "sr": {
-          "file": "a83352402cb9",
+          "file": "43ba2fba6076",
           "counts": {
-            "esri": 24,
+            "esri": 34,
             "esri-check": 0,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 247,
+            "machine": 237,
             "stale": 0,
             "missing": 6
           },
@@ -37173,35 +37073,10 @@
               "src": "machine",
               "h": "bba7e1cc1338"
             },
-            "helpNoMatches": {
-              "t": "Ništa u vodièu ne odgovara toj reèi.",
-              "src": "machine",
-              "h": "3fe179f75330"
-            },
-            "firstRunTitle": {
-              "t": "Novi ovde?",
-              "src": "machine",
-              "h": "b81f2e17e001"
-            },
             "firstRunBody": {
               "t": "Upišite adresu ili broj paketa u kutiju na vrhu, izaberite predlog, i izveštaj se popunjava ispod.",
               "src": "machine",
               "h": "f59b03345791"
-            },
-            "firstRunHelpLink": {
-              "t": "Otvori vodiè.",
-              "src": "machine",
-              "h": "2447dd6134ea"
-            },
-            "firstRunDismiss": {
-              "t": "Otpust.",
-              "src": "machine",
-              "h": "70afe9eff3f2"
-            },
-            "helpStartTitle": {
-              "t": "Poènite ovde: tri koraka.",
-              "src": "machine",
-              "h": "789320b4831d"
             },
             "helpStart1": {
               "t": "Ukucaj adresu ili broj paketa u kutiju na vrhu i izaberi predlog sa liste.",
@@ -37348,11 +37223,6 @@
               "src": "machine",
               "h": "d26fc88662dc"
             },
-            "helpTroubleTitle": {
-              "t": "Ako nešto nije u redu",
-              "src": "machine",
-              "h": "6f7fec3ff1e0"
-            },
             "helpTroubleNoSuggestions": {
               "t": "Nema sugestija: adresa je možda van tog područja ili je napisana drugačije. Pokušajte sa manje reči, samo ime ulice, ili broj paketa.",
               "src": "machine",
@@ -37382,11 +37252,6 @@
               "t": "- Kontaktirajte GIS odjel i spomenite ime Imovinskog izvještaja i ovu aplikaciju.",
               "src": "machine",
               "h": "60ec7b31e57d"
-            },
-            "helpTipsTitle": {
-              "t": "Dobro je znati.",
-              "src": "machine",
-              "h": "79fc372dc790"
             },
             "helpTips1": {
               "t": "Naslovi sekcije takođe rade sa tastature: Tab na naslov i pritisnite Enter da ga otvorite.",
@@ -38173,11 +38038,6 @@
               "src": "machine",
               "h": "ec51d78b31a8"
             },
-            "copied": {
-              "t": "Kopirano!",
-              "src": "machine",
-              "h": "b7c3ca0ee379"
-            },
             "copyAddress": {
               "t": "Kopiraj adresu",
               "src": "machine",
@@ -38372,16 +38232,6 @@
               "t": "Red {value}: {join}",
               "src": "machine",
               "h": "8252c4b8d2f1"
-            },
-            "unknownError": {
-              "t": "nepoznata greška",
-              "src": "machine",
-              "h": "af6321ca7a8b"
-            },
-            "unserializableError": {
-              "t": "Neserijalizacijska greška",
-              "src": "machine",
-              "h": "76e73551597a"
             },
             "unableToGetYourLocation": {
               "t": "Ne mogu da dobijem tvoju lokaciju.",
@@ -59176,12 +59026,12 @@
         "bs": {
           "file": "87e7f533c17b",
           "counts": {
-            "esri": 115,
+            "esri": 117,
             "esri-check": 6,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 975,
+            "machine": 973,
             "stale": 0,
             "missing": 9
           },
@@ -64005,16 +63855,6 @@
               "t": "Prikaži brojeve redova u prvoj koloni. Pomaže u zapisima specifičnim za referencu.",
               "src": "machine",
               "h": "b98aa7b5ff57"
-            },
-            "showHelpGuide": {
-              "t": "Pokaži vodič za pomoć",
-              "src": "machine",
-              "h": "03e9f0b81336"
-            },
-            "showTheQuestionMarkButtonThat": {
-              "t": "Pokaži dugme sa znakom pitanja koje otvara vodič za pomoć grafičkog elementa",
-              "src": "machine",
-              "h": "62c4e81a84ca"
             },
             "uiFieldname": {
               "t": "PoljeName",
@@ -113386,12 +113226,12 @@
         "hr": {
           "file": "eecb1af5f257",
           "counts": {
-            "esri": 115,
+            "esri": 117,
             "esri-check": 6,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 981,
+            "machine": 979,
             "stale": 0,
             "missing": 3
           },
@@ -118245,16 +118085,6 @@
               "t": "Prikaži brojeve redova u prvom stupcu. Pomaže referentnim specifičnim zapisima.",
               "src": "machine",
               "h": "b98aa7b5ff57"
-            },
-            "showHelpGuide": {
-              "t": "Prikaži vodič pomoći",
-              "src": "machine",
-              "h": "03e9f0b81336"
-            },
-            "showTheQuestionMarkButtonThat": {
-              "t": "Prikaži gumb s upitnikom koji otvara vodič za pomoć widgetu",
-              "src": "machine",
-              "h": "62c4e81a84ca"
             },
             "uiFieldname": {
               "t": "Name",
@@ -197031,12 +196861,12 @@
         "sr": {
           "file": "ac831139ca41",
           "counts": {
-            "esri": 116,
+            "esri": 118,
             "esri-check": 4,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 985,
+            "machine": 983,
             "stale": 0,
             "missing": 0
           },
@@ -201910,16 +201740,6 @@
               "t": "Prikaži brojeve redova u prvoj koloni. Pomaže u referentnim specifičnim zapisima.",
               "src": "machine",
               "h": "b98aa7b5ff57"
-            },
-            "showHelpGuide": {
-              "t": "Pokaži vodič za pomoć",
-              "src": "machine",
-              "h": "03e9f0b81336"
-            },
-            "showTheQuestionMarkButtonThat": {
-              "t": "Prikaži dugme sa znakom pitanja koje otvara vodič za pomoć grafičkom elementu",
-              "src": "machine",
-              "h": "62c4e81a84ca"
             },
             "uiFieldname": {
               "t": "ПољеName",
