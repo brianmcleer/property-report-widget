@@ -24,11 +24,11 @@
     "recharts": "^3.10.1"
   },
   "overrides": {
-    "dompurify": "^3.4.16"
+    "dompurify": "^3.4.17"
   },
   "pnpm": {
     "overrides": {
-      "dompurify": "^3.4.16"
+      "dompurify": "^3.4.17"
     }
   }
 }
