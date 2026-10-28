@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  dompurify: ^3.4.17
+
 pnpmfileChecksum: sha256-ws59F7u9RnyI5gc2x6Fk9OrLujOThD04lT43JpgSjv0=
 
 importers:
