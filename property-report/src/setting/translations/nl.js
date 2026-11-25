@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Header-infolaag inschakelen",
         dataSource: "Gegevensbron",
         selectAFeatureLayerTypicallyParcels: "Selecteer een feature laag (typisch pakketten) om te zoeken. Het widget zal de functie vinden op de zoeklocatie en de attributen tonen in de header.",
-        orUseDirectUrl: "Of gebruik direct URL-adres",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "Direct Feature Layer REST endpoint URL (bv. https://server/arcgis/rest/services/Name/MapServer/0). Alternatief voor gegevensbronselectie.",
         displayFields: "Weergavevelden",
         selectWhichFieldsToShowIn: "Selecteer welke velden getoond moeten worden in de berichtkop (bijv., Pakketnummer, Eigenaarnaam). Deze staan onder de adrestitel.",

@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Enable 헤더 정보 층",
         dataSource: "데이터 소스",
         selectAFeatureLayerTypicallyParcels: "기능 레이어 선택 (일반 소포) 쿼리에. 위젯은 검색 위치에 기능을 찾을 수 있으며 헤더의 속성을 표시합니다.",
-        orUseDirectUrl: "— 또는 직접 URL 사용 —",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "직접 기능 레이어 REST 엔드포인트 URL (예: https://server/arcgis/rest/services/Name/MapServer/0). 데이터 소스 선택에 대한 대안.",
         displayFields: "디스플레이 필드",
         selectWhichFieldsToShowIn: "보고서 헤더 (예 : Parcel Number, Owner Name)에서 표시하는 필드를 선택하십시오. 이 주소 제목 아래 나타납니다.",

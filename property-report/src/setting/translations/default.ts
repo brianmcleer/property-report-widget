@@ -122,7 +122,7 @@ export default {
   enableHeaderInfoLayer: 'Enable header info layer',
   dataSource: 'Data Source',
   selectAFeatureLayerTypicallyParcels: 'Select a feature layer (typically parcels) to query. The widget will find the feature at the search location and display its attributes in the header.',
-  orUseDirectUrl: '— OR use direct URL —',
+  orUseDirectUrl: 'Or use a direct URL',
   directFeatureLayerRestEndpointUrl: 'Direct Feature Layer REST endpoint URL (e.g., https://server/arcgis/rest/services/Name/MapServer/0). Alternative to data source selection.',
   displayFields: 'Display Fields',
   selectWhichFieldsToShowIn: 'Select which fields to show in the report header (e.g., Parcel Number, Owner Name). These appear below the address title.',

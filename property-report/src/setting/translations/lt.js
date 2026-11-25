@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Įjungti antraštės informacijos sluoksnį",
         dataSource: "Duomenų šaltinis",
         selectAFeatureLayerTypicallyParcels: "Pasirinkite funkcijų sluoksnį (paprastai sklypai) užklausai. Elementas ras funkciją paieškos vietoje ir savo atributus rodys antraštėje.",
-        orUseDirectUrl: "- Arba naudoti tiesioginį URL -",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "Tiesioginių savybių sluoksnio REST vertinamosios baigties URL (pvz., https: / / server / arcgis / rest / services / Name / MapServer / 0). Alternatyvus duomenų šaltinio pasirinkimui.",
         displayFields: "Rodyti laukus",
         selectWhichFieldsToShowIn: "Pasirinkite, kuriuos laukelius rodyti ataskaitos antraštėje (pvz., Parcel Number, Savininkas vardas). Jie pateikiami po adreso pavadinimu.",

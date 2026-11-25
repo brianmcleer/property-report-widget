@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Aktivér header info lag",
         dataSource: "Datakilde",
         selectAFeatureLayerTypicallyParcels: "Vælg et bonuslag (typisk pakker) til forespørgsel. Kontrollen vil finde funktionen på søgefeltet og vise dens attributter i overskriften.",
-        orUseDirectUrl: "- ELLER brug direkte URL -",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "Direkte feature Layer REST endpoint URL (f.eks. https: / / server / arcgis / rest / services / Name / MapServer / 0). Alternativ til valg af datakilde.",
         displayFields: "Visningsfelter",
         selectWhichFieldsToShowIn: "Vælg hvilke felter der skal vises i rapportens overskrift (fx, parcelnummer, ejernavn). Disse findes under adressetitlen.",

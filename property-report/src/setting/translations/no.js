@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Aktiver infolaget i overskriften",
         dataSource: "Datakilde",
         selectAFeatureLayerTypicallyParcels: "Velg et funksjonslag (vanligvis pakker) for å spørre. Skjermelementet finner funksjonen på søkeplasseringen og viser attributtene i overskriften.",
-        orUseDirectUrl: "— ELLER bruk direkte URL —",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "Direct Feature Layer REST sluttpunkt URL (f.eks. https://server/arcgis/rest/services/Name/MapServer/0). Alternativt til datakildevalg.",
         displayFields: "Visningsfelter",
         selectWhichFieldsToShowIn: "Velg hvilke felt som skal vises i rapporthodet (f.eks. Parcel-nummer, eiernavn). Disse vises under adressetittelen.",

@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Header-Info-Schicht aktivieren",
         dataSource: "Datenquelle",
         selectAFeatureLayerTypicallyParcels: "Wählen Sie eine Feature-Layer (in der Regel Pakete), um abzufragen. Das Widget findet das Feature am Suchort und zeigt seine Attribute im Header an.",
-        orUseDirectUrl: "- ODER direkte URL verwenden -",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "Direkte Feature Layer REST-Endpunkt-URL (z. B. https://server/arcgis/rest/services/Name/MapServer/0). Alternative zur Datenquellenauswahl.",
         displayFields: "Felder anzeigen",
         selectWhichFieldsToShowIn: "Wählen Sie aus, welche Felder im Berichtskopf angezeigt werden sollen (z. B. Paketnummer, Eigentümername). Diese erscheinen unter dem Adresstitel.",

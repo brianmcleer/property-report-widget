@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Povoliť informačnú vrstvu hlavičky",
         dataSource: "Dátový zdroj",
         selectAFeatureLayerTypicallyParcels: "Vyberte vrstvu funkcie (zvyčajne balíky) pre otázku. Widget nájde funkciu na mieste vyhľadávania a zobrazí svoje atribúty v hlavičke.",
-        orUseDirectUrl: "— OR use direct URL —",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "Direct Feature Layer REST koncový ukazovateľ URL (napr. https://server/arcgis/rest/services/Name/MapServer/0). Alternatívne k výberu zdroja údajov.",
         displayFields: "Stĺpce na zobrazenie",
         selectWhichFieldsToShowIn: "Vyberte, ktoré polia sa majú zobraziť v hlavičke správy (napr. číslo parcely, meno vlastníka). Tieto sú uvedené pod názvom adresy.",

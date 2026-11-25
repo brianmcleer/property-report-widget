@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Uključi info sloj zaglavlja",
         dataSource: "Izvor podataka",
         selectAFeatureLayerTypicallyParcels: "Odaberite sloj mogućnosti (tipično parcele) za upit. Vidžet će pronaći značajku na lokaciji pretraživanja i prikazati njene atribute u zaglavlju.",
-        orUseDirectUrl: "- ILI koristiti direktan URL -",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "Direct Feature Layer REST cometer URL (нпр., https://server/arcgis/rest/services/Name/MapServer/0). алтернативно за избор извора података.",
         displayFields: "Prikaži polja",
         selectWhichFieldsToShowIn: "Označite koja polja treba prikazati u zaglavlju izvještaja (npr. broj paketa, ime vlasnika). Ovo se pojavljuje ispod naslova adrese.",

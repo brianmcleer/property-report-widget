@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Enable Title Info katmanı",
         dataSource: "Veri kaynağı",
         selectAFeatureLayerTypicallyParcels: "Sorgu için bir özellik katmanı (tipik olarak parcels) seçin. Widget, arama pozisyonundaki özelliği bulacak ve başlıktaki özelliklerini gösterecektir.",
-        orUseDirectUrl: "- OR doğrudan URL kullanır -",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "Doğrudan Özel Katman REST endpoint URL (e.g., https://server/arcgis/rest/services/Name/Map/Server0). Veri kaynak seçimi için alternatif.",
         displayFields: "Görüntüleme alanları",
         selectWhichFieldsToShowIn: "Hangi alanları rapor başlığında göstermek için seçin (e.g., Parcel Number, Owner Name). Bunlar adres başlığının altında görünür.",

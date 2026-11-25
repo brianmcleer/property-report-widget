@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Päise infokihi lubamine",
         dataSource: "Andmeallikas",
         selectAFeatureLayerTypicallyParcels: "Vali otsinguks funktsioonikiht (tavaliselt pakid). Vidin leiab võimaluse otsingu asukohast ja näitab selle atribuute päises.",
-        orUseDirectUrl: "VÕI kasutada otsest URL- i;",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "Direct Feature Layer REST endpoint URL (nt https://server/arcgis/rest/services/Name/MapServer/0). Alternatiiv andmeallikate valimisele.",
         displayFields: "Kuvamise väljad",
         selectWhichFieldsToShowIn: "Vali, milliseid välju näidata aruande päises (nt Pakinumber, omaniku nimi). Need ilmuvad aadressi pealkirja all.",

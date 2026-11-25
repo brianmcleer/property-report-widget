@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Capa de información de cabecera",
         dataSource: "Fuente de datos",
         selectAFeatureLayerTypicallyParcels: "Seleccione una capa de características (típicamente paquetes) a la consulta. El widget encontrará la característica en la ubicación de búsqueda y mostrará sus atributos en el encabezado.",
-        orUseDirectUrl: "— O utilizar URL directa —",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "Direct Feature Layer REST endpoint URL (por ejemplo, https://server/arcgis/rest/services/Name/MapServer/0). Alternativa a la selección de fuentes de datos.",
         displayFields: "Campos de visualización",
         selectWhichFieldsToShowIn: "Seleccione qué campos mostrar en el encabezado del informe (por ejemplo, Número de Parcel, Nombre del propietario). Estos aparecen debajo del título de dirección.",

@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "启用信头信息层",
         dataSource: "数据源",
         selectAFeatureLayerTypicallyParcels: "选择要查询的特征层(典型的包裹)。 部件将在搜索位置找到该特性,并在标题中显示其属性 。",
-        orUseDirectUrl: "——或使用直接URL——",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "直接地物层 REST 端点 URL(如 https://server/arcgis/rest/ services/Name/MapServer/0). 数据源选择的替代办法。",
         displayFields: "显示字段",
         selectWhichFieldsToShowIn: "选择报表标题中要显示的字段(例如 Parcel Number,所有者名称)。 这些内容载于地址标题下。",

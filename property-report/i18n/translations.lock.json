@@ -48078,7 +48078,7 @@
       }
     },
     "setting": {
-      "en": "5ee875aa4dd1",
+      "en": "fca715e34821",
       "keys": 1112,
       "hashes": {
         "pleaseSelectAnImageFilePng": "bc48712f5074",
@@ -48204,7 +48204,7 @@
         "enableHeaderInfoLayer": "14c6e485313f",
         "dataSource": "863b2164a4f2",
         "selectAFeatureLayerTypicallyParcels": "9a6501ab11e6",
-        "orUseDirectUrl": "cecccbf74706",
+        "orUseDirectUrl": "322782f9bf45",
         "directFeatureLayerRestEndpointUrl": "30b6e639913f",
         "displayFields": "d81fcb9779d9",
         "selectWhichFieldsToShowIn": "73688bac83a4",
@@ -49196,15 +49196,15 @@
       },
       "locales": {
         "ar": {
-          "file": "c27e9bceed97",
+          "file": "6247984deee5",
           "counts": {
             "esri": 118,
             "esri-check": 6,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 981,
-            "stale": 0,
+            "machine": 980,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -49759,9 +49759,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "- أو استخدام الجبهة الثورية الأوروبية المباشرة -",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "- أو استخدام الجبهة الثورية الأوروبية المباشرة -"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Direct Feature Layer REST endpoint URL (e.g., https://server/arcgis/rest/services/Name/MapServer/0). بديل لاختيار مصدر البيانات.",
@@ -54116,15 +54116,15 @@
           }
         },
         "bg": {
-          "file": "04581afe4866",
+          "file": "7f8fe772f91a",
           "counts": {
             "esri": 115,
             "esri-check": 10,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 980,
-            "stale": 0,
+            "machine": 979,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -54679,9 +54679,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": ".",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "."
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Layer REST крайна точка URL (напр. https://server/arcgis/rest/services/Name/MapServer/0). Алтернатива за избор на източник на данни.",
@@ -59031,15 +59031,15 @@
           }
         },
         "bs": {
-          "file": "b4546d912334",
+          "file": "7d5d2181aaee",
           "counts": {
             "esri": 117,
             "esri-check": 6,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 973,
-            "stale": 0,
+            "machine": 972,
+            "stale": 1,
             "missing": 16
           },
           "entries": {
@@ -59589,9 +59589,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "- ILI koristiti direktan URL -",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "- ILI koristiti direktan URL -"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Direct Feature Layer REST compresion URL (npr., https://server/arcgis/rest/services/Ime/MapServer/0). Alternativa izboru izvora podataka.",
@@ -63911,15 +63911,15 @@
           }
         },
         "ca": {
-          "file": "75b9464629ff",
+          "file": "48cffb377a77",
           "counts": {
             "esri": 111,
             "esri-check": 9,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 985,
-            "stale": 0,
+            "machine": 984,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -64479,9 +64479,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "konversation O usar l' URL directe bibliography",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "konversation O usar l' URL directe bibliography"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "URL del punt d' acabament de la capa directa (p. ex., https://server/arcgis/rest/ services/Name/MapServer/0). Alternativa a la selecció font de dades.",
@@ -68851,15 +68851,15 @@
           }
         },
         "cs": {
-          "file": "ba04e8e97c67",
+          "file": "2b27d1f480c3",
           "counts": {
             "esri": 114,
             "esri-check": 10,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 981,
-            "stale": 0,
+            "machine": 980,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -69414,9 +69414,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "- OR použijte přímou URL -",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "- OR použijte přímou URL -"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Přímé funkce Layer REST endpoint URL (např., https: / / server / arcgis / rest / service / Name / MapServer / 0). Alternativa k výběru zdroje dat.",
@@ -73771,15 +73771,15 @@
           }
         },
         "da": {
-          "file": "58cb56130d2b",
+          "file": "da9cb46b0f01",
           "counts": {
             "esri": 115,
             "esri-check": 4,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 986,
-            "stale": 0,
+            "machine": 985,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -74334,9 +74334,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "- ELLER brug direkte URL -",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "- ELLER brug direkte URL -"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Direkte feature Layer REST endpoint URL (f.eks. https: / / server / arcgis / rest / services / Name / MapServer / 0). Alternativ til valg af datakilde.",
@@ -78716,15 +78716,15 @@
           }
         },
         "de": {
-          "file": "4be64a9f4dc6",
+          "file": "d28d0058f269",
           "counts": {
             "esri": 109,
             "esri-check": 8,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 988,
-            "stale": 0,
+            "machine": 987,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -79284,9 +79284,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "- ODER direkte URL verwenden -",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "- ODER direkte URL verwenden -"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Direkte Feature Layer REST-Endpunkt-URL (z. B. https://server/arcgis/rest/services/Name/MapServer/0). Alternative zur Datenquellenauswahl.",
@@ -83671,15 +83671,15 @@
           }
         },
         "el": {
-          "file": "5ad837eebe8b",
+          "file": "62eba1406482",
           "counts": {
             "esri": 121,
             "esri-check": 4,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 980,
-            "stale": 0,
+            "machine": 979,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -84234,9 +84234,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "— Ή να χρησιμοποιήσετε απευθείας URL",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "— Ή να χρησιμοποιήσετε απευθείας URL"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Direct Feature Layer REST endpoint URL (π.χ., https://server/arcgis/rest/services/Name/MapServer/0). Εναλλακτική επιλογή πηγής δεδομένων.",
@@ -88586,15 +88586,15 @@
           }
         },
         "es": {
-          "file": "23ab2c10634f",
+          "file": "e9de345c7d92",
           "counts": {
             "esri": 118,
             "esri-check": 4,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 983,
-            "stale": 0,
+            "machine": 982,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -89149,9 +89149,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "— O utilizar URL directa —",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "— O utilizar URL directa —"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Direct Feature Layer REST endpoint URL (por ejemplo, https://server/arcgis/rest/services/Name/MapServer/0). Alternativa a la selección de fuentes de datos.",
@@ -93516,15 +93516,15 @@
           }
         },
         "et": {
-          "file": "49461958c1d6",
+          "file": "ab1973987eab",
           "counts": {
             "esri": 109,
             "esri-check": 11,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 985,
-            "stale": 0,
+            "machine": 984,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -94079,9 +94079,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "VÕI kasutada otsest URL- i;",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "VÕI kasutada otsest URL- i;"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Direct Feature Layer REST endpoint URL (nt https://server/arcgis/rest/services/Name/MapServer/0). Alternatiiv andmeallikate valimisele.",
@@ -98456,15 +98456,15 @@
           }
         },
         "fi": {
-          "file": "cfc84e973ee0",
+          "file": "b6a97cb460b2",
           "counts": {
             "esri": 121,
             "esri-check": 4,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 978,
-            "stale": 0,
+            "machine": 977,
+            "stale": 1,
             "missing": 9
           },
           "entries": {
@@ -99019,9 +99019,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "Käytä suoraa URL-osoitetta",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "Käytä suoraa URL-osoitetta"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Ominaisuustason REST päätepisteen URL (esim. https://server/arcgis/rest/services/Name/MapServer/0). Vaihtoehto tietolähteen valintaan.",
@@ -103361,15 +103361,15 @@
           }
         },
         "fr": {
-          "file": "c315c11b1b9b",
+          "file": "63150567ad38",
           "counts": {
             "esri": 113,
             "esri-check": 5,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 987,
-            "stale": 0,
+            "machine": 986,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -103929,9 +103929,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "— OU utiliser une URL directe —",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "— OU utiliser une URL directe —"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "URL du paramètre REST (p. ex., https://server/arcgis/rest/services/Name/MapServer/0). Alternative à la sélection des sources de données.",
@@ -108311,15 +108311,15 @@
           }
         },
         "he": {
-          "file": "daab942aec8d",
+          "file": "38afcb4872e4",
           "counts": {
             "esri": 116,
             "esri-check": 8,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 981,
-            "stale": 0,
+            "machine": 980,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -108874,9 +108874,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "או להשתמש ב-URL ישיר -",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "או להשתמש ב-URL ישיר -"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "כתובת ה-URL של ה- RESTpoint (לדוגמה, TP/arcgis/rest/services/name/MapServer/0). אפשרות חלופית לבחירת מקור נתונים.",
@@ -113231,15 +113231,15 @@
           }
         },
         "hr": {
-          "file": "915ea4c1fc95",
+          "file": "3d1bec9761c8",
           "counts": {
             "esri": 117,
             "esri-check": 6,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 979,
-            "stale": 0,
+            "machine": 978,
+            "stale": 1,
             "missing": 10
           },
           "entries": {
@@ -113794,9 +113794,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "- ILI koristiti izravni URL -",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "- ILI koristiti izravni URL -"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Izravni Sloj REST ishoda URL (npr. https://server/arcgis/rest/services/Name/MapServer/0).",
@@ -118141,15 +118141,15 @@
           }
         },
         "hu": {
-          "file": "550fc6f4bff8",
+          "file": "3854f2da1111",
           "counts": {
             "esri": 119,
             "esri-check": 6,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 980,
-            "stale": 0,
+            "machine": 979,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -118704,9 +118704,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "- Használjon közvetlen URL -",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "- Használjon közvetlen URL -"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Direkt funkció réteg REST végpont URL (pl. https: / / server / arcgis / rest / services / Name / MapServer / 0). Az adatforrás kiválasztásának alternatívája.",
@@ -123056,15 +123056,15 @@
           }
         },
         "id": {
-          "file": "d42733d7892b",
+          "file": "2f36c6ffbc46",
           "counts": {
             "esri": 113,
             "esri-check": 5,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 987,
-            "stale": 0,
+            "machine": 986,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -123624,9 +123624,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "- OR gunakan URL langsung -",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "- OR gunakan URL langsung -"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "undo-type Alternatif untuk seleksi sumber data.",
@@ -128006,15 +128006,15 @@
           }
         },
         "it": {
-          "file": "83f4801d9aea",
+          "file": "a17edbdbb5cd",
           "counts": {
             "esri": 116,
             "esri-check": 8,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 981,
-            "stale": 0,
+            "machine": 980,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -128569,9 +128569,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "— O utilizzare URL diretto —",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "— O utilizzare URL diretto —"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "URL punto finale REST (ad esempio, https://server/arcgis/rest/services/Name/MapServer/0). Alternativa alla selezione della sorgente dati.",
@@ -132926,15 +132926,15 @@
           }
         },
         "ja": {
-          "file": "415f76c5b006",
+          "file": "aeac2407937e",
           "counts": {
             "esri": 118,
             "esri-check": 6,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 981,
-            "stale": 0,
+            "machine": 980,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -133489,9 +133489,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "— または直接 URL を使用する —",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "— または直接 URL を使用する —"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "ダイレクト機能レイヤーRESTエンドポイントURL(https://server/arcgis/rest/services/Name/MapServer/0) データソース選択の代替。",
@@ -137846,15 +137846,15 @@
           }
         },
         "ko": {
-          "file": "ee25edf71ac9",
+          "file": "6e5d636bdd2f",
           "counts": {
             "esri": 118,
             "esri-check": 6,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 981,
-            "stale": 0,
+            "machine": 980,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -138409,9 +138409,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "— 또는 직접 URL 사용 —",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "— 또는 직접 URL 사용 —"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "직접 기능 레이어 REST 엔드포인트 URL (예: https://server/arcgis/rest/services/Name/MapServer/0). 데이터 소스 선택에 대한 대안.",
@@ -142766,15 +142766,15 @@
           }
         },
         "lt": {
-          "file": "77014bd5bf20",
+          "file": "532459569c27",
           "counts": {
             "esri": 115,
             "esri-check": 10,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 980,
-            "stale": 0,
+            "machine": 979,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -143329,9 +143329,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "- Arba naudoti tiesioginį URL -",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "- Arba naudoti tiesioginį URL -"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Tiesioginių savybių sluoksnio REST vertinamosios baigties URL (pvz., https: / / server / arcgis / rest / services / Name / MapServer / 0). Alternatyvus duomenų šaltinio pasirinkimui.",
@@ -147681,15 +147681,15 @@
           }
         },
         "lv": {
-          "file": "8f6ecdbeff84",
+          "file": "a5080c743e1b",
           "counts": {
             "esri": 112,
             "esri-check": 13,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 976,
-            "stale": 0,
+            "machine": 975,
+            "stale": 1,
             "missing": 11
           },
           "entries": {
@@ -148244,9 +148244,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "— VAI izmantot tiešo URL —",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "— VAI izmantot tiešo URL —"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Tiešā raksturlieluma slāņa REST beigu punkta URL (piemēram, https://server/arcgis/rest/services/Name/MapServer/0). Alternatīva datu avotu izvēlei.",
@@ -152576,15 +152576,15 @@
           }
         },
         "no": {
-          "file": "346b7736e1f3",
+          "file": "1e50294d8a72",
           "counts": {
             "esri": 116,
             "esri-check": 5,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 984,
-            "stale": 0,
+            "machine": 983,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -153144,9 +153144,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "— ELLER bruk direkte URL —",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "— ELLER bruk direkte URL —"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Direct Feature Layer REST sluttpunkt URL (f.eks. https://server/arcgis/rest/services/Name/MapServer/0). Alternativt til datakildevalg.",
@@ -157511,15 +157511,15 @@
           }
         },
         "nl": {
-          "file": "aec6dd0b0a33",
+          "file": "a4d69f07d74a",
           "counts": {
             "esri": 114,
             "esri-check": 8,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 983,
-            "stale": 0,
+            "machine": 982,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -158074,9 +158074,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "Of gebruik direct URL-adres",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "Of gebruik direct URL-adres"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Direct Feature Layer REST endpoint URL (bv. https://server/arcgis/rest/services/Name/MapServer/0). Alternatief voor gegevensbronselectie.",
@@ -162441,15 +162441,15 @@
           }
         },
         "pl": {
-          "file": "fed3d947d574",
+          "file": "69341d794aaa",
           "counts": {
             "esri": 115,
             "esri-check": 8,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 982,
-            "stale": 0,
+            "machine": 981,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -163009,9 +163009,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "- Albo użyj bezpośredniego adresu URL -",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "- Albo użyj bezpośredniego adresu URL -"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Bezpośredni punkt końcowy warstw REST (np. https: / / server / arcgis / rest / services / Name / MapServer / 0). Alternatywa dla wyboru źródła danych.",
@@ -167366,15 +167366,15 @@
           }
         },
         "pt-br": {
-          "file": "26e53e7b5be8",
+          "file": "e55e1c4e5391",
           "counts": {
             "esri": 116,
             "esri-check": 5,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 984,
-            "stale": 0,
+            "machine": 983,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -167929,9 +167929,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "-Ou use URL direto...",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "-Ou use URL direto..."
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "URL do terminal REST de Característica Direta (por exemplo, https://server/arcgis/rest/services/Name/MapServer/0). Alternativa à seleção de fontes de dados.",
@@ -172301,15 +172301,15 @@
           }
         },
         "pt-pt": {
-          "file": "fe5d0dbff6c3",
+          "file": "c0fd0cd1bd57",
           "counts": {
             "esri": 111,
             "esri-check": 11,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 983,
-            "stale": 0,
+            "machine": 982,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -172864,9 +172864,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "— OU utilizar URL directo —",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "— OU utilizar URL directo —"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "URL de Endpoint REST de Característica Direta (por exemplo, https://server/arcgis/rest/services/Name/MapServer/0). Alternativa à seleção da fonte de dados.",
@@ -177231,7 +177231,7 @@
           }
         },
         "ro": {
-          "file": "41c32b2a85fd",
+          "file": "b01b212834a3",
           "counts": {
             "esri": 115,
             "esri-check": 7,
@@ -182156,15 +182156,15 @@
           }
         },
         "ru": {
-          "file": "bf46ca770c55",
+          "file": "08a253684ce1",
           "counts": {
             "esri": 112,
             "esri-check": 13,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 980,
-            "stale": 0,
+            "machine": 979,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -182719,9 +182719,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "Используйте прямой URL",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "Используйте прямой URL"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "URL конечной точки REST (например, https://server/arcgis/rest/services/Name/MapServer/0). Альтернатива выбору источника данных.",
@@ -187071,7 +187071,7 @@
           }
         },
         "sk": {
-          "file": "6029ce6cf638",
+          "file": "7adac6607e18",
           "counts": {
             "esri": 113,
             "esri-check": 11,
@@ -191966,15 +191966,15 @@
           }
         },
         "sl": {
-          "file": "aa3305142637",
+          "file": "f96089b9f7a9",
           "counts": {
             "esri": 122,
             "esri-check": 2,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 977,
-            "stale": 0,
+            "machine": 976,
+            "stale": 1,
             "missing": 11
           },
           "entries": {
@@ -192534,9 +192534,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "— ALI uporabite neposreden URL —",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "— ALI uporabite neposreden URL —"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "URL neposredne plasti REST (npr. https://server/arcgis/rest/services/name/MapServer/0). Alternativna izbira virov podatkov.",
@@ -196866,15 +196866,15 @@
           }
         },
         "sr": {
-          "file": "d3defda413bd",
+          "file": "4f6ac320132e",
           "counts": {
             "esri": 118,
             "esri-check": 4,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 983,
-            "stale": 0,
+            "machine": 982,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -197434,9 +197434,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "- ILI koristiti direktan URL -",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "- ILI koristiti direktan URL -"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Direct Feature Layer REST cometer URL (нпр., https://server/arcgis/rest/services/Name/MapServer/0). алтернативно за избор извора података.",
@@ -201796,15 +201796,15 @@
           }
         },
         "sv": {
-          "file": "1197edd391a9",
+          "file": "dbeb23614916",
           "counts": {
             "esri": 113,
             "esri-check": 6,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 986,
-            "stale": 0,
+            "machine": 985,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -202364,9 +202364,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "Eller använd direkt URL -",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "Eller använd direkt URL -"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Direct Feature Layer REST endpoint URL (t.ex. https://server/arcgis/rest/services/Name/MapServer/0). Alternativ till datakälla val.",
@@ -206741,15 +206741,15 @@
           }
         },
         "th": {
-          "file": "689e26adc8e9",
+          "file": "0e914e1acaa6",
           "counts": {
             "esri": 114,
             "esri-check": 10,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 981,
-            "stale": 0,
+            "machine": 980,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -207304,9 +207304,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "— หรือใช้ที่อยู่ URL โดยตรง —",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "— หรือใช้ที่อยู่ URL โดยตรง —"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "เพิ่มเลเยอร์ใหม่ ตัวเลือกสําหรับการเลือกแหล่งข้อมูล",
@@ -211661,15 +211661,15 @@
           }
         },
         "tr": {
-          "file": "046cb5f9bf90",
+          "file": "ecee6a788752",
           "counts": {
             "esri": 113,
             "esri-check": 9,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 983,
-            "stale": 0,
+            "machine": 982,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -212224,9 +212224,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "- OR doğrudan URL kullanır -",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "- OR doğrudan URL kullanır -"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Doğrudan Özel Katman REST endpoint URL (e.g., https://server/arcgis/rest/services/Name/Map/Server0). Veri kaynak seçimi için alternatif.",
@@ -216591,15 +216591,15 @@
           }
         },
         "zh-cn": {
-          "file": "a25b45f0fe9e",
+          "file": "da4f8a5e97e1",
           "counts": {
             "esri": 120,
             "esri-check": 4,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 981,
-            "stale": 0,
+            "machine": 980,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -217154,9 +217154,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "——或使用直接URL——",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "——或使用直接URL——"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "直接地物层 REST 端点 URL(如 https://server/arcgis/rest/ services/Name/MapServer/0). 数据源选择的替代办法。",
@@ -221511,15 +221511,15 @@
           }
         },
         "uk": {
-          "file": "a00be24c8f11",
+          "file": "7a69d5a7fc12",
           "counts": {
             "esri": 119,
             "esri-check": 6,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 980,
-            "stale": 0,
+            "machine": 979,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -222074,9 +222074,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "— OR використовувати прямий URL —",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "— OR використовувати прямий URL —"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Пряма особливість Шар REST endpoint URL (наприклад, https://server/arcgis/rest/services/Name/MapServer/0). Альтернатива вибору джерела даних.",
@@ -226426,15 +226426,15 @@
           }
         },
         "vi": {
-          "file": "071c35b067d7",
+          "file": "19165d79afa2",
           "counts": {
             "esri": 119,
             "esri-check": 6,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 980,
-            "stale": 0,
+            "machine": 979,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -226989,9 +226989,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "— OR sử dụng địa chỉ trực tiếp —",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "— OR sử dụng địa chỉ trực tiếp —"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "Địa chỉ Mạng trực tiếp cho lớp RSTpoint (v. d., https vội/arcgis/ Services/ Name Thay vì chọn mã nguồn dữ liệu.",
@@ -231341,15 +231341,15 @@
           }
         },
         "zh-hk": {
-          "file": "7a53b9b76eae",
+          "file": "327a5b262275",
           "counts": {
             "esri": 117,
             "esri-check": 7,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 981,
-            "stale": 0,
+            "machine": 980,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -231904,9 +231904,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "─ 使用直接網址 ─",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "─ 使用直接網址 ─"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "直接地物層 REST 端點網址(例如 https://server/arcgis/rest/ services/Name/MapServer/0). 取代資料來源的選擇 。",
@@ -236261,15 +236261,15 @@
           }
         },
         "zh-tw": {
-          "file": "7a53b9b76eae",
+          "file": "327a5b262275",
           "counts": {
             "esri": 117,
             "esri-check": 7,
             "community": 0,
             "manual": 0,
             "existing": 0,
-            "machine": 981,
-            "stale": 0,
+            "machine": 980,
+            "stale": 1,
             "missing": 7
           },
           "entries": {
@@ -236824,9 +236824,9 @@
               "h": "9a6501ab11e6"
             },
             "orUseDirectUrl": {
-              "t": "─ 使用直接網址 ─",
-              "src": "machine",
-              "h": "cecccbf74706"
+              "src": "stale",
+              "h": "322782f9bf45",
+              "old": "─ 使用直接網址 ─"
             },
             "directFeatureLayerRestEndpointUrl": {
               "t": "直接地物層 REST 端點網址(例如 https://server/arcgis/rest/ services/Name/MapServer/0). 取代資料來源的選擇 。",

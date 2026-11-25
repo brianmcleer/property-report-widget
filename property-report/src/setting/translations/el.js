@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Ενεργοποίηση στρώμαυ πληροφοριών κεφαλίδας",
         dataSource: "Προέλευση δεδομένων",
         selectAFeatureLayerTypicallyParcels: "Επιλέξτε ένα στρώμα χαρακτηριστικών (συνήθως δέματα) για να ρωτήσετε. Το γραφικό συστατικό θα βρει το χαρακτηριστικό στη θέση αναζήτησης και θα εμφανίσει τα χαρακτηριστικά του στην επικεφαλίδα.",
-        orUseDirectUrl: "— Ή να χρησιμοποιήσετε απευθείας URL",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "Direct Feature Layer REST endpoint URL (π.χ., https://server/arcgis/rest/services/Name/MapServer/0). Εναλλακτική επιλογή πηγής δεδομένων.",
         displayFields: "Πεδία εμφάνισης",
         selectWhichFieldsToShowIn: "Επιλέξτε ποια πεδία θα εμφανίζονται στην επικεφαλίδα της αναφοράς (π.χ., αριθμός πακέτου, όνομα ιδιοκτήτη). Αυτά εμφανίζονται κάτω από τον τίτλο της διεύθυνσης.",

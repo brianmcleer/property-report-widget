@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Habilita la capa d' informació de la capçalera",
         dataSource: "Font de dades",
         selectAFeatureLayerTypicallyParcels: "Seleccioneu una capa de característiques (normalment parcels) per a consultar. L' estri trobarà la funció a la localització de la cerca i mostrarà els atributs a la capçalera.",
-        orUseDirectUrl: "konversation O usar l' URL directe bibliography",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "URL del punt d' acabament de la capa directa (p. ex., https://server/arcgis/rest/ services/Name/MapServer/0). Alternativa a la selecció font de dades.",
         displayFields: "Camps de visualització",
         selectWhichFieldsToShowIn: "Seleccioneu quins camps s' han de mostrar a la capçalera de l' informe (p. ex., Número del Parcel, Nom propietari). Aquests apareixen sota el títol de l' adreça.",

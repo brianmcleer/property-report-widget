@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Abilitare l'intestazione info strato",
         dataSource: "Origine dati",
         selectAFeatureLayerTypicallyParcels: "Selezionare uno strato di funzionalità (tipicamente pacchi) per query. Il widget troverà la funzione nella posizione di ricerca e visualizzerà i suoi attributi nell'intestazione.",
-        orUseDirectUrl: "— O utilizzare URL diretto —",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "URL punto finale REST (ad esempio, https://server/arcgis/rest/services/Name/MapServer/0). Alternativa alla selezione della sorgente dati.",
         displayFields: "Campi di visualizzazione",
         selectWhichFieldsToShowIn: "Selezionare i campi da mostrare nell'intestazione del report (ad esempio, numero di Parcel, nome proprietario). Questi appaiono sotto il titolo dell'indirizzo.",

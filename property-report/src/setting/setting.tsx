@@ -31,7 +31,7 @@ const __t = (id: string, values?: { [key: string]: any }): string => {
 }
 
 
-// Tip aliased to Tooltip — component was renamed in ExB 1.20
+// Tip aliased to Tooltip: the component was renamed in ExB 1.20
 const Tip = Tooltip
 const { useState, useEffect, useRef } = React
 

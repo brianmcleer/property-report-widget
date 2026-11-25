@@ -48,6 +48,7 @@ import Graphic from 'esri/Graphic'
 import * as geometryEngine from 'esri/geometry/geometryEngine'
 import SpatialReference from 'esri/geometry/SpatialReference'
 import FeatureLayer from 'esri/layers/FeatureLayer'
+import GraphicsLayer from 'esri/layers/GraphicsLayer'
 import Polygon from 'esri/geometry/Polygon'
 import Polyline from 'esri/geometry/Polyline'
 import { beacon } from '../shared/beacon'
@@ -81,7 +82,7 @@ const htmlToPlainText = (html: string): string => {
 }
 
 // Module-level mutable state (not imports)
-let projection: any = null  // esri/geometry/projection loaded via loadArcGISJSAPIModules
+let projection: any = null  // projectOperator (Maps SDK 5.x) or esri/geometry/projection (4.x), loaded via loadArcGISJSAPIModules
 let _projectionResolve: (() => void) | null = null
 const projectionReady: Promise<void> = new Promise(resolve => { _projectionResolve = resolve })
 // jspdf and html2canvas resolve from the STATIC imports above, which puts them in
@@ -104,7 +105,7 @@ const { useState, useRef, useMemo, useCallback, useEffect } = React
 
 // =====================================================
 // REST GEOCODING HELPERS
-// Use ArcGIS REST API directly — avoids esri/rest/Locator
+// Use ArcGIS REST API directly; avoids esri/rest/Locator
 // module casing conflict on Windows in JSAPI 5.x
 // =====================================================
 
@@ -5009,9 +5010,25 @@ const Widget = (props: WidgetProps) => {
     const statusId = `${widgetId.current}-status`
 
     useEffect(() => {
-        loadArcGISJSAPIModules(['esri/geometry/projection']).then((modules: any[]) => {
-            projection = modules[0]
-            // Must call projection.load() before projection.project() works in JSAPI 5.x
+        // Maps SDK 5.x (Experience Builder 1.21+) has no esri/geometry/projection; its replacement is
+        // projectOperator. Wrap the operator in the old load()/project() shape so every caller works
+        // unchanged, and fall back to the old module on 4.x (Experience Builder 1.20 and earlier).
+        const loadProjection = async (): Promise<any> => {
+            try {
+                const [op] = await loadArcGISJSAPIModules(['esri/geometry/operators/projectOperator'])
+                if (op && typeof op.execute === 'function') {
+                    return {
+                        load: (): Promise<void> => (typeof op.isLoaded === 'function' && op.isLoaded()) ? Promise.resolve() : op.load(),
+                        project: (geometry: any, outSpatialReference: any): any => op.execute(geometry, outSpatialReference)
+                    }
+                }
+            } catch (e) { /* 4.x: no operators, use the projection module below */ }
+            const [legacy] = await loadArcGISJSAPIModules(['esri/geometry/projection'])
+            return legacy
+        }
+        loadProjection().then((loaded: any) => {
+            projection = loaded
+            // The projection engine must be loaded before project() works
             const loadPromise = (projection && typeof projection.load === 'function')
                 ? projection.load()
                 : Promise.resolve()
@@ -5297,7 +5314,7 @@ const Widget = (props: WidgetProps) => {
         // Clear existing features
         showAllFeaturesLayerRef.current.removeAll()
 
-        import('esri/Graphic').then(({ default: Graphic }) => {
+        {
             sectionResults.forEach(sr => {
                 // Process regular layer results
                 sr.layerResults.forEach(lr => {
@@ -5442,7 +5459,7 @@ const Widget = (props: WidgetProps) => {
                     })
                 }
             })
-        })
+        }
     }, [])
 
     const decimalToDMS = useCallback((decimal: number, isLat: boolean): string => {
@@ -5759,7 +5776,7 @@ const Widget = (props: WidgetProps) => {
         setMapView(jmv)
         mapViewRef.current = jmv
 
-        import('esri/layers/GraphicsLayer').then(({ default: GraphicsLayer }) => {
+        {
             const gl = new GraphicsLayer({
                 id: 'property-report-graphics',
                 title: 'Property Report Graphics',
@@ -5785,7 +5802,7 @@ const Widget = (props: WidgetProps) => {
             })
             jmv.view.map.add(rowHighlightLayer)
             rowHighlightLayerRef.current = rowHighlightLayer
-        })
+        }
 
         jmv.view.on('click', async (event: any) => {
             if (!selectByLocationRef.current) return

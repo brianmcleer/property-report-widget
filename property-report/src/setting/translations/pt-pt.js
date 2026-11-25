@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Activar a camada de informação do cabeçalho",
         dataSource: "Fonte de dados",
         selectAFeatureLayerTypicallyParcels: "Selecione uma camada de recursos (tipicamente pacotes) para pesquisar. O widget irá encontrar o recurso no local de pesquisa e mostrar seus atributos no cabeçalho.",
-        orUseDirectUrl: "— OU utilizar URL directo —",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "URL de Endpoint REST de Característica Direta (por exemplo, https://server/arcgis/rest/services/Name/MapServer/0). Alternativa à seleção da fonte de dados.",
         displayFields: "Campos de visualização",
         selectWhichFieldsToShowIn: "Selecione os campos a mostrar no cabeçalho do relatório (por exemplo, número de parcel, nome do proprietário). Estes aparecem abaixo do título do endereço.",

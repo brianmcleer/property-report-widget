@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Activer le calque info en-tête",
         dataSource: "Source de données",
         selectAFeatureLayerTypicallyParcels: "Sélectionnez un calque de fonction (généralement des paquets) pour demander. Le widget trouvera la fonction à l'emplacement de la recherche et affichera ses attributs dans l'en-tête.",
-        orUseDirectUrl: "— OU utiliser une URL directe —",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "URL du paramètre REST (p. ex., https://server/arcgis/rest/services/Name/MapServer/0). Alternative à la sélection des sources de données.",
         displayFields: "Champs d’affichage",
         selectWhichFieldsToShowIn: "Sélectionnez les champs à afficher dans l'en-tête du rapport (p. ex. numéro de parcelle, nom du propriétaire). Celles-ci apparaissent sous le titre de l'adresse.",

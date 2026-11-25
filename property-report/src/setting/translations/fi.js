@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Käytä otsikkoa infokerros",
         dataSource: "Aineistolähde",
         selectAFeatureLayerTypicallyParcels: "Valitse tutkittava ominaisuuskerros (tyypillisesti paketteja). Widget löytää ominaisuuden hakupaikasta ja näyttää sen ominaisuudet otsikossa.",
-        orUseDirectUrl: "Käytä suoraa URL-osoitetta",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "Ominaisuustason REST päätepisteen URL (esim. https://server/arcgis/rest/services/Name/MapServer/0). Vaihtoehto tietolähteen valintaan.",
         displayFields: "Näyttökentät",
         selectWhichFieldsToShowIn: "Valitse raportin otsikossa näkyvät kentät (esim. parcel-numero, omistajan nimi). Nämä näkyvät osoitteen alla.",

@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Увімкнути наголовку інформаційний шар",
         dataSource: "Джерело даних",
         selectAFeatureLayerTypicallyParcels: "Виберіть шар функції (типово посилки) для запиту. Віджет знайде функцію в місці пошуку і відображає його атрибути в заголовку.",
-        orUseDirectUrl: "— OR використовувати прямий URL —",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "Пряма особливість Шар REST endpoint URL (наприклад, https://server/arcgis/rest/services/Name/MapServer/0). Альтернатива вибору джерела даних.",
         displayFields: "Поля відображення",
         selectWhichFieldsToShowIn: "Виберіть які поля для відображення в заголовку звіту (наприклад, номер Парсель, ім'я власника). Нижче наведено назву адреси.",

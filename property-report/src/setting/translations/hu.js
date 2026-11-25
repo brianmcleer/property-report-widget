@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Fejléc információs réteg engedélyezése",
         dataSource: "Adatforrás",
         selectAFeatureLayerTypicallyParcels: "Válassza ki a funkció réteg (jellemzően parcellák) lekérdezés. A widget megtalálja a funkciót a keresési helyszínen, és megjeleníti attribútumait a fejlécben.",
-        orUseDirectUrl: "- Használjon közvetlen URL -",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "Direkt funkció réteg REST végpont URL (pl. https: / / server / arcgis / rest / services / Name / MapServer / 0). Az adatforrás kiválasztásának alternatívája.",
         displayFields: "Megjelenítési mezők",
         selectWhichFieldsToShowIn: "Válassza ki, hogy a jelentés fejlécében melyik mezőt kell feltüntetni (pl., Parcel-szám, Tulajdonos neve). Ezek a cím alatt jelennek meg.",

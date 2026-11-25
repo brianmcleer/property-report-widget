@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Activează stratul de informații antet",
         dataSource: "Sursă de date",
         selectAFeatureLayerTypicallyParcels: "Alegeți un strat de caracteristici (de obicei parcele) pentru interogare. Widget-ul va găsi funcția la locația de căutare și afișa atributele sale în antet.",
-        orUseDirectUrl: "— OR use direct URL —",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "URL-ul de evaluare directă a caracteristicilor layerului REST (de exemplu, https://server/arcgis/rest/services/Name/MapServer/0). Alternativă la selectarea sursei de date.",
         displayFields: "Câmpuri de afişare",
         selectWhichFieldsToShowIn: "Selectați câmpurile pe care trebuie să le afișați în antetul raportului (de exemplu, Numărul Parcelului, Numele Proprietarului). Acestea apar sub titlul adresei.",

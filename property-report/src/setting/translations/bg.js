@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Включване на заглавния информационен слой",
         dataSource: "Източник на данни",
         selectAFeatureLayerTypicallyParcels: "Изберете функция слой (обикновено парцели) за запитване. Джаджата ще намери функцията на мястото на търсене и ще покаже атрибутите си в заглавната част.",
-        orUseDirectUrl: ".",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "Layer REST крайна точка URL (напр. https://server/arcgis/rest/services/Name/MapServer/0). Алтернатива за избор на източник на данни.",
         displayFields: "Показване на полета",
         selectWhichFieldsToShowIn: "Изберете кои полета да се показват в заглавието на доклада (напр. Parcel Number, Име на собственика). Те се появяват под заглавието на адреса.",

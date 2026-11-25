@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "שכבת מידע",
         dataSource: "מקור הנתונים",
         selectAFeatureLayerTypicallyParcels: "בחר שכבת תכונה (בעיקר חבילות) לשאילתה. widget ימצא את התכונה במיקום החיפוש ולהציג את התכונות שלה בראש.",
-        orUseDirectUrl: "או להשתמש ב-URL ישיר -",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "כתובת ה-URL של ה- RESTpoint (לדוגמה, TP/arcgis/rest/services/name/MapServer/0). אפשרות חלופית לבחירת מקור נתונים.",
         displayFields: "הצג שדות",
         selectWhichFieldsToShowIn: "בחר אילו שדות להציג בדו\"ח כותרת (למשל, פרקל מספר, שם הבעלים). אלה מופיעים מתחת לכותרת הכתובת.",

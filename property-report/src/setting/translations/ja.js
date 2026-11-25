@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "ヘッダ情報レイヤーを有効にする",
         dataSource: "データ ソース",
         selectAFeatureLayerTypicallyParcels: "クエリにフィーチャーレイヤー(典型的に小包)を選択します。 ウィジェットは検索場所にある機能を見つけ、ヘッダ内の属性を表示します。",
-        orUseDirectUrl: "— または直接 URL を使用する —",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "ダイレクト機能レイヤーRESTエンドポイントURL(https://server/arcgis/rest/services/Name/MapServer/0) データソース選択の代替。",
         displayFields: "表示フィールド",
         selectWhichFieldsToShowIn: "レポートヘッダに表示するフィールドを選択します。(例、パーセル番号、所有者名)。 アドレスのタイトルの下に表示されます。",

@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Aktivera header info lager",
         dataSource: "Datakälla",
         selectAFeatureLayerTypicallyParcels: "Välj ett funktionsskikt (typiskt paket) för att fråga. Widgeten hittar funktionen på sökplatsen och visar dess attribut i rubriken.",
-        orUseDirectUrl: "Eller använd direkt URL -",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "Direct Feature Layer REST endpoint URL (t.ex. https://server/arcgis/rest/services/Name/MapServer/0). Alternativ till datakälla val.",
         displayFields: "Visningsfält",
         selectWhichFieldsToShowIn: "Välj vilka fält som ska visas i rapportrubriken (t.ex. Parcel Number, Owner Name). Dessa visas under adresstitel.",

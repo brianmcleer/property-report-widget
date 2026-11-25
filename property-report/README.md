@@ -2,7 +2,7 @@
 
 A comprehensive property lookup and reporting widget for ArcGIS Experience Builder applications. Search for a property by address, parcel number, or map click, then view detailed information from multiple data sources in a unified, configurable report, and export it to an accessible, branded PDF.
 
-Built and tested on **ArcGIS Experience Builder Developer Edition 1.19** (also runs on 1.20). The design and functionality were heavily informed by the reporting tool on [PortlandMaps.com](https://www.portlandmaps.com/).
+Built for **ArcGIS Experience Builder Developer Edition 1.21** (Maps SDK 5.x, React 19). Earlier releases ran on 1.19 and 1.20; 1.18 and below (React 18) are not supported. The design and functionality were heavily informed by the reporting tool on [PortlandMaps.com](https://www.portlandmaps.com/).
 
 - **Author:** Brian McLeer, GIS Administrator/Developer, City of Grand Junction, CO
 - **License:** Apache-2.0
@@ -19,6 +19,10 @@ This widget ships with a `package.json` and `package-lock.json`, so you no longe
    ```
    <ExperienceBuilder>/client/your-extensions/widgets/property-report
    ```
+
+   `manifest.json` must sit directly inside `widgets/property-report`, not a second level deep (`widgets/property-report/property-report`). A nested copy is the usual cause of the `property-report is duplicated` error (see Troubleshooting).
+
+   The release zip is the widget only. The Visual Studio type shims in the GitHub repo (`src/exb-editor-shims.d.ts`, `src/vendor-shims.d.ts`) are left out on purpose: their ambient `declare module` blocks are not file-scoped and would rewrite the react, jimu and esri types for every other widget in your `your-extensions` folder. If you clone the repo instead of using the zip, delete those two files before building; nothing else depends on them.
 
 2. Install the widget's dependencies. From your Experience Builder **client** directory, run:
 
@@ -158,6 +162,7 @@ Please report bugs, ideas, questions, and enhancement requests on the [Esri Comm
 
 Full history is in `CHANGELOG.md`.
 
+- **2026-11-25 (v1.3.1):** Coordinates and point projection work again on Experience Builder 1.21 (Maps SDK 5.x replaced the projection module). Map graphics layers load with the widget instead of on demand. Docs and housekeeping brought up to the widget playbook.
 - **2026-11-25 (v1.3.0):** New per-layer **Search By** setting. **Property shape** searches a layer with the property outline from the Highlight Layer instead of the search point, so overlays that cover only part of a property are found.
 - **2026-10-06 (v1.2.13):** Removes four unused dependencies (`@mantine/charts`, `@mantine/dates`, `@mantine/notifications`, `dayjs`). Smaller install, no code changes.
 - **2026-10-06 (v1.2.12):** Security: DOMPurify (used inside jsPDF) updated to 3.4.16 for two low-severity advisories.

@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Bật lớp thông tin đầu trang",
         dataSource: "Nguồn dữ liệu",
         selectAFeatureLayerTypicallyParcels: "Chọn một lớp tính năng (thường là gói) để truy vấn. Các ô điều khiển sẽ tìm thấy tính năng ở vị trí tìm kiếm và hiển thị các tính năng của nó trong đầu trang.",
-        orUseDirectUrl: "— OR sử dụng địa chỉ trực tiếp —",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "Địa chỉ Mạng trực tiếp cho lớp RSTpoint (v. d., https vội/arcgis/ Services/ Name Thay vì chọn mã nguồn dữ liệu.",
         displayFields: "Hiển thị trường",
         selectWhichFieldsToShowIn: "Chọn những trường nào cần hiển thị trong đầu báo cáo (v. d., Số Parcel, Tên Sở hữu). Những cái này xuất hiện bên dưới tựa địa chỉ.",

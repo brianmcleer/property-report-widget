@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Povolit informační vrstvu hlavičky",
         dataSource: "Zdroj dat",
         selectAFeatureLayerTypicallyParcels: "Pro dotaz zvolte celovečerní vrstvu (typicky balíky). Widget najde funkci na místě hledání a zobrazí její atributy v hlavičce.",
-        orUseDirectUrl: "- OR použijte přímou URL -",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "Přímé funkce Layer REST endpoint URL (např., https: / / server / arcgis / rest / service / Name / MapServer / 0). Alternativa k výběru zdroje dat.",
         displayFields: "Pole zobrazení",
         selectWhichFieldsToShowIn: "Vyberte pole, která máte zobrazit v hlavičce zprávy (např. číslo parcel, jméno majitele). Tyto jsou uvedeny pod názvem adresy.",

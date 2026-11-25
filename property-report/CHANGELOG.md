@@ -2,6 +2,19 @@
 
 Newest first. Every release bumps `manifest.json` and `package.json` together.
 
+## 1.3.1 (2026-11-25)
+
+### Fixed
+
+- Experience Builder 1.21: coordinate display in WGS84, Web Mercator or a custom WKID, nearby distances that need a projection, the map preview and the Use your location point were left unprojected. Maps SDK 5.x has no `esri/geometry/projection` module, so the load failed silently. The widget now uses `projectOperator` on 5.x and the old module on 4.x (Experience Builder 1.20 and earlier).
+- The widget's map graphics layers and the show-all-on-map symbols load with the widget bundle instead of through a separate on-demand chunk, the same pattern that once broke Export PDF on some deployments.
+
+### Changed
+
+- `theme.ts` is again a byte copy of the shared family version (adds the `dangerText` token).
+- Settings label "Or use a direct URL" no longer uses dashes; em dashes removed from code comments.
+- README: Experience Builder 1.21 requirement, manifest placement note, and the note that the release zip leaves out the Visual Studio shims. tsconfig comment corrected: ts-loader reads the file, so `jsx` must stay `react-jsx`.
+
 ## 1.3.0 (2026-11-25)
 
 ### Added

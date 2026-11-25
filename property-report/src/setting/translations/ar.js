@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "طبقة معلومات متطورة",
         dataSource: "مصدر البيانات",
         selectAFeatureLayerTypicallyParcels: "نختار طبقة مميزة للإستفسار سيجد المستعار المميزة في موقع البحث ويعرض خصائصها في الرأس",
-        orUseDirectUrl: "- أو استخدام الجبهة الثورية الأوروبية المباشرة -",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "Direct Feature Layer REST endpoint URL (e.g., https://server/arcgis/rest/services/Name/MapServer/0). بديل لاختيار مصدر البيانات.",
         displayFields: "عرض الحقول",
         selectWhichFieldsToShowIn: "(ب) اختيار المجالات التي يتعين عرضها في مقدمة التقرير (مثلاً، رقم بارسيل، اسم المالك). هذه تظهر تحت عنوان العنوان",

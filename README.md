@@ -5,7 +5,7 @@ A comprehensive property lookup and reporting widget for ArcGIS Experience Build
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
 - **Author:** Brian McLeer, GIS Administrator/Developer, City of Grand Junction, CO
-- **Built and tested on:** ArcGIS Experience Builder Developer Edition 1.19 and 1.20 (React 19)
+- **Built for:** ArcGIS Experience Builder Developer Edition 1.21 (Maps SDK 5.x, React 19). Earlier builds ran on 1.19 and 1.20.
 - **Discussion, feedback, and original post:** [Property Report Widget on Esri Community](https://community.esri.com/t5/experience-builder-custom-widgets/property-report-widget/bc-p/1705989)
 
 > The widget folder itself lives in [`property-report/`](property-report). This repo wraps it with project files (license, this readme) so it works for both downloading a release and cloning.
@@ -44,13 +44,16 @@ If you clone the repository instead of using the zip, delete `property-report/sr
    <ArcGISExperienceBuilder>/client/your-extensions/widgets/property-report
    ```
 
+   `manifest.json` must sit directly inside `widgets/property-report`, not a second level deep (`widgets/property-report/property-report`). A nested copy is the usual cause of the `property-report is duplicated` error.
+
 2. From the Experience Builder **client** directory, run the standard install:
 
    ```bash
-   npm install
+   pnpm ci      # Experience Builder 1.21 and later
+   npm ci       # Experience Builder 1.20 and earlier
    ```
 
-   Because the widget includes a `package.json` and `package-lock.json` and lives in `your-extensions`, Experience Builder installs its dependencies automatically. You do not need to install recharts, Mantine, jsPDF, or any other package by hand.
+   Because the widget includes a `package.json` and lockfiles and lives in `your-extensions`, Experience Builder installs its dependencies automatically. You do not need to install recharts, jsPDF, or any other package by hand. Keep `package-lock.json`, `pnpm-lock.yaml` and `.pnpmfile.cjs` in the widget folder.
 
 3. Start (or restart) the client and refresh the Builder window. The widget appears under **Insert Widget > Custom**.
 
@@ -58,10 +61,10 @@ If you clone the repository instead of using the zip, delete `property-report/sr
 
 ## Requirements
 
-- ArcGIS Experience Builder Developer Edition 1.19 or 1.20.
+- ArcGIS Experience Builder Developer Edition 1.21 (Maps SDK 5.x). Earlier releases of this widget ran on 1.19 and 1.20.
 - Earlier editions (1.18 and below) run React 18 and are not supported by this build.
 
-Dependencies (installed automatically, pinned in `property-report/package-lock.json`): recharts, @tanstack/react-table, @mantine/charts, @mantine/dates, @mantine/notifications, dayjs, html2canvas, jspdf.
+Dependencies (installed automatically, pinned in `property-report/package-lock.json` and `property-report/pnpm-lock.yaml`): recharts, @tanstack/react-table, html2canvas, jspdf.
 
 ## Features
 

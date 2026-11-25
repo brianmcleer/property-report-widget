@@ -16,6 +16,8 @@ export interface Tokens {
   textSecondary: string
   divider: string
   danger: string
+  /** Text on a `danger` fill, from the theme. */
+  dangerText: string
   warning: string
   warningBg: string
   info: string
@@ -57,6 +59,7 @@ export function useTokens (): Tokens {
     textSecondary: color.surface?.paperHint ?? '#5a6572',
     divider: color.divider?.secondary ?? color.divider?.primary ?? '#e1e5e9',
     danger: color.error?.main ?? '#d64545',
+    dangerText: color.error?.text ?? '#ffffff',
     warning,
     warningBg: tint(warning, 14, surface),
     info,

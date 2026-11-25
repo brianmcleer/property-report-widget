@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Włącz warstwę informacji nagłówka",
         dataSource: "Źródło danych",
         selectAFeatureLayerTypicallyParcels: "Wybierz warstwę funkcji (zazwyczaj paczki) do zapytania. Widget znajdzie funkcję w lokalizacji wyszukiwania i wyświetli swoje atrybuty w nagłówku.",
-        orUseDirectUrl: "- Albo użyj bezpośredniego adresu URL -",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "Bezpośredni punkt końcowy warstw REST (np. https: / / server / arcgis / rest / services / Name / MapServer / 0). Alternatywa dla wyboru źródła danych.",
         displayFields: "Wyświetl pola",
         selectWhichFieldsToShowIn: "Wybierz pola, które należy wyświetlić w nagłówku raportu (np. numer parcela, nazwa właściciela). Pojawiają się poniżej tytułu adresu.",

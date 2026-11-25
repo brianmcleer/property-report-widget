@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Aktifkan lapis info header",
         dataSource: "Sumber data",
         selectAFeatureLayerTypicallyParcels: "Pilih sebuah lapis fitur (biasanya parsel) untuk diquery. Widget akan menemukan fitur di lokasi pencarian dan menampilkan atribut pada header.",
-        orUseDirectUrl: "- OR gunakan URL langsung -",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "undo-type Alternatif untuk seleksi sumber data.",
         displayFields: "Kolom tampilan",
         selectWhichFieldsToShowIn: "Pilih ruas mana yang akan ditampilkan dalam tajuk laporan (mis., Nomor Parcel, Nama Pemilik). Ini muncul di bawah judul alamat.",

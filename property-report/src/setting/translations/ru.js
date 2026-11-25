@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Включить Header info layer",
         dataSource: "Источник данных",
         selectAFeatureLayerTypicallyParcels: "Выберите слой функций (обычно посылки) для запроса. Виджет найдет функцию в месте поиска и отобразит ее атрибуты в заголовке.",
-        orUseDirectUrl: "Используйте прямой URL",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "URL конечной точки REST (например, https://server/arcgis/rest/services/Name/MapServer/0). Альтернатива выбору источника данных.",
         displayFields: "Отображаемые поля",
         selectWhichFieldsToShowIn: "Выберите, какие поля показывать в заголовке отчета (например, номер посылки, имя владельца). Они появляются ниже заголовка адреса.",

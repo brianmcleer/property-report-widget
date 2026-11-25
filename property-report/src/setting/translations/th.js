@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "เปิดใช้การแสดงเลเยอร์ข้อมูล",
         dataSource: "แหล่งข้อมูล",
         selectAFeatureLayerTypicallyParcels: "เลือกเลเยอร์ของคุณสมบัติ (จดหมายธรรมดา) ที่จะสอบถาม วิดเจ็ตจะค้นหาคุณสมบัติในตําแหน่งการค้นหา และแสดงคุณลักษณะของมันในส่วนหัว",
-        orUseDirectUrl: "— หรือใช้ที่อยู่ URL โดยตรง —",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "เพิ่มเลเยอร์ใหม่ ตัวเลือกสําหรับการเลือกแหล่งข้อมูล",
         displayFields: "แสดงผลฟิลด์",
         selectWhichFieldsToShowIn: "เลือกช่องข้อมูลที่จะแสดงในส่วนหัวเรื่องรายงาน (เช่น, Parcel, ManerName ภาพ เหล่า นี้ ปรากฏ อยู่ ใต้ ชื่อ ที่ อยู่.",

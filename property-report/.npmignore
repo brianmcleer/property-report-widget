@@ -1,4 +1,4 @@
-# Never ship installed dependencies — consumers run `npm ci`
+# Never ship installed dependencies; consumers run `pnpm ci` (1.21+) or `npm ci` (1.20 and earlier)
 node_modules/
 
 # Visual Studio cache / user state

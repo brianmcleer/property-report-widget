@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "開啟信頭信息層",
         dataSource: "資料來源",
         selectAFeatureLayerTypicallyParcels: "選擇要查詢的特征層( 通常為套件) 。 元件會在搜尋位置找到此特性, 在信頭中顯示其屬性 。",
-        orUseDirectUrl: "─ 使用直接網址 ─",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "直接地物層 REST 端點網址(例如 https://server/arcgis/rest/ services/Name/MapServer/0). 取代資料來源的選擇 。",
         displayFields: "顯示欄位",
         selectWhichFieldsToShowIn: "選擇要顯示在報告頭中的字段( 例如 Parcel 數字、 所有者名稱 ) 。 其地址列于下方。",

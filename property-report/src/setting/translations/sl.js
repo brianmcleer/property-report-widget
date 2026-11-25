@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Omogoči plast informacij o glavi",
         dataSource: "Vir podatkov",
         selectAFeatureLayerTypicallyParcels: "Izberite plast funkcije (običajno parcele) za poizvedbo. Gradnik bo našel funkcijo na lokaciji iskanja in prikazal svoje atribute v glavi.",
-        orUseDirectUrl: "— ALI uporabite neposreden URL —",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "URL neposredne plasti REST (npr. https://server/arcgis/rest/services/name/MapServer/0). Alternativna izbira virov podatkov.",
         displayFields: "Prikaži polja",
         selectWhichFieldsToShowIn: "Izberite, katera polja naj se prikažejo v glavi poročila (npr. številka paketa, ime lastnika). Ti se pojavljajo pod naslovom naslova.",

@@ -126,7 +126,7 @@ System.register([], function (e) {
         enableHeaderInfoLayer: "Aktivizēt galvenes informācijas slāni",
         dataSource: "Datu avots",
         selectAFeatureLayerTypicallyParcels: "Izvēlieties funkciju slāni (parasti pakas) vaicājumam. Sīkrīks atradīs funkciju meklēšanas vietā un parādīs tās atribūtus galvenē.",
-        orUseDirectUrl: "— VAI izmantot tiešo URL —",
+        orUseDirectUrl: "Or use a direct URL",
         directFeatureLayerRestEndpointUrl: "Tiešā raksturlieluma slāņa REST beigu punkta URL (piemēram, https://server/arcgis/rest/services/Name/MapServer/0). Alternatīva datu avotu izvēlei.",
         displayFields: "Rādīt laukus",
         selectWhichFieldsToShowIn: "Izvēlieties, kurus laukus rādīt ziņojuma galvenē (piem., paku numurs, īpašnieka vārds). Tie parādās zem adreses nosaukuma.",
