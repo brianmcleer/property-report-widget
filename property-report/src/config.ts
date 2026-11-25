@@ -60,6 +60,11 @@ export interface LayerConfig {
     fields: FieldConfig[]
     bufferDistance?: number
     bufferUnit?: 'feet' | 'meters' | 'miles' | 'kilometers'
+    // What this layer is searched with. 'point' (default) is the searched address point or map click.
+    // 'shape' is the property outline returned by the Highlight Layer, so a feature that covers any
+    // part of the property is found. Falls back to the point when no outline is available. With 'shape',
+    // bufferDistance may be negative to shrink the outline and drop features that only touch its boundary.
+    searchGeometry?: 'point' | 'shape'
 
     // Display state
     expanded?: boolean             // Default expanded state when results load (default: true = expanded)

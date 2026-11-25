@@ -1418,6 +1418,7 @@ const Setting = (props: SettingProps) => {
             xml += '  - dataSourceId, useDataSource, layerUrl\n'
             xml += '  - fields[] (name, alias, visible, format, excludeFromPdf, hideNull)\n'
             xml += '  - bufferDistance, bufferUnit\n'
+            xml += '  - searchGeometry (point/shape - shape searches with the Highlight Layer outline)\n'
             xml += '  - expanded (default expanded state: true=expanded, false=collapsed)\n'
             xml += '  - displayMode (table/list/card - how to display multiple records)\n'
             xml += '  - defaultSortField, defaultSortOrder (asc/desc)\n'
@@ -1671,7 +1672,7 @@ const Setting = (props: SettingProps) => {
 
             // Enum/type strings (must stay as strings, not parsed as other types)
             'type', 'numberFormat', 'dateFormat', 'textFormat',
-            'coordinateSystem', 'coordinateFormat', 'customCoordinateLabel', 'dataLayout', 'bufferUnit', 'spatialBufferUnit',
+            'coordinateSystem', 'coordinateFormat', 'customCoordinateLabel', 'dataLayout', 'bufferUnit', 'spatialBufferUnit', 'searchGeometry',
             'titleMode', 'sizeMode', 'position', 'verticalAlign', 'shape',
             'legendPosition', 'pageNumberPosition', 'contactPosition', 'titlePosition', 'datePosition',
             'richTextPosition', 'headerLayout', 'pageNumberFormat', 'chartType', 'chartMode',
@@ -6409,8 +6410,36 @@ const Setting = (props: SettingProps) => {
                                                                             <>
                                                                                 <SettingRow flow="wrap" label={(
                                                                                     <TooltipLabel
+                                                                                        label={t('searchBy')}
+                                                                                        tooltip={t('searchByTooltip')}
+                                                                                    />
+                                                                                )}>
+                                                                                    <Select
+                                                                                        size="sm"
+                                                                                        value={(layer as any).searchGeometry === 'shape' ? 'shape' : 'point'}
+                                                                                        onChange={(e) => {
+                                                                                            const mode = e.target.value === 'shape' ? 'shape' : 'point'
+                                                                                            const changes: any = { searchGeometry: mode }
+                                                                                            // A negative buffer only means something for a shape
+                                                                                            if (mode === 'point' && (layer.bufferDistance || 0) < 0) changes.bufferDistance = 0
+                                                                                            updateLayer(section.sectionId, layer.layerId, changes)
+                                                                                        }}
+                                                                                        aria-label={t('searchBy')}
+                                                                                    >
+                                                                                        <Option value="point">{t('searchByPoint')}</Option>
+                                                                                        <Option value="shape">{t('searchByShape')}</Option>
+                                                                                    </Select>
+                                                                                </SettingRow>
+                                                                                {(layer as any).searchGeometry === 'shape' && (
+                                                                                    <p className="hint-text">
+                                                                                        {config.highlightLayer?.enabled ? t('searchByShapeHint') : t('searchByShapeNeedsHighlight')}
+                                                                                    </p>
+                                                                                )}
+
+                                                                                <SettingRow flow="wrap" label={(
+                                                                                    <TooltipLabel
                                                                                         label={t('bufferDistance')}
-                                                                                        tooltip={t('expandTheSearchAreaAroundThe')}
+                                                                                        tooltip={(layer as any).searchGeometry === 'shape' ? t('bufferShapeTooltip') : t('expandTheSearchAreaAroundThe')}
                                                                                     />
                                                                                 )}>
 
@@ -6418,7 +6447,7 @@ const Setting = (props: SettingProps) => {
                                                                                         <NumericInput
                                                                                             size="sm"
                                                                                             value={layer.bufferDistance || 0}
-                                                                                            min={0}
+                                                                                            min={(layer as any).searchGeometry === 'shape' ? undefined : 0}
                                                                                             onChange={(value) => updateLayer(section.sectionId, layer.layerId, { bufferDistance: value })}
                                                                                             style={{ width: 80 }}
                                                                                             aria-label={t('bufferDistance2')}

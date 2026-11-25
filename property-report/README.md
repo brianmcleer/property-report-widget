@@ -83,6 +83,7 @@ Exact versions are pinned in `package.json` and frozen in `package-lock.json`.
 - **Charts:** bar, column, pie, donut, line, area; interactive legends and tooltips; responsive sizing; screen-reader-accessible data tables as an alternative.
 - **Related tables:** query relationship classes; display inline (collapsed/expanded) or in a separate pane, with field formatting, optional charts, and sorting.
 - **Nearby features:** distance-based analysis sorted nearest/farthest, with title, subtitle, formatted distance, and optional click-to-zoom.
+- **Search by point or property shape:** each layer is queried with "intersects". By default the search geometry is the address point or map click (plus an optional buffer). Set a layer's **Search By** to **Property shape** to query with the property outline from the Highlight Layer instead, so overlays such as flood or bushfire zones are reported when they cover any part of the property. A small negative buffer distance leaves out features that only touch the boundary.
 
 ### Map integration
 - Highlights query results using configurable point, line, and polygon symbols.
@@ -157,6 +158,7 @@ Please report bugs, ideas, questions, and enhancement requests on the [Esri Comm
 
 Full history is in `CHANGELOG.md`.
 
+- **2026-11-25 (v1.3.0):** New per-layer **Search By** setting. **Property shape** searches a layer with the property outline from the Highlight Layer instead of the search point, so overlays that cover only part of a property are found.
 - **2026-10-06 (v1.2.13):** Removes four unused dependencies (`@mantine/charts`, `@mantine/dates`, `@mantine/notifications`, `dayjs`). Smaller install, no code changes.
 - **2026-10-06 (v1.2.12):** Security: DOMPurify (used inside jsPDF) updated to 3.4.16 for two low-severity advisories.
 - **2026-09-28 (v1.2.11):** Pins `@tanstack/react-table` to version 8. Version 9 breaks every table section at runtime.

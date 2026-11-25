@@ -6376,6 +6376,10 @@ const Widget = (props: WidgetProps) => {
 
         mapView.view.goTo({ target: point, zoom: 16 })
 
+        // Property outline from the Highlight Layer, before any display offset. Layers set to
+        // searchGeometry 'shape' are queried with it instead of the point.
+        let propertyShape: any = null
+
         // Highlight layer
         if (config.highlightLayer?.enabled && graphicsLayerRef.current) {
             try {
@@ -6424,6 +6428,10 @@ const Widget = (props: WidgetProps) => {
 
                     if (result.features.length > 0) {
                         let geometry = result.features[0].geometry
+
+                        if (geometry && geometry.type === 'polygon') {
+                            propertyShape = geometry
+                        }
 
                         // Apply geometry offset if configured (for datum correction)
                         // Positive X = shift east, Positive Y = shift north
@@ -6614,8 +6622,24 @@ const Widget = (props: WidgetProps) => {
                     const lc = layerConfig as any
                     let features: any[] = []
 
-                    let queryGeometry: any = point
-                    if (lc.bufferDistance && lc.bufferDistance > 0) {
+                    // Search by the property outline when this layer asks for it and the Highlight Layer
+                    // returned a polygon; otherwise by the searched point, as before.
+                    const useShape = lc.searchGeometry === 'shape' && !!propertyShape
+                    let queryGeometry: any = useShape ? propertyShape : point
+                    if (useShape) {
+                        // A positive buffer widens the outline. A negative one shrinks it, which leaves out
+                        // features that only touch the boundary. If the result is empty (a very narrow
+                        // property) or the buffer fails, the exact outline is used.
+                        const shapeBuffer = Number(lc.bufferDistance) || 0
+                        if (shapeBuffer !== 0) {
+                            const bufferUnit = lc.bufferUnit || 'feet'
+                            const buffered: any = (() => { try { return geometryEngine.buffer(propertyShape, shapeBuffer, bufferUnit as any) } catch (e) { return null } })()
+                            const bufferedShape: any = Array.isArray(buffered) ? buffered[0] : buffered
+                            if (bufferedShape && Array.isArray(bufferedShape.rings) && bufferedShape.rings.length > 0) {
+                                queryGeometry = bufferedShape
+                            }
+                        }
+                    } else if (lc.bufferDistance && lc.bufferDistance > 0) {
                         const bufferUnit = lc.bufferUnit || 'feet'
                         queryGeometry = (() => { try { return geometryEngine.buffer(point, lc.bufferDistance, bufferUnit as any) } catch (e) { return null } })()
                     }

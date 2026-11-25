@@ -2,6 +2,15 @@
 
 Newest first. Every release bumps `manifest.json` and `package.json` together.
 
+## 1.3.0 (2026-11-25)
+
+### Added
+
+- Search by property shape. Each layer has a new **Search By** setting. **Search point** (the default, and what every earlier version did) queries the layer at the address point or the spot clicked on the map. **Property shape** queries it with the property outline returned by the Highlight Layer, so an overlay such as a flood or bushfire zone is reported when it covers any part of the property, not only the searched point.
+- With Property shape, Buffer Distance applies to the outline and may be negative. A positive distance also finds features near the property. A small negative distance (for example -1) shrinks the outline, which leaves out features that only touch the boundary, such as a neighbouring zone that shares a lot line.
+- If the Highlight Layer is off, or finds no polygon at the searched location, the layer is searched by point as before.
+- The setting round-trips through XML import and export as `searchGeometry`.
+
 ## 1.2.14 (2026-10-09)
 
 ### Fixed
